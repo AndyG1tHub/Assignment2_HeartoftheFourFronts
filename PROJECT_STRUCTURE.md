@@ -88,7 +88,8 @@ Assignment2_HeartoftheFourFronts-main/
 │       └── Direction.java       # 方向枚举（上、下、左、右）
 │
 └── sounds/                       # 音频资源目录
-    └── (音效文件)
+|    └── (音效文件)
+
 ```
 
 ## 包说明
@@ -234,3 +235,15 @@ java Main
 
 - **v2.0** (2026-05-24): 重构为包结构，提高代码组织性
 - **v1.0**: 初始版本，所有类在同一目录下
+
+## Enemy enemies 子包说明
+
+`src/enemy/enemies/` 采用与 `building/tower/` 类似的组织方式：`enemy.Enemy` 作为通用基类，保存移动、受伤、减速、奖励、绘制等公共逻辑；具体敌人类型放在 `enemy.enemies` 子包中，由 `EnemyFactory` 根据 `EnemyType` 创建。
+
+- **MeleeEnemy（近战）**: 标准敌人，血量、速度、伤害比较均衡，作为基础刷怪单位。
+- **TankEnemy（肉盾）**: 高血量、低速度，伤害较高，用来吸收防御塔火力。
+- **AssassinEnemy（刺客）**: 血量较低但移动速度快、伤害高，适合快速冲击基地。
+- **ArcherEnemy（射手）**: 脆皮输出型敌人，速度和伤害中等偏高，可以在距离基地 3 格内停下攻击。
+- **HealerEnemy（治疗）**: 支援型敌人，会周期性治疗附近受伤的其他敌人。
+
+当前刷怪逻辑在 `EnemySpawner` 中按波次逐步解锁：第 1 阶段以近战为主，混入刺客和射手；第 2 阶段加入肉盾和治疗；第 3 阶段五种敌人都会出现。
