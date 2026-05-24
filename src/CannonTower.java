@@ -21,6 +21,7 @@ public class CannonTower extends AttackTower {
         }
         projectiles.addProjectile(position, target.getGridPosition(), Color.ORANGE);
         resetCooldown();
+        playShootSound();
     }
 
     @Override

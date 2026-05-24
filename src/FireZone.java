@@ -23,6 +23,8 @@ public class FireZone extends Disaster {
         damageEnemies(enemies);
         damageBuildings(buildings);
         tickTimer = 0.0;
+        SoundManager sm = SoundManager.getInstance();
+        if (sm != null) sm.playFireDisaster();
     }
 
     private void damageEnemies(List<Enemy> enemies) {

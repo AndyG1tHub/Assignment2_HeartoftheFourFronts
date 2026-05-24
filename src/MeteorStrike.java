@@ -32,6 +32,8 @@ public class MeteorStrike extends Disaster {
             }
         }
         struck = true;
+        SoundManager sm = SoundManager.getInstance();
+        if (sm != null) sm.playMeteorDisaster();
     }
 
     @Override

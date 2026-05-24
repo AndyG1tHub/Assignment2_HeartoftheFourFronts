@@ -38,6 +38,8 @@ public class EnemySpawner {
         Enemy enemy = enemyFactory.createEnemy(chooseEnemyType(waveManager), getSpawnPosition(direction));
         enemy.snapToMap(map);
         enemies.add(enemy);
+        SoundManager sm = SoundManager.getInstance();
+        if (sm != null) sm.playEnemySpawn();
     }
 
     private Direction chooseSpawnDirection() {
@@ -80,6 +82,8 @@ public class EnemySpawner {
                 economy.addMoney(enemy.getMoneyReward());
                 score.addKillScore(enemy.getScoreReward());
                 iterator.remove();
+                SoundManager sm = SoundManager.getInstance();
+                if (sm != null) sm.playEnemyDeath();
             }
         }
     }

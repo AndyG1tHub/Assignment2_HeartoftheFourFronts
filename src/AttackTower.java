@@ -31,6 +31,18 @@ public abstract class AttackTower extends Building {
         target.takeDamage(damage);
         projectiles.addProjectile(position, target.getGridPosition(), Color.YELLOW);
         resetCooldown();
+        playShootSound();
+    }
+
+    protected void playShootSound() {
+        SoundManager sm = SoundManager.getInstance();
+        if (sm == null) return;
+        switch (getType()) {
+            case ARROW_TOWER: sm.playArrowShoot(); break;
+            case CANNON_TOWER: sm.playCannonShoot(); break;
+            case ICE_TOWER: sm.playIceShoot(); break;
+            case LIGHTNING_TOWER: sm.playLightningShoot(); break;
+        }
     }
 
     protected Enemy findClosestEnemy(List<Enemy> enemies) {

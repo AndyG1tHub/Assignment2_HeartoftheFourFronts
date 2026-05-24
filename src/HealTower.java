@@ -23,8 +23,14 @@ public class HealTower extends Building {
     }
 
     private void healDamagedBuildings(List<Building> buildings) {
+        boolean healedAny = false;
         for (Building building : findDamagedBuildings(buildings)) {
             healBuilding(building);
+            healedAny = true;
+        }
+        if (healedAny) {
+            SoundManager sm = SoundManager.getInstance();
+            if (sm != null) sm.playHealTower();
         }
     }
 

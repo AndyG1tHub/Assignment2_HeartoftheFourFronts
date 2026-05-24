@@ -9,6 +9,8 @@ public class WaveManager {
         stage = calculateStage();
         if (stage > oldStage) {
             score.addWaveScore(stage * 250);
+            SoundManager sm = SoundManager.getInstance();
+            if (sm != null) sm.playWaveStart();
         }
     }
 

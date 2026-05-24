@@ -23,6 +23,7 @@ public class LightningTower extends AttackTower {
         }
         if (hitCount > 0) {
             resetCooldown();
+            playShootSound();
         }
     }
 
