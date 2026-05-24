@@ -1,11 +1,10 @@
 package enemy;
 
-/** Enemy archetypes. Only basic stats are implemented for the first framework. */
+/** Enemy archetypes used by EnemyFactory and the wave spawner. */
 public enum EnemyType {
-    VOIDLING,
-    RAVAGER,
-    STONEBREAKER,
-    BLIGHT_BOMBER,
-    GOLD_WRAITH,
-    BOSS
+    MELEE,
+    TANK,
+    ASSASSIN,
+    ARCHER,
+    HEALER
 }

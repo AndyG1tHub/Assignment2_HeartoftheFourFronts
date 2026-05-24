@@ -55,6 +55,13 @@ public class Enemy {
         ai.updateEnemyBehaviour(this, dt);
     }
 
+    public void supportAllies(double dt, List<Enemy> enemies) {
+    }
+
+    public double getBaseAttackRange() {
+        return 0.0;
+    }
+
     private void updateStatusEffects(double dt) {
         if (!slowed) {
             return;
@@ -127,6 +134,13 @@ public class Enemy {
         }
     }
 
+    public void heal(int amount) {
+        if (isDead()) {
+            return;
+        }
+        hp = Math.min(maxHp, hp + amount);
+    }
+
     public void applySlow(double duration) {
         slowed = true;
         slowTimer = Math.max(slowTimer, duration);
@@ -139,17 +153,17 @@ public class Enemy {
     public void draw(GameEngine engine, GridMap map) {
         engine.changeColor(getColor());
         engine.drawSolidCircle(x, y, GameConfig.TILE_SIZE * 0.35);
+        engine.changeColor(Color.WHITE);
+        engine.drawText(x - 5, y + 5, getDrawLabel(), "Arial", 12);
         drawHealthBar(engine);
     }
 
-    private Color getColor() {
-        if (type == EnemyType.BOSS) {
-            return new Color(120, 30, 30);
-        }
-        if (type == EnemyType.GOLD_WRAITH) {
-            return new Color(230, 190, 65);
-        }
+    protected Color getColor() {
         return new Color(205, 70, 80);
+    }
+
+    protected String getDrawLabel() {
+        return "M";
     }
 
     private void drawHealthBar(GameEngine engine) {
@@ -166,6 +180,18 @@ public class Enemy {
 
     public GridPosition getGridPosition() {
         return gridPosition;
+    }
+
+    public EnemyType getType() {
+        return type;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public int getMaxHp() {
+        return maxHp;
     }
 
     public int getMoneyReward() {

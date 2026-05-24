@@ -46,12 +46,20 @@ public class EnemyAI {
     }
 
     private void moveOrAttackBase(Enemy enemy, double dt) {
-        if (enemy.getGridPosition().equals(base.getPosition())) {
+        if (isInBaseAttackRange(enemy)) {
             enemy.attackBase(dt, base);
             return;
         }
         ensurePath(enemy, base.getPosition());
         enemy.followPath(dt, map);
+    }
+
+    private boolean isInBaseAttackRange(Enemy enemy) {
+        GridPosition enemyPosition = enemy.getGridPosition();
+        GridPosition basePosition = base.getPosition();
+        int rowDiff = enemyPosition.row - basePosition.row;
+        int colDiff = enemyPosition.col - basePosition.col;
+        return Math.sqrt(rowDiff * rowDiff + colDiff * colDiff) <= enemy.getBaseAttackRange();
     }
 
     private void ensurePath(Enemy enemy, GridPosition target) {

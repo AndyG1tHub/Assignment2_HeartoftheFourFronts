@@ -1,6 +1,11 @@
 package enemy;
 
 import core.GridPosition;
+import enemy.enemies.ArcherEnemy;
+import enemy.enemies.AssassinEnemy;
+import enemy.enemies.HealerEnemy;
+import enemy.enemies.MeleeEnemy;
+import enemy.enemies.TankEnemy;
 import manager.DifficultyManager;
 
 /** Creates enemies with difficulty-scaled stats. */
@@ -12,37 +17,22 @@ public class EnemyFactory {
     }
 
     public Enemy createEnemy(EnemyType type, GridPosition position) {
-        int hp = (int) Math.round(baseHp(type) * difficultyManager.getEnemyHpMultiplier());
-        return new Enemy(position, type, hp, baseDamage(type),
-                baseSpeed(type), moneyReward(type), scoreReward(type));
-    }
-
-    private int baseHp(EnemyType type) {
-        if (type == EnemyType.RAVAGER) {
-            return 120;
+        if (type == EnemyType.TANK) {
+            return new TankEnemy(position, scaleHp(TankEnemy.BASE_HP));
         }
-        if (type == EnemyType.STONEBREAKER) {
-            return 180;
+        if (type == EnemyType.ASSASSIN) {
+            return new AssassinEnemy(position, scaleHp(AssassinEnemy.BASE_HP));
         }
-        if (type == EnemyType.BOSS) {
-            return 700;
+        if (type == EnemyType.ARCHER) {
+            return new ArcherEnemy(position, scaleHp(ArcherEnemy.BASE_HP));
         }
-        return 70;
+        if (type == EnemyType.HEALER) {
+            return new HealerEnemy(position, scaleHp(HealerEnemy.BASE_HP));
+        }
+        return new MeleeEnemy(position, scaleHp(MeleeEnemy.BASE_HP));
     }
 
-    private int baseDamage(EnemyType type) {
-        return type == EnemyType.BOSS ? 40 : 12;
-    }
-
-    private double baseSpeed(EnemyType type) {
-        return type == EnemyType.STONEBREAKER ? 0.75 : 1.0;
-    }
-
-    private int moneyReward(EnemyType type) {
-        return type == EnemyType.GOLD_WRAITH ? 35 : 15;
-    }
-
-    private int scoreReward(EnemyType type) {
-        return type == EnemyType.BOSS ? 500 : 75;
+    private int scaleHp(int baseHp) {
+        return (int) Math.round(baseHp * difficultyManager.getEnemyHpMultiplier());
     }
 }

@@ -62,13 +62,44 @@ public class EnemySpawner {
 
     private EnemyType chooseEnemyType(WaveManager waveManager) {
         int stage = waveManager.getStage();
-        if (stage >= 3 && random.nextDouble() < 0.08) {
-            return EnemyType.BOSS;
+        double roll = random.nextDouble();
+        if (stage >= 3) {
+            if (roll < 0.18) {
+                return EnemyType.TANK;
+            }
+            if (roll < 0.34) {
+                return EnemyType.ASSASSIN;
+            }
+            if (roll < 0.50) {
+                return EnemyType.ARCHER;
+            }
+            if (roll < 0.62) {
+                return EnemyType.HEALER;
+            }
+            return EnemyType.MELEE;
         }
-        if (stage >= 2 && random.nextDouble() < 0.25) {
-            return EnemyType.RAVAGER;
+        if (stage >= 2) {
+            if (roll < 0.20) {
+                return EnemyType.TANK;
+            }
+            if (roll < 0.35) {
+                return EnemyType.ASSASSIN;
+            }
+            if (roll < 0.50) {
+                return EnemyType.ARCHER;
+            }
+            if (roll < 0.58) {
+                return EnemyType.HEALER;
+            }
+            return EnemyType.MELEE;
         }
-        return EnemyType.VOIDLING;
+        if (roll < 0.20) {
+            return EnemyType.ASSASSIN;
+        }
+        if (roll < 0.35) {
+            return EnemyType.ARCHER;
+        }
+        return EnemyType.MELEE;
     }
 
     private GridPosition getSpawnPosition(Direction direction) {
@@ -87,6 +118,9 @@ public class EnemySpawner {
     }
 
     public void updateEnemies(double dt, EnemyAI enemyAI, EconomyManager economy, ScoreManager score) {
+        for (Enemy enemy : new ArrayList<Enemy>(enemies)) {
+            enemy.supportAllies(dt, enemies);
+        }
         Iterator<Enemy> iterator = enemies.iterator();
         while (iterator.hasNext()) {
             Enemy enemy = iterator.next();
