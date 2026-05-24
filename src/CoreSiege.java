@@ -144,12 +144,14 @@ public class CoreSiege extends GameEngine {
             gameState = GameState.GAME_OVER;
             if (!hasTriggeredEndSound) {
                 soundManager.stopBgm();
+                soundManager.playGameOver();
                 hasTriggeredEndSound = true;
             }
         } else if (waveManager.hasWon()) {
             gameState = GameState.WIN;
             if (!hasTriggeredEndSound) {
                 soundManager.stopBgm();
+                soundManager.playGameWin();
                 hasTriggeredEndSound = true;
             }
         }

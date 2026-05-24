@@ -2,6 +2,9 @@
 public class SoundManager {
     private static SoundManager instance;
 
+    private static final float SFX_VOLUME = -3.0f;
+    private static final float BGM_VOLUME = -12.0f;
+
     private GameEngine engine;
     private boolean muted;
 
@@ -22,6 +25,8 @@ public class SoundManager {
     private GameEngine.AudioClip fireDisaster;
     private GameEngine.AudioClip meteorDisaster;
     private GameEngine.AudioClip insufficientMoney;
+    private GameEngine.AudioClip gameOver;
+    private GameEngine.AudioClip gameWin;
     private GameEngine.AudioClip bgm;
 
     private SoundManager(GameEngine engine) {
@@ -54,6 +59,8 @@ public class SoundManager {
         fireDisaster = tryLoad("sounds/fire_disaster.wav");
         meteorDisaster = tryLoad("sounds/meteor_disaster.wav");
         insufficientMoney = tryLoad("sounds/insufficient_money.wav");
+        gameOver = tryLoad("sounds/game_over.wav");
+        gameWin = tryLoad("sounds/game_win.wav");
         bgm = tryLoad("sounds/bgm.wav");
     }
 
@@ -70,7 +77,7 @@ public class SoundManager {
         if (muted) {
             if (bgm != null) engine.stopAudioLoop(bgm);
         } else {
-            if (bgm != null) engine.startAudioLoop(bgm);
+            if (bgm != null) engine.startAudioLoop(bgm, BGM_VOLUME);
         }
     }
 
@@ -79,8 +86,12 @@ public class SoundManager {
     }
 
     private void play(GameEngine.AudioClip clip) {
+        play(clip, SFX_VOLUME);
+    }
+
+    private void play(GameEngine.AudioClip clip, float volume) {
         if (clip != null && !muted) {
-            engine.playAudio(clip);
+            engine.playAudio(clip, volume);
         }
     }
 
@@ -90,17 +101,19 @@ public class SoundManager {
     public void playLightningShoot() { play(lightningShoot); }
     public void playEnemyDeath() { play(enemyDeath); }
     public void playBaseHit() { play(baseHit); }
-    public void playButtonClick() { play(buttonClick); }
+    public void playButtonClick() { play(buttonClick, -5.0f); }
     public void playPlaceBuilding() { play(placeBuilding); }
     public void playWallBreak() { play(wallBreak); }
     public void playHealTower() { play(healTower); }
     public void playDecoyDeploy() { play(decoyDeploy); }
     public void playRewardCollect() { play(rewardCollect); }
     public void playWaveStart() { play(waveStart); }
-    public void playEnemySpawn() { play(enemySpawn); }
+    public void playEnemySpawn() { play(enemySpawn, -6.0f); }
     public void playFireDisaster() { play(fireDisaster); }
     public void playMeteorDisaster() { play(meteorDisaster); }
     public void playInsufficientMoney() { play(insufficientMoney); }
-    public void startBgm() { if (!muted && bgm != null) engine.startAudioLoop(bgm); }
+    public void playGameOver() { play(gameOver); }
+    public void playGameWin() { play(gameWin); }
+    public void startBgm() { if (!muted && bgm != null) engine.startAudioLoop(bgm, BGM_VOLUME); }
     public void stopBgm() { if (bgm != null) engine.stopAudioLoop(bgm); }
 }
