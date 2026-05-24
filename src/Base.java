@@ -14,6 +14,8 @@ public class Base {
 
     public void takeDamage(int amount) {
         hp = Math.max(0, hp - amount);
+        SoundManager sm = SoundManager.getInstance();
+        if (sm != null) sm.playBaseHit();
     }
 
     public boolean isDestroyed() {

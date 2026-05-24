@@ -18,6 +18,7 @@ public class IceTower extends AttackTower {
         target.applySlow(2.0);
         projectiles.addProjectile(position, target.getGridPosition(), Color.CYAN);
         resetCooldown();
+        playShootSound();
     }
 
     @Override

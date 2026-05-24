@@ -17,6 +17,8 @@ public class RewardPoint extends GameEvent {
         economy.addMoney(GameConfig.REWARD_MONEY);
         score.addRewardScore(GameConfig.REWARD_SCORE);
         active = false;
+        SoundManager sm = SoundManager.getInstance();
+        if (sm != null) sm.playRewardCollect();
     }
 
     @Override

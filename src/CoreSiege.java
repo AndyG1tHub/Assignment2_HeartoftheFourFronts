@@ -44,13 +44,16 @@ public class CoreSiege extends GameEngine {
         menuScreen = new MenuScreen();
         hud = new HUD();
         assetManager = new AssetManager();
-        soundManager = new SoundManager();
+        SoundManager.init(this);
+        soundManager = SoundManager.getInstance();
+        soundManager.loadSounds();
         assetManager.loadAssets();
         startNewGame(selectedDifficulty);
         gameState = GameState.MENU;
     }
 
     private void startNewGame(Difficulty difficulty) {
+        hasTriggeredEndSound = false;
         selectedDifficulty = difficulty;
         gridMap = new GridMap();
         base = new Base(gridMap.getBasePosition());
@@ -69,6 +72,7 @@ public class CoreSiege extends GameEngine {
         scoreManager = new ScoreManager();
         waveManager = new WaveManager();
         particleSystem = new ParticleSystem();
+        soundManager.startBgm();
     }
 
     @Override
@@ -117,6 +121,9 @@ public class CoreSiege extends GameEngine {
             Building building = iterator.next();
             if (building.isDestroyed()) {
                 gridMap.removeBuilding(building.getPosition());
+                if (building.getType() == BuildingType.WALL) {
+                    soundManager.playWallBreak();
+                }
                 iterator.remove();
             }
         }
@@ -130,11 +137,21 @@ public class CoreSiege extends GameEngine {
         decoyManager.update(dt);
     }
 
+    private boolean hasTriggeredEndSound;
+
     private void checkGameEnd() {
         if (base.isDestroyed()) {
             gameState = GameState.GAME_OVER;
+            if (!hasTriggeredEndSound) {
+                soundManager.stopBgm();
+                hasTriggeredEndSound = true;
+            }
         } else if (waveManager.hasWon()) {
             gameState = GameState.WIN;
+            if (!hasTriggeredEndSound) {
+                soundManager.stopBgm();
+                hasTriggeredEndSound = true;
+            }
         }
     }
 
@@ -211,6 +228,7 @@ public class CoreSiege extends GameEngine {
     private void handleMenuClick(MouseEvent event) {
         Difficulty difficulty = menuScreen.handleClick(event.getX(), event.getY());
         if (difficulty != null) {
+            soundManager.playButtonClick();
             startNewGame(difficulty);
             gameState = GameState.PLAYING;
         }
@@ -220,6 +238,7 @@ public class CoreSiege extends GameEngine {
         BuildingType clickedType = hud.getClickedBuildingType(event.getX(), event.getY());
         if (clickedType != null) {
             selectedBuilding = clickedType;
+            soundManager.playButtonClick();
             return;
         }
         GridPosition position = gridMap.mouseToGrid(event.getX(), event.getY());
@@ -240,17 +259,22 @@ public class CoreSiege extends GameEngine {
     private void placeDecoy() {
         if (economyManager.spendMoney(GameConfig.DECOY_COST)) {
             decoyManager.createDecoy(base.getPosition(), Direction.NORTH);
+            soundManager.playDecoyDeploy();
+        } else {
+            soundManager.playInsufficientMoney();
         }
     }
 
     private void placeBuilding(GridPosition position) {
         Building building = buildingFactory.createBuilding(selectedBuilding, position);
         if (building == null || !economyManager.spendMoney(building.getCost())) {
+            if (building != null) soundManager.playInsufficientMoney();
             return;
         }
         if (gridMap.placeBuilding(building)) {
             buildings.add(building);
             scoreManager.addBuildingBuilt();
+            soundManager.playPlaceBuilding();
         } else {
             economyManager.addMoney(building.getCost());
         }
