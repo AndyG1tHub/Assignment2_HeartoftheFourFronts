@@ -89,60 +89,26 @@ public class SoundManager {
         play(clip, SFX_VOLUME);
     }
 
-    private long lastPlayTime;
-    private static final long GLOBAL_COOLDOWN = 50_000_000L; // 50ms global throttle
-    private static final long COOLDOWN = 250_000_000L; // 250ms per sound
-
     private void play(GameEngine.AudioClip clip, float volume) {
         if (clip != null && !muted) {
-            long now = System.nanoTime();
-            if (now - lastPlayTime < GLOBAL_COOLDOWN) return;
-            lastPlayTime = now;
             engine.playAudio(clip, volume);
         }
     }
 
-    private long lastArrowTime, lastCannonTime, lastIceTime, lastLightningTime;
-    private long lastDeathTime, lastBaseHitTime, lastWallTime, lastSpawnTime;
-
-    public void playArrowShoot() {
-        long now = System.nanoTime();
-        if (now - lastArrowTime >= COOLDOWN) { lastArrowTime = now; play(arrowShoot); }
-    }
-    public void playCannonShoot() {
-        long now = System.nanoTime();
-        if (now - lastCannonTime >= COOLDOWN) { lastCannonTime = now; play(cannonShoot); }
-    }
-    public void playIceShoot() {
-        long now = System.nanoTime();
-        if (now - lastIceTime >= COOLDOWN) { lastIceTime = now; play(iceShoot); }
-    }
-    public void playLightningShoot() {
-        long now = System.nanoTime();
-        if (now - lastLightningTime >= COOLDOWN) { lastLightningTime = now; play(lightningShoot); }
-    }
-    public void playEnemyDeath() {
-        long now = System.nanoTime();
-        if (now - lastDeathTime >= COOLDOWN) { lastDeathTime = now; play(enemyDeath); }
-    }
-    public void playBaseHit() {
-        long now = System.nanoTime();
-        if (now - lastBaseHitTime >= COOLDOWN) { lastBaseHitTime = now; play(baseHit); }
-    }
+    public void playArrowShoot() { play(arrowShoot); }
+    public void playCannonShoot() { play(cannonShoot); }
+    public void playIceShoot() { play(iceShoot); }
+    public void playLightningShoot() { play(lightningShoot); }
+    public void playEnemyDeath() { play(enemyDeath); }
+    public void playBaseHit() { play(baseHit); }
     public void playButtonClick() { play(buttonClick, -5.0f); }
     public void playPlaceBuilding() { play(placeBuilding); }
-    public void playWallBreak() {
-        long now = System.nanoTime();
-        if (now - lastWallTime >= COOLDOWN) { lastWallTime = now; play(wallBreak); }
-    }
+    public void playWallBreak() { play(wallBreak); }
     public void playHealTower() { play(healTower); }
     public void playDecoyDeploy() { play(decoyDeploy); }
     public void playRewardCollect() { play(rewardCollect); }
     public void playWaveStart() { play(waveStart); }
-    public void playEnemySpawn() {
-        long now = System.nanoTime();
-        if (now - lastSpawnTime >= COOLDOWN) { lastSpawnTime = now; play(enemySpawn, -6.0f); }
-    }
+    public void playEnemySpawn() { play(enemySpawn, -6.0f); }
     public void playFireDisaster() { play(fireDisaster); }
     public void playMeteorDisaster() { play(meteorDisaster); }
     public void playInsufficientMoney() { play(insufficientMoney); }
