@@ -92,7 +92,7 @@ public class SoundManager {
     }
 
     public void playArrowShoot() { play(arrowShoot); }
-    public void playCannonShoot() { play(cannonShoot); }
+    public void playCannonShoot() { play(cannonShoot, -1.0f); }
     public void playIceShoot() { play(iceShoot); }
     public void playLightningShoot() { play(lightningShoot); }
     public void playEnemyDeath() { play(enemyDeath); }
