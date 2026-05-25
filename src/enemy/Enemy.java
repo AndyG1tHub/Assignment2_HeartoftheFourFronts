@@ -1,6 +1,7 @@
 package enemy;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import building.Base;
 import building.Decoy;
 import game.GameEngine;
 import game.GameConfig;
+import util.AssetManager;
 
 /** Base enemy that owns stats and grid movement; EnemyAI owns decisions. */
 public class Enemy {
@@ -29,6 +31,7 @@ public class Enemy {
     private double attackCooldown;
     private boolean slowed;
     private double slowTimer;
+    private double animationTime;
     private Decoy targetDecoy;
 
     public Enemy(GridPosition gridPosition, EnemyType type, int hp, int damage,
@@ -51,6 +54,7 @@ public class Enemy {
     }
 
     public void update(double dt, EnemyAI ai) {
+        animationTime += dt;
         updateStatusEffects(dt);
         ai.updateEnemyBehaviour(this, dt);
     }
@@ -151,6 +155,13 @@ public class Enemy {
     }
 
     public void draw(GameEngine engine, GridMap map) {
+        Image sprite = AssetManager.getEnemySprite(type, animationTime);
+        if (sprite != null) {
+            double size = GameConfig.TILE_SIZE * 1.25;
+            engine.drawImage(sprite, x - size / 2, y - size / 2, size, size);
+            drawHealthBar(engine);
+            return;
+        }
         engine.changeColor(getColor());
         engine.drawSolidCircle(x, y, GameConfig.TILE_SIZE * 0.35);
         engine.changeColor(Color.WHITE);

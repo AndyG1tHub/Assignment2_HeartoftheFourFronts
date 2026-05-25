@@ -60,7 +60,7 @@ public class CoreSiege extends GameEngine {
         SoundManager.init(this);
         soundManager = SoundManager.getInstance();
         soundManager.loadSounds();
-        assetManager.loadAssets();
+        assetManager.loadAssets(this);
         startNewGame(selectedDifficulty);
         gameState = GameState.MENU;
     }
