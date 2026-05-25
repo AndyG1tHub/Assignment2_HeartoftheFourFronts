@@ -1,8 +1,5 @@
 package util;
 
-/** Placeholder for future sprite loading. The framework uses shapes for now. */
+/** Reserved for non-image shared assets. Image loading is handled by manager.ImageManger. */
 public class AssetManager {
-    public void loadAssets() {
-        // TODO: load sprites once assignment assets are available.
-    }
 }

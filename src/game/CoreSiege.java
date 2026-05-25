@@ -41,7 +41,7 @@ public class CoreSiege extends GameEngine {
     private WaveManager waveManager;
     private HUD hud;
     private MenuScreen menuScreen;
-    private AssetManager assetManager;
+    private ImageManger imageManger;
     private SoundManager soundManager;
     private ParticleSystem particleSystem;
 
@@ -56,11 +56,11 @@ public class CoreSiege extends GameEngine {
         setWindowSize(GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
         menuScreen = new MenuScreen();
         hud = new HUD();
-        assetManager = new AssetManager();
+        imageManger = new ImageManger();
         SoundManager.init(this);
         soundManager = SoundManager.getInstance();
         soundManager.loadSounds();
-        assetManager.loadAssets();
+        imageManger.loadImages(this);
         startNewGame(selectedDifficulty);
         gameState = GameState.MENU;
     }

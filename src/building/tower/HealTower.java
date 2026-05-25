@@ -1,6 +1,7 @@
 package building.tower;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import enemy.Enemy;
 import combat.ProjectileManager;
 import game.GameEngine;
 import game.GameConfig;
+import manager.ImageManger;
 import manager.SoundManager;
 
 /** Support building that heals nearby damaged buildings. */
@@ -70,6 +72,18 @@ public class HealTower extends Building {
     public void draw(GameEngine engine, GridMap map) {
         int x = map.toScreenX(position.col);
         int y = map.toScreenY(position.row);
+        Image rangeImage = ImageManger.getHealRangeEffect();
+        if (rangeImage != null) {
+            int size = (range * 2 + 1) * GameConfig.TILE_SIZE;
+            engine.drawImage(rangeImage, map.tileCenterX(position) - size / 2,
+                    map.tileCenterY(position) - size / 2, size, size);
+        }
+        Image image = ImageManger.getHealTower();
+        if (image != null) {
+            engine.drawImage(image, x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
+            drawHealthBar(engine, map);
+            return;
+        }
         engine.changeColor(new Color(95, 205, 165));
         engine.drawSolidRectangle(x + 5, y + 5, GameConfig.TILE_SIZE - 10, GameConfig.TILE_SIZE - 10);
         engine.changeColor(Color.WHITE);
