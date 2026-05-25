@@ -89,15 +89,21 @@ public class SoundManager {
         play(clip, SFX_VOLUME);
     }
 
+    private long lastPlayTime;
+    private static final long GLOBAL_COOLDOWN = 50_000_000L; // 50ms global throttle
+    private static final long COOLDOWN = 250_000_000L; // 250ms per sound
+
     private void play(GameEngine.AudioClip clip, float volume) {
         if (clip != null && !muted) {
+            long now = System.nanoTime();
+            if (now - lastPlayTime < GLOBAL_COOLDOWN) return;
+            lastPlayTime = now;
             engine.playAudio(clip, volume);
         }
     }
 
     private long lastArrowTime, lastCannonTime, lastIceTime, lastLightningTime;
     private long lastDeathTime, lastBaseHitTime, lastWallTime, lastSpawnTime;
-    private static final long COOLDOWN = 200_000_000L; // 200ms in nanos
 
     public void playArrowShoot() {
         long now = System.nanoTime();
