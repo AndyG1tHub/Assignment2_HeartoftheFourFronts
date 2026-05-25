@@ -11,7 +11,7 @@ import building.Base;
 import building.Decoy;
 import game.GameEngine;
 import game.GameConfig;
-import util.AssetManager;
+import manager.ImageManger;
 
 /** Base enemy that owns stats and grid movement; EnemyAI owns decisions. */
 public class Enemy {
@@ -155,7 +155,7 @@ public class Enemy {
     }
 
     public void draw(GameEngine engine, GridMap map) {
-        Image sprite = AssetManager.getEnemySprite(type, animationTime);
+        Image sprite = ImageManger.getEnemySprite(type, animationTime);
         if (sprite != null) {
             double size = GameConfig.TILE_SIZE * 1.25;
             engine.drawImage(sprite, x - size / 2, y - size / 2, size, size);
