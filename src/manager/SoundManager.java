@@ -107,7 +107,7 @@ public class SoundManager {
     public void playHealTower() { play(healTower); }
     public void playDecoyDeploy() { play(decoyDeploy); }
     public void playRewardCollect() { play(rewardCollect); }
-    public void playWaveStart() { play(waveStart); }
+    public void playWaveStart() { play(waveStart, -6.0f); }
     public void playEnemySpawn() { play(enemySpawn, -6.0f); }
     public void playFireDisaster() { play(fireDisaster); }
     public void playMeteorDisaster() { play(meteorDisaster); }
