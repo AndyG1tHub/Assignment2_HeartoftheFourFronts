@@ -71,6 +71,7 @@ Assignment2_HeartoftheFourFronts-main/
 │   │   ├── WaveManager.java          # 波次管理器，控制敌人波次
 │   │   ├── DecoyManager.java         # 诱饵管理器
 │   │   ├── RewardPointManager.java   # 奖励点管理器
+│   │   ├── ImageManger.java          # 图片资源管理器，加载并缓存精灵图
 │   │   └── SoundManager.java         # 音效管理器，播放音乐和音效
 │   │
 │   ├── ui/                       # 用户界面
