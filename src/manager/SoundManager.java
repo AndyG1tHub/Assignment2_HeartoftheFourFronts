@@ -69,11 +69,7 @@ public class SoundManager {
     }
 
     private GameEngine.AudioClip tryLoad(String path) {
-        GameEngine.AudioClip clip = engine.loadAudio(path);
-        if (clip == null) {
-            System.out.println("[SoundManager] missing: " + path + " (silent)");
-        }
-        return clip;
+        return engine.loadAudio(path);
     }
 
     public void toggleMute() {
@@ -99,12 +95,21 @@ public class SoundManager {
         }
     }
 
+    private long lastBaseHitTime;
+    private static final long BASE_HIT_COOLDOWN = 300_000_000L; // 300ms in nanos
+
     public void playArrowShoot() { play(arrowShoot); }
     public void playCannonShoot() { play(cannonShoot); }
     public void playIceShoot() { play(iceShoot); }
     public void playLightningShoot() { play(lightningShoot); }
     public void playEnemyDeath() { play(enemyDeath); }
-    public void playBaseHit() { play(baseHit); }
+    public void playBaseHit() {
+        long now = System.nanoTime();
+        if (now - lastBaseHitTime >= BASE_HIT_COOLDOWN) {
+            lastBaseHitTime = now;
+            play(baseHit);
+        }
+    }
     public void playButtonClick() { play(buttonClick, -5.0f); }
     public void playPlaceBuilding() { play(placeBuilding); }
     public void playWallBreak() { play(wallBreak); }
