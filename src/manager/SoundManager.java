@@ -46,30 +46,26 @@ public class SoundManager {
     }
 
     public void loadSounds() {
-        arrowShoot = tryLoad("sounds/arrow_shoot.wav");
-        cannonShoot = tryLoad("sounds/cannon_shoot.wav");
-        iceShoot = tryLoad("sounds/ice_shoot.wav");
-        lightningShoot = tryLoad("sounds/lightning_shoot.wav");
-        enemyDeath = tryLoad("sounds/enemy_death.wav");
-        baseHit = tryLoad("sounds/base_hit.wav");
-        buttonClick = tryLoad("sounds/button_click.wav");
-        placeBuilding = tryLoad("sounds/place_building.wav");
-        wallBreak = tryLoad("sounds/wall_break.wav");
-        healTower = tryLoad("sounds/heal_tower.wav");
-        decoyDeploy = tryLoad("sounds/decoy_deploy.wav");
-        rewardCollect = tryLoad("sounds/reward_collect.wav");
-        waveStart = tryLoad("sounds/wave_start.wav");
-        enemySpawn = tryLoad("sounds/enemy_spawn.wav");
-        fireDisaster = tryLoad("sounds/fire_disaster.wav");
-        meteorDisaster = tryLoad("sounds/meteor_disaster.wav");
-        insufficientMoney = tryLoad("sounds/insufficient_money.wav");
-        gameOver = tryLoad("sounds/game_over.wav");
-        gameWin = tryLoad("sounds/game_win.wav");
-        bgm = tryLoad("sounds/bgm.wav");
-    }
-
-    private GameEngine.AudioClip tryLoad(String path) {
-        return engine.loadAudio(path);
+        arrowShoot = engine.loadAudio("sounds/arrow_shoot.wav");
+        cannonShoot = engine.loadAudio("sounds/cannon_shoot.wav");
+        iceShoot = engine.loadAudio("sounds/ice_shoot.wav");
+        lightningShoot = engine.loadAudio("sounds/lightning_shoot.wav");
+        enemyDeath = engine.loadAudio("sounds/enemy_death.wav");
+        baseHit = engine.loadAudio("sounds/base_hit.wav");
+        buttonClick = engine.loadAudio("sounds/button_click.wav");
+        placeBuilding = engine.loadAudio("sounds/place_building.wav");
+        wallBreak = engine.loadAudio("sounds/wall_break.wav");
+        healTower = engine.loadAudio("sounds/heal_tower.wav");
+        decoyDeploy = engine.loadAudio("sounds/decoy_deploy.wav");
+        rewardCollect = engine.loadAudio("sounds/reward_collect.wav");
+        waveStart = engine.loadAudio("sounds/wave_start.wav");
+        enemySpawn = engine.loadAudio("sounds/enemy_spawn.wav");
+        fireDisaster = engine.loadAudio("sounds/fire_disaster.wav");
+        meteorDisaster = engine.loadAudio("sounds/meteor_disaster.wav");
+        insufficientMoney = engine.loadAudio("sounds/insufficient_money.wav");
+        gameOver = engine.loadAudio("sounds/game_over.wav");
+        gameWin = engine.loadAudio("sounds/game_win.wav");
+        bgm = engine.loadAudio("sounds/bgm.wav");
     }
 
     public void toggleMute() {
