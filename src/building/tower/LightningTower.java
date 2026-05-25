@@ -1,6 +1,7 @@
 package building.tower;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.util.List;
 
 import building.BuildingType;
@@ -10,6 +11,7 @@ import enemy.Enemy;
 import combat.ProjectileManager;
 import game.GameEngine;
 import game.GameConfig;
+import manager.ImageManger;
 
 /** Simple multi-target tower used as a placeholder for chain lightning. */
 public class LightningTower extends AttackTower {
@@ -41,6 +43,12 @@ public class LightningTower extends AttackTower {
     public void draw(GameEngine engine, GridMap map) {
         int x = map.toScreenX(position.col);
         int y = map.toScreenY(position.row);
+        Image image = ImageManger.getLightningTower();
+        if (image != null) {
+            engine.drawImage(image, x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
+            drawHealthBar(engine, map);
+            return;
+        }
         engine.changeColor(new Color(165, 90, 210));
         engine.drawSolidRectangle(x + 5, y + 5, GameConfig.TILE_SIZE - 10, GameConfig.TILE_SIZE - 10);
         engine.changeColor(Color.WHITE);
