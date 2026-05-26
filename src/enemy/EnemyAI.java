@@ -1,7 +1,5 @@
 package enemy;
 
-import java.util.List;
-
 import core.GridPosition;
 import core.GridMap;
 import core.PathFinder;
@@ -51,8 +49,7 @@ public class EnemyAI {
             enemy.attackBase(dt, base);
             return;
         }
-        ensurePath(enemy, base.getPosition());
-        enemy.followPath(dt, map);
+        enemy.followPath(pathFinder.findPath(map, enemy.getGridPosition(), base.getPosition()), dt, map);
     }
 
     private boolean isInBaseAttackRange(Enemy enemy) {
@@ -63,11 +60,4 @@ public class EnemyAI {
         return Math.sqrt(rowDiff * rowDiff + colDiff * colDiff) <= enemy.getBaseAttackRange();
     }
 
-    private void ensurePath(Enemy enemy, GridPosition target) {
-        if (!enemy.needsPathTo(target)) {
-            return;
-        }
-        List<GridPosition> path = pathFinder.findPath(map, enemy.getGridPosition(), target);
-        enemy.setPath(path);
-    }
 }

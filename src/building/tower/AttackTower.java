@@ -19,7 +19,7 @@ public abstract class AttackTower extends Building {
 
     protected AttackTower(GridPosition position, int maxHp, int cost, int range,
             BuildingType type, int damage, double attackInterval) {
-        super(position, maxHp, cost, range, type, false);
+        super(position, maxHp, cost, range, type);
         this.damage = damage;
         this.attackInterval = attackInterval;
     }

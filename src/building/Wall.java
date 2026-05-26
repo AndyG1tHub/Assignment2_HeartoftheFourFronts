@@ -10,7 +10,7 @@ import game.GameConfig;
 /** High-health blocking defence. */
 public class Wall extends Building {
     public Wall(GridPosition position) {
-        super(position, 350, GameConfig.WALL_COST, 0, BuildingType.WALL, true);
+        super(position, 350, GameConfig.WALL_COST, 0, BuildingType.WALL);
     }
 
     @Override

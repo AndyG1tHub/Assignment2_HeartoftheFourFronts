@@ -84,7 +84,6 @@ Assignment2_HeartoftheFourFronts-main/
 │   │   └── RewardPoint.java     # 奖励点特效
 │   │
 │   └── util/                     # 工具类
-│       ├── AssetManager.java    # 资源管理器，加载图片等资源
 │       └── Direction.java       # 方向枚举（上、下、左、右）
 │
 └── sounds/                       # 音频资源目录
@@ -108,7 +107,53 @@ Assignment2_HeartoftheFourFronts-main/
 - **GridPosition**: 表示网格坐标
 - **Tile**: 地图上的单个地块
 - **TileType**: 地块类型（路径、可建造区域等）
-- **PathFinder**: A*寻路算法实现
+- **PathFinder**: BFS寻路算法实现
+
+## 寻路逻辑说明
+
+敌人寻路由 `EnemyAI`、`PathFinder`、`GridMap` 和 `Tile` 配合完成。
+
+- **EnemyAI.moveOrAttackBase**: 每次敌人更新时都检查是否进入基地攻击范围；未进入范围时立即调用 `PathFinder.findPath` 重新计算到基地的最短路径。
+- **PathFinder.findPath**: 使用 BFS 八方向搜索，返回从当前格到目标格的最短路径列表。
+- **PathFinder.getNeighbors**: 每次扩展当前格周围 8 个邻居，并按到基地的直线距离从近到远排序，因此敌人会优先斜向靠近基地，避免先横向或纵向走到中线再转向。
+- **Enemy.followPath**: 不缓存旧路径，只读取 BFS 返回路径中的下一格并向该格移动。
+- **Tile.isWalkable**: 当前帧中有建筑或障碍物的格子不能作为路径；基地目标格由 `PathFinder` 特判允许进入或接近。
+
+因此敌人会根据当前地图状态持续重新规划路线，玩家新建或移除建筑后，下一次敌人更新就会重新选择当前最短路径。
+
+## GameConfig 配置项说明
+
+- **TITLE**: 游戏窗口标题。
+- **WINDOW_WIDTH / WINDOW_HEIGHT**: 游戏窗口宽度和高度。
+- **TARGET_FPS**: 游戏目标帧率。
+- **GRID_ROWS / GRID_COLS**: 地图网格行数和列数。
+- **TILE_SIZE**: 单个格子的像素大小。
+- **MAP_OFFSET_X / MAP_OFFSET_Y**: 地图在窗口中的左上角偏移。
+- **BASE_MAX_HP**: 基地最大生命值。
+- **STARTING_MONEY**: 玩家开局金币。
+- **BASE_INCOME_PER_SECOND**: 每秒自动获得的金币。
+- **ARROW_TOWER_COST**: 箭塔建造费用。
+- **CANNON_TOWER_COST**: 炮塔建造费用。
+- **ICE_TOWER_COST**: 冰塔建造费用。
+- **LIGHTNING_TOWER_COST**: 闪电塔建造费用。
+- **WALL_COST**: 墙体建造费用。
+- **HEAL_TOWER_COST**: 治疗塔建造费用。
+- **DECOY_COST**: 诱饵释放费用。
+- **REWARD_MONEY**: 收集奖励点获得的金币。
+- **REWARD_SCORE**: 收集奖励点获得的分数。
+- **REWARD_SPAWN_INTERVAL**: 奖励点刷新间隔。
+- **DEFAULT_SPAWN_INTERVAL**: 基础刷怪间隔。
+- **WAVE_LENGTH_SECONDS**: 每个压力阶段持续时间。
+- **STAGE_ONE_ASSASSIN_CHANCE**: 第 1 阶段刷出刺客的概率。
+- **STAGE_ONE_ARCHER_CHANCE**: 第 1 阶段刷出射手的概率。
+- **STAGE_TWO_TANK_CHANCE**: 第 2 阶段刷出肉盾的概率。
+- **STAGE_TWO_ASSASSIN_CHANCE**: 第 2 阶段刷出刺客的概率。
+- **STAGE_TWO_ARCHER_CHANCE**: 第 2 阶段刷出射手的概率。
+- **STAGE_TWO_HEALER_CHANCE**: 第 2 阶段刷出治疗敌人的概率。
+- **STAGE_THREE_TANK_CHANCE**: 第 3 阶段刷出肉盾的概率。
+- **STAGE_THREE_ASSASSIN_CHANCE**: 第 3 阶段刷出刺客的概率。
+- **STAGE_THREE_ARCHER_CHANCE**: 第 3 阶段刷出射手的概率。
+- **STAGE_THREE_HEALER_CHANCE**: 第 3 阶段刷出治疗敌人的概率。
 
 ### 3. building 包 - 建筑系统
 包含所有建筑相关的类，防御塔单独放在tower子包中。
