@@ -40,6 +40,7 @@ public class MenuScreen {
         engine.drawSolidRectangle(0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
 
         drawBorder(engine);
+        drawCastle(engine);
         drawTitle(engine);
         drawSubtitle(engine);
 
@@ -49,6 +50,26 @@ public class MenuScreen {
             drawMainButtons(engine, mouseX, mouseY);
         }
         drawFooter(engine);
+    }
+
+    private void drawCastle(GameEngine engine) {
+        int cx = 750, cy = 70;
+        engine.changeColor(new Color(55, 60, 70));
+        engine.drawSolidRectangle(cx - 40, cy, 80, 50);
+        engine.drawSolidRectangle(cx - 15, cy - 20, 30, 20);
+        engine.changeColor(new Color(200, 180, 120));
+        engine.drawRectangle(cx - 40, cy, 80, 50);
+        engine.drawRectangle(cx - 15, cy - 20, 30, 20);
+        for (int i = 0; i < 4; i++) {
+            engine.drawSolidRectangle(cx - 35 + i * 20, cy - 6, 10, 6);
+        }
+        engine.changeColor(new Color(40, 35, 25));
+        engine.drawSolidRectangle(cx - 8, cy + 25, 16, 25);
+        engine.changeColor(new Color(200, 180, 120));
+        engine.drawRectangle(cx - 8, cy + 25, 16, 25);
+        engine.drawCircle(cx, cy + 38, 3);
+        engine.drawLine(cx, cy + 30, cx, cy + 45);
+        engine.drawLine(cx - 8, cy + 38, cx + 8, cy + 38);
     }
 
     private void drawBorder(GameEngine engine) {
