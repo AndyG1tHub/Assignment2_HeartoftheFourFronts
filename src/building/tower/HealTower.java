@@ -23,7 +23,7 @@ public class HealTower extends Building {
     private double cooldown;
 
     public HealTower(GridPosition position) {
-        super(position, 120, GameConfig.HEAL_TOWER_COST, 3, BuildingType.HEAL_TOWER, false);
+        super(position, 120, GameConfig.HEAL_TOWER_COST, 3, BuildingType.HEAL_TOWER);
     }
 
     @Override

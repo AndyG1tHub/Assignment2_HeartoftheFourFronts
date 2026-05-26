@@ -2,7 +2,6 @@ package enemy;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.util.ArrayList;
 import java.util.List;
 
 import core.GridPosition;
@@ -26,8 +25,6 @@ public class Enemy {
     private final int scoreReward;
     private final EnemyType type;
     private EnemyState state;
-    private List<GridPosition> path;
-    private int pathIndex;
     private double attackCooldown;
     private boolean slowed;
     private double slowTimer;
@@ -45,7 +42,6 @@ public class Enemy {
         this.moneyReward = moneyReward;
         this.scoreReward = scoreReward;
         this.state = EnemyState.SPAWNING;
-        this.path = new ArrayList<GridPosition>();
     }
 
     public void snapToMap(GridMap map) {
@@ -80,11 +76,11 @@ public class Enemy {
         }
     }
 
-    public void followPath(double dt, GridMap map) {
-        if (path == null || pathIndex >= path.size()) {
+    public void followPath(List<GridPosition> path, double dt, GridMap map) {
+        if (path == null || path.size() < 2) {
             return;
         }
-        moveToward(path.get(pathIndex), dt, map);
+        moveToward(path.get(1), dt, map);
     }
 
     private void moveToward(GridPosition next, double dt, GridMap map) {
@@ -104,7 +100,6 @@ public class Enemy {
         gridPosition = next;
         x = map.tileCenterX(next);
         y = map.tileCenterY(next);
-        pathIndex++;
         state = EnemyState.MOVING;
     }
 
@@ -124,15 +119,6 @@ public class Enemy {
         }
         state = EnemyState.CHASING_DECOY;
         moveToward(decoy.getGridPosition(), dt, map);
-    }
-
-    public void setPath(List<GridPosition> newPath) {
-        path = newPath == null ? new ArrayList<GridPosition>() : newPath;
-        pathIndex = path.size() > 1 ? 1 : 0;
-    }
-
-    public boolean needsPathTo(GridPosition target) {
-        return path == null || pathIndex >= path.size() || !path.get(path.size() - 1).equals(target);
     }
 
     public void takeDamage(int amount) {

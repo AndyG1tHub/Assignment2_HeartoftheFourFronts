@@ -38,7 +38,11 @@ public class Projectile {
         Image image = getProjectileImage();
         if (image != null) {
             double size = color == Color.MAGENTA ? GameConfig.TILE_SIZE * 1.6 : GameConfig.TILE_SIZE;
-            engine.drawImage(image, x - size / 2, y - size / 2, size, size);
+            if (color == Color.YELLOW) {
+                drawArrow(engine, image, x, y, size, map);
+            } else {
+                engine.drawImage(image, x - size / 2, y - size / 2, size, size);
+            }
             return;
         }
         engine.changeColor(color);
@@ -59,6 +63,17 @@ public class Projectile {
             return ImageManger.getLaserEffect();
         }
         return null;
+    }
+
+    private void drawArrow(GameEngine engine, Image image, double x, double y, double size, GridMap map) {
+        double dx = map.tileCenterX(target) - map.tileCenterX(start);
+        double dy = map.tileCenterY(target) - map.tileCenterY(start);
+        double angle = Math.toDegrees(Math.atan2(dy, dx)) + 45.0;
+        engine.saveCurrentTransform();
+        engine.translate(x, y);
+        engine.rotate(angle);
+        engine.drawImage(image, -size / 2, -size / 2, size, size);
+        engine.restoreLastTransform();
     }
 
     private double lerp(double a, double b, double t) {

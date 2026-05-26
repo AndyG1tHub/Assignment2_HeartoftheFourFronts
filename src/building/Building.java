@@ -17,17 +17,15 @@ public abstract class Building {
     protected final int cost;
     protected final int range;
     protected final BuildingType type;
-    protected final boolean blocksPath;
 
     protected Building(GridPosition position, int maxHp, int cost, int range,
-            BuildingType type, boolean blocksPath) {
+            BuildingType type) {
         this.position = position;
         this.hp = maxHp;
         this.maxHp = maxHp;
         this.cost = cost;
         this.range = range;
         this.type = type;
-        this.blocksPath = blocksPath;
     }
 
     public void update(double dt, List<Enemy> enemies, ProjectileManager projectiles,
@@ -71,10 +69,6 @@ public abstract class Building {
 
     public BuildingType getType() {
         return type;
-    }
-
-    public boolean blocksPath() {
-        return blocksPath;
     }
 
     protected void drawHealthBar(GameEngine engine, GridMap map) {

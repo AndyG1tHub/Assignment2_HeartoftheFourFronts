@@ -71,7 +71,6 @@ Assignment2_HeartoftheFourFronts-main/
 │   │   ├── WaveManager.java          # 波次管理器，控制敌人波次
 │   │   ├── DecoyManager.java         # 诱饵管理器
 │   │   ├── RewardPointManager.java   # 奖励点管理器
-│   │   ├── ImageManger.java          # 图片资源管理器，加载并缓存精灵图
 │   │   └── SoundManager.java         # 音效管理器，播放音乐和音效
 │   │
 │   ├── ui/                       # 用户界面
@@ -85,7 +84,6 @@ Assignment2_HeartoftheFourFronts-main/
 │   │   └── RewardPoint.java     # 奖励点特效
 │   │
 │   └── util/                     # 工具类
-│       ├── AssetManager.java    # 资源管理器，加载图片等资源
 │       └── Direction.java       # 方向枚举（上、下、左、右）
 │
 └── sounds/                       # 音频资源目录
@@ -109,7 +107,53 @@ Assignment2_HeartoftheFourFronts-main/
 - **GridPosition**: 表示网格坐标
 - **Tile**: 地图上的单个地块
 - **TileType**: 地块类型（路径、可建造区域等）
-- **PathFinder**: A*寻路算法实现
+- **PathFinder**: BFS寻路算法实现
+
+## 寻路逻辑说明
+
+敌人寻路由 `EnemyAI`、`PathFinder`、`GridMap` 和 `Tile` 配合完成。
+
+- **EnemyAI.moveOrAttackBase**: 每次敌人更新时都检查是否进入基地攻击范围；未进入范围时立即调用 `PathFinder.findPath` 重新计算到基地的最短路径。
+- **PathFinder.findPath**: 使用 BFS 八方向搜索，返回从当前格到目标格的最短路径列表。
+- **PathFinder.getNeighbors**: 每次扩展当前格周围 8 个邻居，并按到基地的直线距离从近到远排序，因此敌人会优先斜向靠近基地，避免先横向或纵向走到中线再转向。
+- **Enemy.followPath**: 不缓存旧路径，只读取 BFS 返回路径中的下一格并向该格移动。
+- **Tile.isWalkable**: 当前帧中有建筑或障碍物的格子不能作为路径；基地目标格由 `PathFinder` 特判允许进入或接近。
+
+因此敌人会根据当前地图状态持续重新规划路线，玩家新建或移除建筑后，下一次敌人更新就会重新选择当前最短路径。
+
+## GameConfig 配置项说明
+
+- **TITLE**: 游戏窗口标题。
+- **WINDOW_WIDTH / WINDOW_HEIGHT**: 游戏窗口宽度和高度。
+- **TARGET_FPS**: 游戏目标帧率。
+- **GRID_ROWS / GRID_COLS**: 地图网格行数和列数。
+- **TILE_SIZE**: 单个格子的像素大小。
+- **MAP_OFFSET_X / MAP_OFFSET_Y**: 地图在窗口中的左上角偏移。
+- **BASE_MAX_HP**: 基地最大生命值。
+- **STARTING_MONEY**: 玩家开局金币。
+- **BASE_INCOME_PER_SECOND**: 每秒自动获得的金币。
+- **ARROW_TOWER_COST**: 箭塔建造费用。
+- **CANNON_TOWER_COST**: 炮塔建造费用。
+- **ICE_TOWER_COST**: 冰塔建造费用。
+- **LIGHTNING_TOWER_COST**: 闪电塔建造费用。
+- **WALL_COST**: 墙体建造费用。
+- **HEAL_TOWER_COST**: 治疗塔建造费用。
+- **DECOY_COST**: 诱饵释放费用。
+- **REWARD_MONEY**: 收集奖励点获得的金币。
+- **REWARD_SCORE**: 收集奖励点获得的分数。
+- **REWARD_SPAWN_INTERVAL**: 奖励点刷新间隔。
+- **DEFAULT_SPAWN_INTERVAL**: 基础刷怪间隔。
+- **WAVE_LENGTH_SECONDS**: 每个压力阶段持续时间。
+- **STAGE_ONE_ASSASSIN_CHANCE**: 第 1 阶段刷出刺客的概率。
+- **STAGE_ONE_ARCHER_CHANCE**: 第 1 阶段刷出射手的概率。
+- **STAGE_TWO_TANK_CHANCE**: 第 2 阶段刷出肉盾的概率。
+- **STAGE_TWO_ASSASSIN_CHANCE**: 第 2 阶段刷出刺客的概率。
+- **STAGE_TWO_ARCHER_CHANCE**: 第 2 阶段刷出射手的概率。
+- **STAGE_TWO_HEALER_CHANCE**: 第 2 阶段刷出治疗敌人的概率。
+- **STAGE_THREE_TANK_CHANCE**: 第 3 阶段刷出肉盾的概率。
+- **STAGE_THREE_ASSASSIN_CHANCE**: 第 3 阶段刷出刺客的概率。
+- **STAGE_THREE_ARCHER_CHANCE**: 第 3 阶段刷出射手的概率。
+- **STAGE_THREE_HEALER_CHANCE**: 第 3 阶段刷出治疗敌人的概率。
 
 ### 3. building 包 - 建筑系统
 包含所有建筑相关的类，防御塔单独放在tower子包中。
@@ -247,7 +291,9 @@ java Main
 - **ArcherEnemy（射手）**: 远程敌人，攻击范围 4 格，能在基地外停下攻击。
 - **HealerEnemy（治疗）**: 支援型敌人，会周期性治疗附近受伤的其他敌人，攻击范围 2 格。
 
-当前刷怪逻辑在 `EnemySpawner` 中按波次逐步解锁：第 1 阶段以近战为主，混入刺客和射手；第 2 阶段加入肉盾和治疗；第 3 阶段五种敌人都会出现。
+当前刷怪逻辑在 `EnemySpawner` 中按波次逐步解锁：第 1 阶段以近战为主，混入刺客和射手；第 2 阶段加入肉盾和治疗；第 3 阶段五种敌人都会出现。敌人会从地图四条边上的随机格子刷出，不再固定在每条边中点。
+
+特殊敌人的刷新概率统一定义在 `GameConfig` 中，包括 `STAGE_ONE_*_CHANCE`、`STAGE_TWO_*_CHANCE` 和 `STAGE_THREE_*_CHANCE`，`EnemySpawner` 只读取这些配置值。
 
 敌人进入攻击范围后会停在当前方格内攻击基地，基地血量下降；敌人攻击或受到攻击时会播放对应的攻击动画。
 
@@ -266,4 +312,5 @@ java Main
 
 - **bait.png**: 诱饵图片，用于替换 `Decoy` 原来的黄色圆点绘制。
 - **homeItems.png**: 物品合集图，按像素范围切出基地、弓箭、炮弹、ice、激光、治疗范围特效和爆炸火球。
+- **弓箭投射物**: 使用 `homeItems.png` 中切出的弓箭图片，并在 `Projectile` 中根据起点和目标位置旋转到目标方向。
 - **meleeEnemy.png / tankEnemy.png / assassinEnemy.png / archerEnemy.png / healerEnemy.png**: 敌人精灵图，按固定 256x256 分割，前两排为跑步动画，第三排为攻击动画。
