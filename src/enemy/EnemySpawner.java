@@ -8,7 +8,6 @@ import java.util.Random;
 import core.GridPosition;
 import core.GridMap;
 import enemy.enemies.HealerEnemy;
-import util.Direction;
 import game.GameEngine;
 import game.GameConfig;
 import manager.DifficultyManager;
@@ -48,74 +47,77 @@ public class EnemySpawner {
     }
 
     private void spawnEnemy(WaveManager waveManager) {
-        Direction direction = chooseSpawnDirection();
-        Enemy enemy = enemyFactory.createEnemy(chooseEnemyType(waveManager), getSpawnPosition(direction));
+        Enemy enemy = enemyFactory.createEnemy(chooseEnemyType(waveManager), getSpawnPosition());
         enemy.snapToMap(map);
         enemies.add(enemy);
         SoundManager sm = SoundManager.getInstance();
         if (sm != null) sm.playEnemySpawn();
     }
 
-    private Direction chooseSpawnDirection() {
-        Direction[] directions = Direction.values();
-        return directions[random.nextInt(directions.length)];
-    }
-
     private EnemyType chooseEnemyType(WaveManager waveManager) {
         int stage = waveManager.getStage();
         double roll = random.nextDouble();
         if (stage >= 3) {
-            if (roll < 0.18) {
+            double tankLimit = GameConfig.STAGE_THREE_TANK_CHANCE;
+            double assassinLimit = tankLimit + GameConfig.STAGE_THREE_ASSASSIN_CHANCE;
+            double archerLimit = assassinLimit + GameConfig.STAGE_THREE_ARCHER_CHANCE;
+            double healerLimit = archerLimit + GameConfig.STAGE_THREE_HEALER_CHANCE;
+            if (roll < tankLimit) {
                 return EnemyType.TANK;
             }
-            if (roll < 0.34) {
+            if (roll < assassinLimit) {
                 return EnemyType.ASSASSIN;
             }
-            if (roll < 0.50) {
+            if (roll < archerLimit) {
                 return EnemyType.ARCHER;
             }
-            if (roll < 0.62) {
+            if (roll < healerLimit) {
                 return EnemyType.HEALER;
             }
             return EnemyType.MELEE;
         }
         if (stage >= 2) {
-            if (roll < 0.20) {
+            double tankLimit = GameConfig.STAGE_TWO_TANK_CHANCE;
+            double assassinLimit = tankLimit + GameConfig.STAGE_TWO_ASSASSIN_CHANCE;
+            double archerLimit = assassinLimit + GameConfig.STAGE_TWO_ARCHER_CHANCE;
+            double healerLimit = archerLimit + GameConfig.STAGE_TWO_HEALER_CHANCE;
+            if (roll < tankLimit) {
                 return EnemyType.TANK;
             }
-            if (roll < 0.35) {
+            if (roll < assassinLimit) {
                 return EnemyType.ASSASSIN;
             }
-            if (roll < 0.50) {
+            if (roll < archerLimit) {
                 return EnemyType.ARCHER;
             }
-            if (roll < 0.58) {
+            if (roll < healerLimit) {
                 return EnemyType.HEALER;
             }
             return EnemyType.MELEE;
         }
-        if (roll < 0.20) {
+        double assassinLimit = GameConfig.STAGE_ONE_ASSASSIN_CHANCE;
+        double archerLimit = assassinLimit + GameConfig.STAGE_ONE_ARCHER_CHANCE;
+        if (roll < assassinLimit) {
             return EnemyType.ASSASSIN;
         }
-        if (roll < 0.35) {
+        if (roll < archerLimit) {
             return EnemyType.ARCHER;
         }
         return EnemyType.MELEE;
     }
 
-    private GridPosition getSpawnPosition(Direction direction) {
-        int middleRow = GameConfig.GRID_ROWS / 2;
-        int middleCol = GameConfig.GRID_COLS / 2;
-        if (direction == Direction.NORTH) {
-            return new GridPosition(0, middleCol);
+    private GridPosition getSpawnPosition() {
+        int side = random.nextInt(4);
+        if (side == 0) {
+            return new GridPosition(0, random.nextInt(GameConfig.GRID_COLS));
         }
-        if (direction == Direction.SOUTH) {
-            return new GridPosition(GameConfig.GRID_ROWS - 1, middleCol);
+        if (side == 1) {
+            return new GridPosition(GameConfig.GRID_ROWS - 1, random.nextInt(GameConfig.GRID_COLS));
         }
-        if (direction == Direction.WEST) {
-            return new GridPosition(middleRow, 0);
+        if (side == 2) {
+            return new GridPosition(random.nextInt(GameConfig.GRID_ROWS), 0);
         }
-        return new GridPosition(middleRow, GameConfig.GRID_COLS - 1);
+        return new GridPosition(random.nextInt(GameConfig.GRID_ROWS), GameConfig.GRID_COLS - 1);
     }
 
     public void updateEnemies(double dt, EnemyAI enemyAI, EconomyManager economy, ScoreManager score) {

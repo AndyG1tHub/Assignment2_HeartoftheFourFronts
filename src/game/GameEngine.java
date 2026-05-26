@@ -556,13 +556,13 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 	}
 
 	// This function translates the drawing context by (x,y)
-	void translate(double x, double y) {
+	public void translate(double x, double y) {
 		// Translate the drawing context
 		mGraphics.translate(x,y);
 	}
 
 	// This function rotates the drawing context by a degrees
-	void rotate(double a) {
+	public void rotate(double a) {
 		// Rotate the drawing context
 		mGraphics.rotate(Math.toRadians(a));
 	}

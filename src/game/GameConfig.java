@@ -33,6 +33,19 @@ public final class GameConfig {
     public static final double DEFAULT_SPAWN_INTERVAL = 2.0;
     public static final double WAVE_LENGTH_SECONDS = 45.0;
 
+    public static final double STAGE_ONE_ASSASSIN_CHANCE = 0.20;
+    public static final double STAGE_ONE_ARCHER_CHANCE = 0.15;
+
+    public static final double STAGE_TWO_TANK_CHANCE = 0.20;
+    public static final double STAGE_TWO_ASSASSIN_CHANCE = 0.15;
+    public static final double STAGE_TWO_ARCHER_CHANCE = 0.15;
+    public static final double STAGE_TWO_HEALER_CHANCE = 0.08;
+
+    public static final double STAGE_THREE_TANK_CHANCE = 0.18;
+    public static final double STAGE_THREE_ASSASSIN_CHANCE = 0.16;
+    public static final double STAGE_THREE_ARCHER_CHANCE = 0.16;
+    public static final double STAGE_THREE_HEALER_CHANCE = 0.12;
+
     private GameConfig() {
     }
 }

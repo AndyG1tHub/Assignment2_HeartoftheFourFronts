@@ -246,7 +246,9 @@ java Main
 - **ArcherEnemy（射手）**: 远程敌人，攻击范围 4 格，能在基地外停下攻击。
 - **HealerEnemy（治疗）**: 支援型敌人，会周期性治疗附近受伤的其他敌人，攻击范围 2 格。
 
-当前刷怪逻辑在 `EnemySpawner` 中按波次逐步解锁：第 1 阶段以近战为主，混入刺客和射手；第 2 阶段加入肉盾和治疗；第 3 阶段五种敌人都会出现。
+当前刷怪逻辑在 `EnemySpawner` 中按波次逐步解锁：第 1 阶段以近战为主，混入刺客和射手；第 2 阶段加入肉盾和治疗；第 3 阶段五种敌人都会出现。敌人会从地图四条边上的随机格子刷出，不再固定在每条边中点。
+
+特殊敌人的刷新概率统一定义在 `GameConfig` 中，包括 `STAGE_ONE_*_CHANCE`、`STAGE_TWO_*_CHANCE` 和 `STAGE_THREE_*_CHANCE`，`EnemySpawner` 只读取这些配置值。
 
 敌人进入攻击范围后会停在当前方格内攻击基地，基地血量下降；敌人攻击或受到攻击时会播放对应的攻击动画。
 
@@ -265,4 +267,5 @@ java Main
 
 - **bait.png**: 诱饵图片，用于替换 `Decoy` 原来的黄色圆点绘制。
 - **homeItems.png**: 物品合集图，按像素范围切出基地、弓箭、炮弹、ice、激光、治疗范围特效和爆炸火球。
+- **弓箭投射物**: 使用 `homeItems.png` 中切出的弓箭图片，并在 `Projectile` 中根据起点和目标位置旋转到目标方向。
 - **meleeEnemy.png / tankEnemy.png / assassinEnemy.png / archerEnemy.png / healerEnemy.png**: 敌人精灵图，按固定 256x256 分割，前两排为跑步动画，第三排为攻击动画。
