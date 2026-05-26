@@ -257,7 +257,7 @@ public class HUD {
             engine.changeColor(new Color(120, 125, 130));
             engine.drawText(tx + 8, ly + 32, "Heal", "Arial", 11);
             engine.changeColor(new Color(100, 220, 200));
-            engine.drawText(tx + 80, ly + 32, "12 HP", "Arial", 11);
+            engine.drawText(tx + 80, ly + 32, "20 HP", "Arial", 11);
 
             engine.changeColor(new Color(120, 125, 130));
             engine.drawText(tx + 8, ly + 48, "Range", "Arial", 11);
@@ -295,19 +295,19 @@ public class HUD {
             case CANNON_TOWER: return 150;
             case ICE_TOWER: return 120;
             case LIGHTNING_TOWER: return 110;
-            case WALL: return 350;
+            case WALL: return 300;
             case HEAL_TOWER: return 120;
-            case DECOY: return 80;
+            case DECOY: return 100;
             default: return 0;
         }
     }
 
     private int getDamage(BuildingType type) {
         switch (type) {
-            case ARROW_TOWER: return 20;
-            case CANNON_TOWER: return 35;
-            case ICE_TOWER: return 10;
-            case LIGHTNING_TOWER: return 25;
+            case ARROW_TOWER: return 15;
+            case CANNON_TOWER: return 45;
+            case ICE_TOWER: return 18;
+            case LIGHTNING_TOWER: return 28;
             default: return 0;
         }
     }

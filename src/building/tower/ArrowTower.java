@@ -14,7 +14,7 @@ import manager.ImageManger;
 public class ArrowTower extends AttackTower {
     public ArrowTower(GridPosition position) {
         super(position, 120, GameConfig.ARROW_TOWER_COST, 4,
-                BuildingType.ARROW_TOWER, 20, 0.75);
+                BuildingType.ARROW_TOWER, 15, 1.0);
     }
 
     @Override

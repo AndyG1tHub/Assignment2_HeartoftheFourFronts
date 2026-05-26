@@ -20,7 +20,7 @@ public class Decoy {
     public Decoy(GridPosition start, Direction direction) {
         this.gridPosition = start;
         this.direction = direction;
-        this.hp = 80;
+        this.hp = 100;
     }
 
     public void update(double dt) {
