@@ -11,7 +11,7 @@ public class MeleeEnemy extends Enemy {
     public static final int BASE_HP = 80;
 
     public MeleeEnemy(GridPosition position, int hp) {
-        super(position, EnemyType.MELEE, hp, 12, 1.0, 15, 75);
+        super(position, EnemyType.MELEE, hp, 14, 1.0, 15, 75);
     }
 
     @Override

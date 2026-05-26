@@ -93,39 +93,19 @@ public class CoreSiege extends GameEngine {
         if (gameState != GameState.PLAYING) {
             return;
         }
-        updateEconomy(dt);
-        updateWaves(dt);
-        updateEvents(dt);
-        updateEnemies(dt);
-        updateBuildings(dt);
-        updateProjectiles(dt);
-        updateDecoys(dt);
-        checkGameEnd();
-    }
-
-    private void updateEconomy(double dt) {
         economyManager.updateIncome(dt);
-    }
-
-    private void updateWaves(double dt) {
         waveManager.update(dt, scoreManager);
         enemySpawner.update(dt, waveManager);
-    }
-
-    private void updateEvents(double dt) {
         eventManager.update(dt, gridMap, waveManager, enemySpawner, buildings);
         particleSystem.update(dt);
-    }
-
-    private void updateEnemies(double dt) {
         enemySpawner.updateEnemies(dt, enemyAI, economyManager, scoreManager);
-    }
-
-    private void updateBuildings(double dt) {
         for (Building building : new ArrayList<Building>(buildings)) {
             building.update(dt, enemySpawner.getEnemies(), projectileManager, gridMap, buildings);
         }
         removeDestroyedBuildings();
+        projectileManager.update(dt);
+        decoyManager.update(dt);
+        checkGameEnd();
     }
 
     private void removeDestroyedBuildings() {
@@ -140,14 +120,6 @@ public class CoreSiege extends GameEngine {
                 iterator.remove();
             }
         }
-    }
-
-    private void updateProjectiles(double dt) {
-        projectileManager.update(dt);
-    }
-
-    private void updateDecoys(double dt) {
-        decoyManager.update(dt);
     }
 
     private boolean hasTriggeredEndSound;
@@ -177,55 +149,27 @@ public class CoreSiege extends GameEngine {
             menuScreen.draw(this);
             return;
         }
-        drawMap();
-        drawBuildings();
-        drawBase();
-        drawEnemies();
-        drawProjectiles();
-        drawDecoys();
-        drawEvents();
-        drawHUD();
+        if (gameState == GameState.GAME_OVER || gameState == GameState.WIN) {
+            menuScreen.drawEndScreen(this, gameState == GameState.WIN);
+            return;
+        }
+        gridMap.draw(this);
+        for (Building building : buildings) {
+            building.draw(this, gridMap);
+        }
+        base.draw(this, gridMap);
+        enemySpawner.draw(this, gridMap);
+        projectileManager.draw(this, gridMap);
+        decoyManager.draw(this);
+        eventManager.draw(this, gridMap);
+        particleSystem.draw(this);
+        hud.draw(this, base, economyManager, scoreManager, waveManager,
+                selectedDifficulty, selectedBuilding, gameState);
     }
 
     private void drawBackground() {
         changeBackgroundColor(new Color(20, 24, 28));
         clearBackground(GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
-    }
-
-    private void drawMap() {
-        gridMap.draw(this);
-    }
-
-    private void drawBuildings() {
-        for (Building building : buildings) {
-            building.draw(this, gridMap);
-        }
-    }
-
-    private void drawBase() {
-        base.draw(this, gridMap);
-    }
-
-    private void drawEnemies() {
-        enemySpawner.draw(this, gridMap);
-    }
-
-    private void drawProjectiles() {
-        projectileManager.draw(this, gridMap);
-    }
-
-    private void drawDecoys() {
-        decoyManager.draw(this);
-    }
-
-    private void drawEvents() {
-        eventManager.draw(this, gridMap);
-        particleSystem.draw(this);
-    }
-
-    private void drawHUD() {
-        hud.draw(this, base, economyManager, scoreManager, waveManager,
-                selectedDifficulty, selectedBuilding, gameState);
     }
 
     @Override
@@ -234,10 +178,26 @@ public class CoreSiege extends GameEngine {
             handleMenuClick(event);
             return;
         }
+        if (gameState == GameState.GAME_OVER || gameState == GameState.WIN) {
+            handleEndClick(event);
+            return;
+        }
         if (gameState != GameState.PLAYING) {
             return;
         }
         handlePlayClick(event);
+    }
+
+    private void handleEndClick(MouseEvent event) {
+        int action = menuScreen.handleEndClick(event.getX(), event.getY());
+        if (action == MenuScreen.END_RESTART) {
+            soundManager.playButtonClick();
+            startNewGame(selectedDifficulty);
+            gameState = GameState.PLAYING;
+        } else if (action == MenuScreen.END_MENU) {
+            soundManager.playButtonClick();
+            gameState = GameState.MENU;
+        }
     }
 
     private void handleMenuClick(MouseEvent event) {
@@ -298,7 +258,11 @@ public class CoreSiege extends GameEngine {
     @Override
     public void keyPressed(KeyEvent event) {
         int keyCode = event.getKeyCode();
-        if (keyCode == KeyEvent.VK_ESCAPE) {
+        if ((gameState == GameState.GAME_OVER || gameState == GameState.WIN)
+                && keyCode == KeyEvent.VK_ENTER) {
+            startNewGame(selectedDifficulty);
+            gameState = GameState.PLAYING;
+        } else if (keyCode == KeyEvent.VK_ESCAPE) {
             gameState = GameState.MENU;
         } else if (keyCode == KeyEvent.VK_SPACE) {
             togglePause();

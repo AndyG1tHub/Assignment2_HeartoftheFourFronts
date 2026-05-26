@@ -150,11 +150,12 @@ Assignment2_HeartoftheFourFronts-main/
 - **DecoyManager**: 诱饵管理
 - **RewardPointManager**: 奖励点管理
 - **SoundManager**: 音效和音乐播放
+- **ImageManger**: 图片加载和精灵图切割，集中管理塔、敌人、基地、诱饵和特效图片
 
 ### 8. ui 包 - 用户界面
 包含所有UI组件。
 - **HUD**: 游戏内抬头显示
-- **MenuScreen**: 主菜单界面
+- **MenuScreen**: 主菜单和游戏结束界面
 - **Button**: 按钮组件
 
 ### 9. effect 包 - 视觉效果
@@ -165,7 +166,6 @@ Assignment2_HeartoftheFourFronts-main/
 
 ### 10. util 包 - 工具类
 包含辅助工具和枚举。
-- **AssetManager**: 资源加载管理
 - **Direction**: 方向枚举
 
 ## 编译和运行
@@ -201,7 +201,7 @@ java Main
 
 ## 代码统计
 
-- 总文件数: 55个Java文件
+- 总文件数: 60个Java文件
 - 总代码行数: 约3500行
 - 包数量: 11个包（包括1个子包）
 
@@ -240,13 +240,24 @@ java Main
 
 `src/enemy/enemies/` 采用与 `building/tower/` 类似的组织方式：`enemy.Enemy` 作为通用基类，保存移动、受伤、减速、奖励、绘制等公共逻辑；具体敌人类型放在 `enemy.enemies` 子包中，由 `EnemyFactory` 根据 `EnemyType` 创建。
 
-- **MeleeEnemy（近战）**: 标准敌人，血量、速度、伤害比较均衡，作为基础刷怪单位。
-- **TankEnemy（肉盾）**: 高血量、低速度，伤害较高，用来吸收防御塔火力。
-- **AssassinEnemy（刺客）**: 血量较低但移动速度快、伤害高，适合快速冲击基地。
-- **ArcherEnemy（射手）**: 脆皮输出型敌人，速度和伤害中等偏高，可以在距离基地 3 格内停下攻击。
-- **HealerEnemy（治疗）**: 支援型敌人，会周期性治疗附近受伤的其他敌人。
+- **MeleeEnemy（近战）**: 标准敌人，攻击范围 1 格，伤害 14。
+- **TankEnemy（肉盾）**: 高血量、低速度，基础血量 280，用来吸收防御塔火力。
+- **AssassinEnemy（刺客）**: 血量较低但速度快，攻击范围 1 格，伤害 28。
+- **ArcherEnemy（射手）**: 远程敌人，攻击范围 4 格，能在基地外停下攻击。
+- **HealerEnemy（治疗）**: 支援型敌人，会周期性治疗附近受伤的其他敌人，攻击范围 2 格。
 
 当前刷怪逻辑在 `EnemySpawner` 中按波次逐步解锁：第 1 阶段以近战为主，混入刺客和射手；第 2 阶段加入肉盾和治疗；第 3 阶段五种敌人都会出现。
+
+敌人进入攻击范围后会停在当前方格内攻击基地，基地血量下降；敌人攻击或受到攻击时会播放对应的攻击动画。
+
+## 游戏结束界面
+
+当基地血量归零时进入 `GAME_OVER` 界面；通关后进入 `WIN` 界面。结束界面提供两个按钮：
+
+- **Restart**: 使用当前难度重新开始游戏。
+- **Main Menu**: 返回主菜单重新选择难度。
+
+在结束界面也可以按 Enter 使用当前难度快速重新开始，按 Esc 返回主菜单。
 
 ## 图片资源说明
 

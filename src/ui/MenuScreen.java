@@ -8,9 +8,15 @@ import game.Difficulty;
 
 /** Simple menu and difficulty selection screen. */
 public class MenuScreen {
+    public static final int END_NONE = 0;
+    public static final int END_RESTART = 1;
+    public static final int END_MENU = 2;
+
     private final Button easyButton = new Button(330, 275, 240, 36, "Start Easy", null);
     private final Button normalButton = new Button(330, 320, 240, 36, "Start Normal", null);
     private final Button hardButton = new Button(330, 365, 240, 36, "Start Hard", null);
+    private final Button restartButton = new Button(330, 320, 240, 36, "Restart", null);
+    private final Button menuButton = new Button(330, 365, 240, 36, "Main Menu", null);
 
     public void draw(GameEngine engine) {
         engine.changeColor(new Color(24, 28, 32));
@@ -35,5 +41,25 @@ public class MenuScreen {
             return Difficulty.HARD;
         }
         return null;
+    }
+
+    public void drawEndScreen(GameEngine engine, boolean won) {
+        engine.changeColor(new Color(24, 28, 32));
+        engine.drawSolidRectangle(0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
+        engine.changeColor(Color.WHITE);
+        engine.drawBoldText(310, 210, won ? "YOU WIN" : "GAME OVER", "Arial", 42);
+        engine.drawText(325, 270, "Choose what to do next.", "Arial", 16);
+        restartButton.draw(engine, true);
+        menuButton.draw(engine, false);
+    }
+
+    public int handleEndClick(int mouseX, int mouseY) {
+        if (restartButton.contains(mouseX, mouseY)) {
+            return END_RESTART;
+        }
+        if (menuButton.contains(mouseX, mouseY)) {
+            return END_MENU;
+        }
+        return END_NONE;
     }
 }

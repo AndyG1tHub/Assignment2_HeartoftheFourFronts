@@ -32,7 +32,7 @@ public class Enemy {
     private boolean slowed;
     private double slowTimer;
     private double animationTime;
-    private Decoy targetDecoy;
+    private double attackAnimationTimer;
 
     public Enemy(GridPosition gridPosition, EnemyType type, int hp, int damage,
             double speed, int moneyReward, int scoreReward) {
@@ -55,15 +55,19 @@ public class Enemy {
 
     public void update(double dt, EnemyAI ai) {
         animationTime += dt;
+        attackAnimationTimer = Math.max(0.0, attackAnimationTimer - dt);
         updateStatusEffects(dt);
         ai.updateEnemyBehaviour(this, dt);
     }
 
-    public void supportAllies(double dt, List<Enemy> enemies) {
-    }
-
     public double getBaseAttackRange() {
-        return 0.0;
+        if (type == EnemyType.ARCHER) {
+            return 3.0;
+        }
+        if (type == EnemyType.HEALER) {
+            return 2.0;
+        }
+        return 1.0;
     }
 
     private void updateStatusEffects(double dt) {
@@ -109,13 +113,13 @@ public class Enemy {
         state = EnemyState.ATTACKING_BASE;
         if (attackCooldown <= 0.0) {
             base.takeDamage(damage);
+            attackAnimationTimer = 0.45;
             attackCooldown = 1.0;
         }
     }
 
     public void chaseDecoy(double dt, Decoy decoy, GridMap map) {
         if (decoy == null || decoy.isDestroyed()) {
-            targetDecoy = null;
             return;
         }
         state = EnemyState.CHASING_DECOY;
@@ -133,6 +137,7 @@ public class Enemy {
 
     public void takeDamage(int amount) {
         hp = Math.max(0, hp - amount);
+        attackAnimationTimer = 0.35;
         if (hp <= 0) {
             state = EnemyState.DEAD;
         }
@@ -155,7 +160,13 @@ public class Enemy {
     }
 
     public void draw(GameEngine engine, GridMap map) {
-        Image sprite = ImageManger.getEnemySprite(type, animationTime);
+        if (isPlayingAttackAnimation()) {
+            x = map.tileCenterX(gridPosition);
+            y = map.tileCenterY(gridPosition);
+        }
+        Image sprite = isPlayingAttackAnimation()
+                ? ImageManger.getEnemyAttackSprite(type, animationTime)
+                : ImageManger.getEnemySprite(type, animationTime);
         if (sprite != null) {
             double size = GameConfig.TILE_SIZE * 1.25;
             engine.drawImage(sprite, x - size / 2, y - size / 2, size, size);
@@ -187,6 +198,15 @@ public class Enemy {
 
     private double getCurrentSpeed() {
         return slowed ? speed * 0.5 : speed;
+    }
+
+    private boolean isPlayingAttackAnimation() {
+        return state == EnemyState.ATTACKING_BASE || attackAnimationTimer > 0.0;
+    }
+
+    public void stopAtCurrentTile(GridMap map) {
+        x = map.tileCenterX(gridPosition);
+        y = map.tileCenterY(gridPosition);
     }
 
     public GridPosition getGridPosition() {

@@ -11,12 +11,12 @@ public class ArcherEnemy extends Enemy {
     public static final int BASE_HP = 65;
 
     public ArcherEnemy(GridPosition position, int hp) {
-        super(position, EnemyType.ARCHER, hp, 16, 1.05, 20, 95);
+        super(position, EnemyType.ARCHER, hp, 12, 1.05, 20, 95);
     }
 
     @Override
     public double getBaseAttackRange() {
-        return 3.0;
+        return 4.0;
     }
 
     @Override
