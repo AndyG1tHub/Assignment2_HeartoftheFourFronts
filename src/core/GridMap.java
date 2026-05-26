@@ -3,6 +3,7 @@ package core;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import game.GameConfig;
 import game.GameEngine;
@@ -12,13 +13,14 @@ import building.Building;
 public class GridMap {
     private final Tile[][] tiles;
     private final GridPosition basePosition;
+    private final Random random = new Random();
 
     public GridMap() {
         tiles = new Tile[GameConfig.GRID_ROWS][GameConfig.GRID_COLS];
         basePosition = new GridPosition(GameConfig.GRID_ROWS / 2, GameConfig.GRID_COLS / 2);
         createEmptyTiles();
         placeCentralBase();
-        generateSimpleObstacles();
+        generateRandomObstacles();
     }
 
     private void createEmptyTiles() {
@@ -33,12 +35,70 @@ public class GridMap {
         getTile(basePosition).setType(TileType.BASE);
     }
 
-    private void generateSimpleObstacles() {
-        // TODO: replace with a stronger obstacle generator after pathing tests.
-        setObstacle(4, 4);
-        setObstacle(4, 5);
-        setObstacle(15, 15);
-        setObstacle(15, 14);
+    private void generateRandomObstacles() {
+        int totalTiles = GameConfig.GRID_ROWS * GameConfig.GRID_COLS;
+        int obstacleCount = (int) (totalTiles * 0.10);
+        int placedObstacles = 0;
+        int maxAttempts = obstacleCount * 3;
+        int attempts = 0;
+
+        PathFinder pathFinder = new PathFinder();
+        List<GridPosition> spawnPositions = getEdgeSpawnPositions();
+
+        while (placedObstacles < obstacleCount && attempts < maxAttempts) {
+            attempts++;
+            int row = random.nextInt(GameConfig.GRID_ROWS);
+            int col = random.nextInt(GameConfig.GRID_COLS);
+            GridPosition position = new GridPosition(row, col);
+
+            if (canPlaceObstacle(position, spawnPositions, pathFinder)) {
+                setObstacle(row, col);
+                placedObstacles++;
+            }
+        }
+    }
+
+    private boolean canPlaceObstacle(GridPosition position, List<GridPosition> spawnPositions, PathFinder pathFinder) {
+        if (!isInside(position)) {
+            return false;
+        }
+        if (tiles[position.row][position.col].getType() != TileType.EMPTY) {
+            return false;
+        }
+        if (position.equals(basePosition)) {
+            return false;
+        }
+        if (isNearBase(position, 2)) {
+            return false;
+        }
+
+        tiles[position.row][position.col].setType(TileType.OBSTACLE);
+
+        for (GridPosition spawn : spawnPositions) {
+            List<GridPosition> path = pathFinder.findPath(this, spawn, basePosition);
+            if (path.isEmpty()) {
+                tiles[position.row][position.col].setType(TileType.EMPTY);
+                return false;
+            }
+        }
+
+        tiles[position.row][position.col].setType(TileType.EMPTY);
+        return true;
+    }
+
+    private boolean isNearBase(GridPosition position, int distance) {
+        int rowDiff = Math.abs(position.row - basePosition.row);
+        int colDiff = Math.abs(position.col - basePosition.col);
+        return rowDiff <= distance && colDiff <= distance;
+    }
+
+    private List<GridPosition> getEdgeSpawnPositions() {
+        List<GridPosition> positions = new ArrayList<GridPosition>();
+        positions.add(new GridPosition(0, GameConfig.GRID_COLS / 2));
+        positions.add(new GridPosition(GameConfig.GRID_ROWS - 1, GameConfig.GRID_COLS / 2));
+        positions.add(new GridPosition(GameConfig.GRID_ROWS / 2, 0));
+        positions.add(new GridPosition(GameConfig.GRID_ROWS / 2, GameConfig.GRID_COLS - 1));
+        return positions;
     }
 
     private void setObstacle(int row, int col) {
