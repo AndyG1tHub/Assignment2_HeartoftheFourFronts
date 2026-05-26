@@ -15,20 +15,28 @@ public class MenuScreen {
     public static final int END_NONE = 0;
     public static final int END_RESTART = 1;
     public static final int END_MENU = 2;
+    public static final int CONTINUE = 3;
 
-    private int menuState; // 0=main, 1=help
+    private int menuState;
+    private boolean hasContinue;
     private Difficulty currentDifficulty = Difficulty.NORMAL;
 
-    private final Button playButton = new Button(320, 280, 200, 36, "PLAY", null, new Color(80, 180, 120));
-    private final Button diffButton = new Button(320, 324, 200, 36, "", null, new Color(200, 180, 80));
-    private final Button helpButton = new Button(320, 368, 200, 36, "HELP", null, new Color(130, 150, 180));
-    private final Button exitButton = new Button(320, 412, 200, 36, "EXIT", null, new Color(180, 100, 100));
+    private final Button continueButton = new Button(320, 270, 200, 34, "CONTINUE", null, new Color(80, 200, 160));
+    private final Button playButton = new Button(320, 312, 200, 34, "PLAY", null, new Color(80, 180, 120));
+    private final Button diffButton = new Button(320, 354, 200, 34, "", null, new Color(200, 180, 80));
+    private final Button helpButton = new Button(320, 396, 200, 34, "HELP", null, new Color(130, 150, 180));
+    private final Button exitButton = new Button(320, 438, 200, 34, "EXIT", null, new Color(180, 100, 100));
     private final Button backButton = new Button(320, 420, 200, 34, "BACK", null, SUBTITLE);
     private final Button restartButton = new Button(330, 320, 240, 34, "RESTART", null, new Color(200, 180, 80));
     private final Button menuButton = new Button(330, 365, 240, 34, "MAIN MENU", null, SUBTITLE);
 
     public MenuScreen() {
+        menuState = 0;
         updateDiffLabel();
+    }
+
+    public void setHasContinue(boolean exists) {
+        hasContinue = exists;
     }
 
     private void updateDiffLabel() {
@@ -91,6 +99,9 @@ public class MenuScreen {
     }
 
     private void drawMainButtons(GameEngine engine, int mouseX, int mouseY) {
+        if (hasContinue) {
+            continueButton.draw(engine, false, mouseX, mouseY);
+        }
         playButton.draw(engine, false, mouseX, mouseY);
         diffButton.draw(engine, false, mouseX, mouseY);
         helpButton.draw(engine, false, mouseX, mouseY);
@@ -121,6 +132,9 @@ public class MenuScreen {
                 return MenuAction.SOUND;
             }
             return MenuAction.NONE;
+        }
+        if (hasContinue && continueButton.contains(mouseX, mouseY)) {
+            return CONTINUE;
         }
         if (playButton.contains(mouseX, mouseY)) {
             return MenuAction.PLAY;

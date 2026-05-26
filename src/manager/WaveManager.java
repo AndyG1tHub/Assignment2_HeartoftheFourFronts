@@ -40,6 +40,11 @@ public class WaveManager {
         return stage;
     }
 
+    public void setElapsedTime(double elapsedTime, int stage) {
+        this.elapsedTime = elapsedTime;
+        this.stage = stage;
+    }
+
     public double getElapsedTime() {
         return elapsedTime;
     }
