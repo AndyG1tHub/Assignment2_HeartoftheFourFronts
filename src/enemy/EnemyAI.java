@@ -66,7 +66,7 @@ public class EnemyAI {
                 map, enemy.getGridPosition(), base.getPosition());
         GridPosition targetPosition = findFirstBuildingPosition(blockedPath);
         Building target = map.getBuildingAt(targetPosition);
-        if (target == null) {
+        if (target == null || target.isDestroyed()) {
             return;
         }
         int targetIndex = blockedPath.indexOf(targetPosition);
@@ -80,7 +80,8 @@ public class EnemyAI {
 
     private GridPosition findFirstBuildingPosition(List<GridPosition> path) {
         for (GridPosition position : path) {
-            if (map.getBuildingAt(position) != null) {
+            Building building = map.getBuildingAt(position);
+            if (building != null && !building.isDestroyed()) {
                 return position;
             }
         }

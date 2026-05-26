@@ -19,7 +19,7 @@ public class Tile {
         if (type == TileType.OBSTACLE) {
             return false;
         }
-        return building == null;
+        return building == null || building.isDestroyed();
     }
 
     public boolean isWalkableIgnoringBuilding() {

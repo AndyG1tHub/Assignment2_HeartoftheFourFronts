@@ -28,6 +28,7 @@ public class Enemy {
     private EnemyState state;
     private double attackCooldown;
     private GridPosition moveTarget;
+    private Building attackTarget;
     private boolean slowed;
     private double slowTimer;
     private double animationTime;
@@ -60,6 +61,7 @@ public class Enemy {
         animationTime += dt;
         attackAnimationTimer = Math.max(0.0, attackAnimationTimer - dt);
         updateStatusEffects(dt);
+        clearDeadAttackTarget();
         ai.updateEnemyBehaviour(this, dt);
     }
 
@@ -87,6 +89,7 @@ public class Enemy {
         if (path == null || path.size() < 2) {
             return;
         }
+        attackTarget = null;
         GridPosition next = path.get(1);
         if (moveTarget != null && !moveTarget.equals(next)) {
             returnToCurrentTile(dt, map);
@@ -164,6 +167,7 @@ public class Enemy {
 
     public void attackBase(double dt, Base base) {
         moveTarget = null;
+        attackTarget = null;
         attackCooldown -= dt;
         state = EnemyState.ATTACKING_BASE;
         if (attackCooldown <= 0.0) {
@@ -175,15 +179,25 @@ public class Enemy {
 
     public void attackBuilding(double dt, Building building) {
         if (building == null || building.isDestroyed()) {
+            attackTarget = null;
             return;
         }
         moveTarget = null;
+        attackTarget = building;
         attackCooldown -= dt;
         state = EnemyState.ATTACKING_BASE;
         if (attackCooldown <= 0.0) {
             building.takeDamage(damage);
+            clearDeadAttackTarget();
             attackAnimationTimer = 0.45;
             attackCooldown = 1.0;
+        }
+    }
+
+    private void clearDeadAttackTarget() {
+        if (attackTarget != null && attackTarget.isDestroyed()) {
+            attackTarget = null;
+            state = EnemyState.MOVING;
         }
     }
 
