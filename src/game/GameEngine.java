@@ -70,10 +70,7 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 		mHeight = height;
 		GameConfig.WINDOW_WIDTH = width;
 		GameConfig.WINDOW_HEIGHT = height;
-		int hudW = 260;
-		int playW = width - hudW;
-		int gridW = GameConfig.GRID_COLS * GameConfig.TILE_SIZE;
-		GameConfig.MAP_OFFSET_X = (playW - gridW) / 2;
+		recalcTileSize(width, height);
 
 		mFrame.setSize(width, height);
 		mFrame.setLocation(200,200);
@@ -98,10 +95,7 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 				mHeight = h;
 				GameConfig.WINDOW_WIDTH = w;
 				GameConfig.WINDOW_HEIGHT = h;
-				int hudWidth = 260;
-				int playW = w - hudWidth;
-				int gridW = GameConfig.GRID_COLS * GameConfig.TILE_SIZE;
-				GameConfig.MAP_OFFSET_X = (playW - gridW) / 2;
+				recalcTileSize(w, h);
 				mPanel.setSize(w, h);
 			}
 		});
@@ -142,14 +136,26 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 				mHeight = height;
 				GameConfig.WINDOW_WIDTH = width;
 				GameConfig.WINDOW_HEIGHT = height;
-				int hudWidth = 260;
-				int playW = width - hudWidth;
-				int gridW = GameConfig.GRID_COLS * GameConfig.TILE_SIZE;
-				GameConfig.MAP_OFFSET_X = (playW - gridW) / 2;
+				recalcTileSize(width, height);
 				mFrame.setSize(width + insets.left + insets.right, height + insets.top + insets.bottom);
 				mPanel.setSize(width, height);
 			}
 		});
+	}
+
+	private void recalcTileSize(int windowWidth, int windowHeight) {
+		int hudWidth = 260;
+		int playW = windowWidth - hudWidth - 10;
+		int playH = windowHeight;
+		int tsW = playW / GameConfig.GRID_COLS;
+		int tsH = (playH - 20) / GameConfig.GRID_ROWS;
+		int ts = Math.min(tsW, tsH);
+		if (ts < 20) ts = 20;
+		GameConfig.TILE_SIZE = ts;
+		int gridW = GameConfig.GRID_COLS * ts;
+		int gridH = GameConfig.GRID_ROWS * ts;
+		GameConfig.MAP_OFFSET_X = (playW + 10 - gridW) / 2;
+		GameConfig.MAP_OFFSET_Y = 10 + (playH - 20 - gridH) / 2;
 	}
 
 	// Return the width of the window

@@ -125,8 +125,12 @@ public class HUD {
     }
 
     private void drawButtons(GameEngine engine, BuildingType selected) {
+        int x = GameConfig.WINDOW_WIDTH - 240;
+        int y = 260;
         for (Button button : buttons) {
+            button.setPosition(x, y);
             button.draw(engine, button.getBuildingType() == selected);
+            y += 26;
         }
     }
 
