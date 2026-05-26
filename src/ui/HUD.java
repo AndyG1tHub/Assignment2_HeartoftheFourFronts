@@ -16,7 +16,16 @@ import manager.WaveManager;
 
 /** Draws in-game stats and build buttons. */
 public class HUD {
+    public static final int PAUSE_RESUME = 1;
+    public static final int PAUSE_SAVE = 2;
+    public static final int PAUSE_RESTART = 3;
+    public static final int PAUSE_MENU = 4;
+
     private final List<Button> buttons = new ArrayList<Button>();
+    private final Button resumeButton = new Button(200, 260, 240, 32, "RESUME", null, new Color(80, 200, 120));
+    private final Button saveButton = new Button(200, 300, 240, 32, "SAVE", null, new Color(80, 160, 200));
+    private final Button restartBtn = new Button(200, 340, 240, 32, "RESTART", null, new Color(200, 180, 80));
+    private final Button menuBtn = new Button(200, 380, 240, 32, "MAIN MENU", null, new Color(180, 100, 100));
 
     private static final Color PANEL_BG = new Color(28, 32, 36);
     private static final Color DIVIDER = new Color(55, 60, 65);
@@ -45,13 +54,13 @@ public class HUD {
 
     public void draw(GameEngine engine, Base base, EconomyManager economy,
             ScoreManager score, WaveManager waves, Difficulty difficulty,
-            BuildingType selected, GameState state) {
+            BuildingType selected, GameState state, int mouseX, int mouseY) {
         drawPanel(engine);
         drawTitle(engine);
         drawBaseHealthBar(engine, base);
         drawStats(engine, base, economy, score, waves, difficulty);
         drawButtons(engine, selected);
-        drawStateOverlay(engine, state);
+        drawStateOverlay(engine, state, mouseX, mouseY);
     }
 
     private void drawPanel(GameEngine engine) {
@@ -117,17 +126,32 @@ public class HUD {
         }
     }
 
-    private void drawStateOverlay(GameEngine engine, GameState state) {
+    private void drawStateOverlay(GameEngine engine, GameState state, int mouseX, int mouseY) {
         if (state == GameState.PAUSED) {
-            drawOverlay(engine, "PAUSED", new Color(200, 180, 80));
+            drawPauseMenu(engine, mouseX, mouseY);
         } else if (state == GameState.GAME_OVER) {
-            drawOverlay(engine, "GAME OVER", new Color(200, 60, 60));
+            drawMessage(engine, "GAME OVER", new Color(200, 60, 60));
         } else if (state == GameState.WIN) {
-            drawOverlay(engine, "YOU WIN!", new Color(80, 200, 120));
+            drawMessage(engine, "YOU WIN!", new Color(80, 200, 120));
         }
     }
 
-    private void drawOverlay(GameEngine engine, String text, Color color) {
+    private void drawPauseMenu(GameEngine engine, int mouseX, int mouseY) {
+        engine.changeColor(new Color(0, 0, 0, 140));
+        engine.drawSolidRectangle(0, 0, 640, GameConfig.WINDOW_HEIGHT);
+        engine.changeColor(new Color(20, 24, 28, 220));
+        engine.drawSolidRectangle(180, 230, 280, 210);
+        engine.changeColor(new Color(200, 180, 120));
+        engine.drawRectangle(180, 230, 280, 210, 2);
+        engine.changeColor(new Color(200, 180, 120));
+        engine.drawBoldText(255, 255, "PAUSED", "Arial", 24);
+        resumeButton.draw(engine, false, mouseX, mouseY);
+        saveButton.draw(engine, false, mouseX, mouseY);
+        restartBtn.draw(engine, false, mouseX, mouseY);
+        menuBtn.draw(engine, false, mouseX, mouseY);
+    }
+
+    private void drawMessage(GameEngine engine, String text, Color color) {
         engine.changeColor(new Color(0, 0, 0, 120));
         engine.drawSolidRectangle(0, 0, 640, GameConfig.WINDOW_HEIGHT);
         engine.changeColor(new Color(20, 24, 28, 200));
@@ -136,6 +160,14 @@ public class HUD {
         engine.drawRectangle(200, 280, 240, 60, 2);
         engine.changeColor(color);
         engine.drawBoldText(230, 320, text, "Arial", 32);
+    }
+
+    public int handlePauseClick(int mouseX, int mouseY) {
+        if (resumeButton.contains(mouseX, mouseY)) return PAUSE_RESUME;
+        if (saveButton.contains(mouseX, mouseY)) return PAUSE_SAVE;
+        if (restartBtn.contains(mouseX, mouseY)) return PAUSE_RESTART;
+        if (menuBtn.contains(mouseX, mouseY)) return PAUSE_MENU;
+        return 0;
     }
 
     public BuildingType getClickedBuildingType(int mouseX, int mouseY) {

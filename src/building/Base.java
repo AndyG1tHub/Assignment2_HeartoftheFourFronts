@@ -28,6 +28,10 @@ public class Base {
         if (sm != null) sm.playBaseHit();
     }
 
+    public void setHp(int hp) {
+        this.hp = Math.min(maxHp, Math.max(0, hp));
+    }
+
     public boolean isDestroyed() {
         return hp <= 0;
     }

@@ -41,6 +41,13 @@ public class ScoreManager {
         return rewardPointsCollected;
     }
 
+    public void setScore(int score, int kills, int rewards, int buildingsBuilt) {
+        this.score = score;
+        this.enemiesKilled = kills;
+        this.rewardPointsCollected = rewards;
+        this.buildingsBuilt = buildingsBuilt;
+    }
+
     public int getBuildingsBuilt() {
         return buildingsBuilt;
     }
