@@ -33,6 +33,10 @@ public class ImageManger {
     private static Image healRangeEffect;
     private static Image explosionFireball;
 
+    private static Image[] mapTiles;
+    private static Image[] obstacleSprites;
+    private static Image[] fireAnimationFrames;
+
     private static Image uiSheet;
     private static Image btnPlayHover;
     private static Image btnPlayNormal;
@@ -199,6 +203,10 @@ public class ImageManger {
         pauseTR = engine.subImage(uiSheet, 192, 128, 64, 64);
         pauseBL = engine.subImage(uiSheet, 128, 192, 64, 64);
         pauseBR = engine.subImage(uiSheet, 192, 192, 64, 64);
+
+        loadMapTiles(engine);
+        loadObstacleSprites(engine);
+        loadFireAnimationFrames(engine);
     }
 
     private void loadEnemySprites(GameEngine engine) {
@@ -328,6 +336,32 @@ public class ImageManger {
         return explosionFireball;
     }
 
+    public static Image getMapTile(int index) {
+        if (mapTiles == null || index < 0 || index >= mapTiles.length) {
+            return null;
+        }
+        return mapTiles[index];
+    }
+
+    public static int getMapTileCount() {
+        return mapTiles != null ? mapTiles.length : 0;
+    }
+
+    public static Image getObstacleSprite(int index) {
+        if (obstacleSprites == null || index < 0 || index >= obstacleSprites.length) {
+            return null;
+        }
+        return obstacleSprites[index];
+    }
+
+    public static Image getFireAnimationFrame(double animationTime) {
+        if (fireAnimationFrames == null || fireAnimationFrames.length == 0) {
+            return null;
+        }
+        int frameIndex = ((int) (animationTime * 4)) % fireAnimationFrames.length;
+        return fireAnimationFrames[frameIndex];
+    }
+
     public static Image getBtnPlayNormal() { return btnPlayNormal; }
     public static Image getBtnPlayHover() { return btnPlayHover; }
     public static Image getBtnExitNormal() { return btnExitNormal; }
@@ -342,4 +376,30 @@ public class ImageManger {
     public static Image getPauseTR() { return pauseTR; }
     public static Image getPauseBL() { return pauseBL; }
     public static Image getPauseBR() { return pauseBR; }
+
+    private void loadMapTiles(GameEngine engine) {
+        mapTiles = new Image[3];
+        mapTiles[0] = engine.loadImage("Images/mapGround.png");
+        mapTiles[1] = engine.loadImage("Images/mapGross.png");
+        mapTiles[2] = engine.loadImage("Images/mapFlower.png");
+    }
+
+    private void loadObstacleSprites(GameEngine engine) {
+        obstacleSprites = new Image[4];
+        for (int i = 0; i < 4; i++) {
+            obstacleSprites[i] = engine.loadImage("Images/tree_" + (i + 1) + ".png");
+        }
+    }
+
+    private void loadFireAnimationFrames(GameEngine engine) {
+        Image fireSheet = engine.loadImage("Images/fireAnimation.png");
+        int frameWidth = 44;
+        int frameHeight = 48;
+        int column = 2;
+        int rows = 6;
+        fireAnimationFrames = new Image[rows];
+        for (int i = 0; i < rows; i++) {
+            fireAnimationFrames[i] = engine.subImage(fireSheet, column * frameWidth, i * frameHeight, frameWidth, frameHeight);
+        }
+    }
 }
