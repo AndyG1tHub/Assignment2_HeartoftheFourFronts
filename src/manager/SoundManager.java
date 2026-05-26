@@ -1,5 +1,7 @@
 package manager;
 
+import javax.sound.sampled.*;
+
 import game.GameEngine;
 
 /** Central sound facade. Singleton so any gameplay class can call it. */
@@ -32,6 +34,11 @@ public class SoundManager {
     private GameEngine.AudioClip gameOver;
     private GameEngine.AudioClip gameWin;
     private GameEngine.AudioClip bgm;
+
+    private Clip arrowClip, cannonClip, iceClip, lightningClip;
+    private Clip deathClip, baseHitClip, buttonClip, placeClip, wallClip;
+    private Clip healClip, decoyClip, rewardClip, waveClip, spawnClip;
+    private Clip fireClip, meteorClip, moneyClip, overClip, winClip;
 
     private SoundManager(GameEngine engine) {
         this.engine = engine;
@@ -66,6 +73,52 @@ public class SoundManager {
         gameOver = engine.loadAudio("sounds/game_over.wav");
         gameWin = engine.loadAudio("sounds/game_win.wav");
         bgm = engine.loadAudio("sounds/bgm.wav");
+        preloadClips();
+    }
+
+    private void preloadClips() {
+        arrowClip = createClip(arrowShoot);
+        cannonClip = createClip(cannonShoot);
+        iceClip = createClip(iceShoot);
+        lightningClip = createClip(lightningShoot);
+        deathClip = createClip(enemyDeath);
+        baseHitClip = createClip(baseHit);
+        buttonClip = createClip(buttonClick);
+        placeClip = createClip(placeBuilding);
+        wallClip = createClip(wallBreak);
+        healClip = createClip(healTower);
+        decoyClip = createClip(decoyDeploy);
+        rewardClip = createClip(rewardCollect);
+        waveClip = createClip(waveStart);
+        spawnClip = createClip(enemySpawn);
+        fireClip = createClip(fireDisaster);
+        meteorClip = createClip(meteorDisaster);
+        moneyClip = createClip(insufficientMoney);
+        overClip = createClip(gameOver);
+        winClip = createClip(gameWin);
+    }
+
+    private Clip createClip(GameEngine.AudioClip ac) {
+        if (ac == null) return null;
+        try {
+            Clip clip = AudioSystem.getClip();
+            clip.open(ac.getAudioFormat(), ac.getData(), 0, (int) ac.getBufferSize());
+            return clip;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private void playClip(Clip clip, float volume) {
+        if (clip == null || muted) return;
+        clip.stop();
+        clip.setFramePosition(0);
+        try {
+            FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            control.setValue(volume);
+        } catch (Exception ignored) {
+        }
+        clip.start();
     }
 
     public void toggleMute() {
@@ -81,35 +134,26 @@ public class SoundManager {
         return muted;
     }
 
-    private void play(GameEngine.AudioClip clip) {
-        play(clip, SFX_VOLUME);
-    }
+    public void playArrowShoot() { playClip(arrowClip, SFX_VOLUME); }
+    public void playCannonShoot() { playClip(cannonClip, -1.0f); }
+    public void playIceShoot() { playClip(iceClip, SFX_VOLUME); }
+    public void playLightningShoot() { playClip(lightningClip, SFX_VOLUME); }
+    public void playEnemyDeath() { playClip(deathClip, SFX_VOLUME); }
+    public void playBaseHit() { playClip(baseHitClip, SFX_VOLUME); }
+    public void playButtonClick() { playClip(buttonClip, -5.0f); }
+    public void playPlaceBuilding() { playClip(placeClip, SFX_VOLUME); }
+    public void playWallBreak() { playClip(wallClip, SFX_VOLUME); }
+    public void playHealTower() { playClip(healClip, SFX_VOLUME); }
+    public void playDecoyDeploy() { playClip(decoyClip, SFX_VOLUME); }
+    public void playRewardCollect() { playClip(rewardClip, SFX_VOLUME); }
+    public void playWaveStart() { playClip(waveClip, -6.0f); }
+    public void playEnemySpawn() { playClip(spawnClip, -6.0f); }
+    public void playFireDisaster() { playClip(fireClip, SFX_VOLUME); }
+    public void playMeteorDisaster() { playClip(meteorClip, SFX_VOLUME); }
+    public void playInsufficientMoney() { playClip(moneyClip, SFX_VOLUME); }
+    public void playGameOver() { playClip(overClip, SFX_VOLUME); }
+    public void playGameWin() { playClip(winClip, SFX_VOLUME); }
 
-    private void play(GameEngine.AudioClip clip, float volume) {
-        if (clip != null && !muted) {
-            engine.playAudio(clip, volume);
-        }
-    }
-
-    public void playArrowShoot() { play(arrowShoot); }
-    public void playCannonShoot() { play(cannonShoot, -1.0f); }
-    public void playIceShoot() { play(iceShoot); }
-    public void playLightningShoot() { play(lightningShoot); }
-    public void playEnemyDeath() { play(enemyDeath); }
-    public void playBaseHit() { play(baseHit); }
-    public void playButtonClick() { play(buttonClick, -5.0f); }
-    public void playPlaceBuilding() { play(placeBuilding); }
-    public void playWallBreak() { play(wallBreak); }
-    public void playHealTower() { play(healTower); }
-    public void playDecoyDeploy() { play(decoyDeploy); }
-    public void playRewardCollect() { play(rewardCollect); }
-    public void playWaveStart() { play(waveStart, -6.0f); }
-    public void playEnemySpawn() { play(enemySpawn, -6.0f); }
-    public void playFireDisaster() { play(fireDisaster); }
-    public void playMeteorDisaster() { play(meteorDisaster); }
-    public void playInsufficientMoney() { play(insufficientMoney); }
-    public void playGameOver() { play(gameOver); }
-    public void playGameWin() { play(gameWin); }
     public void startBgm() { if (!muted && bgm != null) engine.startAudioLoop(bgm, BGM_VOLUME); }
     public void stopBgm() { if (bgm != null) engine.stopAudioLoop(bgm); }
 }
