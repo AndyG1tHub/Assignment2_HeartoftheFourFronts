@@ -31,6 +31,11 @@ public class ImageManger {
     private static Image healRangeEffect;
     private static Image explosionFireball;
 
+    private static Image mapTile;
+    private static Image[] mapTiles;
+    private static Image[] obstacleSprites;
+    private static Image[] fireAnimationFrames;
+
     private static Image[] meleeEnemyRun;
     private static Image[] meleeEnemyAttack;
     private static Image[] tankEnemyRun;
@@ -115,6 +120,11 @@ public class ImageManger {
         laserEffect = engine.subImage(homeItems, 170, 650, 300, 265);
         healRangeEffect = engine.subImage(homeItems, 555, 650, 340, 265);
         explosionFireball = engine.subImage(homeItems, 995, 630, 350, 285);
+
+        mapTile = engine.loadImage("Images/mapGross.png");
+        loadMapTiles(engine);
+        loadObstacleSprites(engine);
+        loadFireAnimationFrames(engine);
     }
 
     private void loadEnemySprites(GameEngine engine) {
@@ -209,5 +219,61 @@ public class ImageManger {
 
     public static Image getExplosionFireball() {
         return explosionFireball;
+    }
+
+    public static Image getMapTile() {
+        return mapTile;
+    }
+
+    public static Image getMapTile(int index) {
+        if (mapTiles == null || index < 0 || index >= mapTiles.length) {
+            return mapTile;
+        }
+        return mapTiles[index];
+    }
+
+    public static int getMapTileCount() {
+        return mapTiles != null ? mapTiles.length : 0;
+    }
+
+    public static Image getObstacleSprite(int index) {
+        if (obstacleSprites == null || index < 0 || index >= obstacleSprites.length) {
+            return null;
+        }
+        return obstacleSprites[index];
+    }
+
+    public static Image getFireAnimationFrame(double animationTime) {
+        if (fireAnimationFrames == null || fireAnimationFrames.length == 0) {
+            return null;
+        }
+        int frameIndex = ((int) (animationTime * 4)) % fireAnimationFrames.length;
+        return fireAnimationFrames[frameIndex];
+    }
+
+    private void loadMapTiles(GameEngine engine) {
+        mapTiles = new Image[3];
+        mapTiles[0] = engine.loadImage("Images/mapGround.png");
+        mapTiles[1] = engine.loadImage("Images/mapGross.png");
+        mapTiles[2] = engine.loadImage("Images/mapFlower.png");
+    }
+
+    private void loadObstacleSprites(GameEngine engine) {
+        obstacleSprites = new Image[4];
+        for (int i = 0; i < 4; i++) {
+            obstacleSprites[i] = engine.loadImage("Images/tree_" + (i + 1) + ".png");
+        }
+    }
+
+    private void loadFireAnimationFrames(GameEngine engine) {
+        Image fireSheet = engine.loadImage("Images/fireAnimation.png");
+        int frameWidth = 44;
+        int frameHeight = 48;
+        int column = 2;
+        int rows = 6;
+        fireAnimationFrames = new Image[rows];
+        for (int i = 0; i < rows; i++) {
+            fireAnimationFrames[i] = engine.subImage(fireSheet, column * frameWidth, i * frameHeight, frameWidth, frameHeight);
+        }
     }
 }

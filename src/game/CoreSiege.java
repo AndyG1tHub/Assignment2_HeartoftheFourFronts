@@ -94,6 +94,7 @@ public class CoreSiege extends GameEngine {
         if (gameState != GameState.PLAYING) {
             return;
         }
+        gridMap.update(dt);
         economyManager.updateIncome(dt);
         waveManager.update(dt, scoreManager);
         enemySpawner.update(dt, waveManager);
