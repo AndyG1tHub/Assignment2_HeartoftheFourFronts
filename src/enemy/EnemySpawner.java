@@ -7,6 +7,7 @@ import java.util.Random;
 
 import core.GridPosition;
 import core.GridMap;
+import enemy.enemies.HealerEnemy;
 import util.Direction;
 import game.GameEngine;
 import game.GameConfig;
@@ -119,7 +120,9 @@ public class EnemySpawner {
 
     public void updateEnemies(double dt, EnemyAI enemyAI, EconomyManager economy, ScoreManager score) {
         for (Enemy enemy : new ArrayList<Enemy>(enemies)) {
-            enemy.supportAllies(dt, enemies);
+            if (enemy instanceof HealerEnemy) {
+                ((HealerEnemy) enemy).supportAllies(dt, enemies);
+            }
         }
         Iterator<Enemy> iterator = enemies.iterator();
         while (iterator.hasNext()) {

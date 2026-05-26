@@ -21,6 +21,10 @@ public class HealerEnemy extends Enemy {
     }
 
     @Override
+    public double getBaseAttackRange() {
+        return 2.0;
+    }
+
     public void supportAllies(double dt, List<Enemy> enemies) {
         healCooldown = Math.max(0.0, healCooldown - dt);
         if (healCooldown > 0.0 || isDead()) {

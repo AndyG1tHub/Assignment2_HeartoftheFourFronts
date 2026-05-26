@@ -47,6 +47,7 @@ public class EnemyAI {
 
     private void moveOrAttackBase(Enemy enemy, double dt) {
         if (isInBaseAttackRange(enemy)) {
+            enemy.stopAtCurrentTile(map);
             enemy.attackBase(dt, base);
             return;
         }

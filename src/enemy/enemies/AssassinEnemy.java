@@ -11,7 +11,7 @@ public class AssassinEnemy extends Enemy {
     public static final int BASE_HP = 55;
 
     public AssassinEnemy(GridPosition position, int hp) {
-        super(position, EnemyType.ASSASSIN, hp, 18, 1.55, 18, 90);
+        super(position, EnemyType.ASSASSIN, hp, 28, 1.55, 18, 90);
     }
 
     @Override
