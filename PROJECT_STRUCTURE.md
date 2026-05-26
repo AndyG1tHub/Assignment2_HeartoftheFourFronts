@@ -247,3 +247,11 @@ java Main
 - **HealerEnemy（治疗）**: 支援型敌人，会周期性治疗附近受伤的其他敌人。
 
 当前刷怪逻辑在 `EnemySpawner` 中按波次逐步解锁：第 1 阶段以近战为主，混入刺客和射手；第 2 阶段加入肉盾和治疗；第 3 阶段五种敌人都会出现。
+
+## 图片资源说明
+
+`Images/` 中的图片由 `manager.ImageManger` 统一加载。塔、防御基地、投射物、治疗范围、爆炸火球和诱饵都通过 `GameEngine.loadImage` 或 `GameEngine.subImage` 加载后再绘制到游戏中。
+
+- **bait.png**: 诱饵图片，用于替换 `Decoy` 原来的黄色圆点绘制。
+- **homeItems.png**: 物品合集图，按像素范围切出基地、弓箭、炮弹、ice、激光、治疗范围特效和爆炸火球。
+- **meleeEnemy.png / tankEnemy.png / assassinEnemy.png / archerEnemy.png / healerEnemy.png**: 敌人精灵图，按固定 256x256 分割，前两排为跑步动画，第三排为攻击动画。

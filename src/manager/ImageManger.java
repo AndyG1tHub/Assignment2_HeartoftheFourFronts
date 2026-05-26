@@ -19,7 +19,7 @@ public class ImageManger {
     private static Image iceTower;
     private static Image lightningTower;
     Image wall;
-    Image bait;
+    private static Image bait;
     Image homeItems;
     Image enemies;
     Image naturalDisaster;
@@ -177,6 +177,10 @@ public class ImageManger {
 
     public static Image getLightningTower() {
         return lightningTower;
+    }
+
+    public static Image getBait() {
+        return bait;
     }
 
     public static Image getBaseImage() {

@@ -1,11 +1,14 @@
 package building;
 
 import java.awt.Color;
+import java.awt.Image;
 
 import core.GridPosition;
 import core.GridMap;
 import util.Direction;
+import game.GameConfig;
 import game.GameEngine;
+import manager.ImageManger;
 
 /** Moving lure that travels outward and attracts nearby enemies. */
 public class Decoy {
@@ -64,6 +67,13 @@ public class Decoy {
 
     public void draw(GameEngine engine, GridMap map) {
         if (isOutside(map)) {
+            return;
+        }
+        Image image = ImageManger.getBait();
+        if (image != null) {
+            int x = map.toScreenX(gridPosition.col);
+            int y = map.toScreenY(gridPosition.row);
+            engine.drawImage(image, x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
             return;
         }
         engine.changeColor(new Color(240, 220, 95));
