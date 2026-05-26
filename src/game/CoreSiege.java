@@ -46,6 +46,7 @@ public class CoreSiege extends GameEngine {
     private ParticleSystem particleSystem;
 
     private BuildingType selectedBuilding = BuildingType.ARROW_TOWER;
+    private int mouseX = -1, mouseY = -1;
 
     public static void main(String[] args) {
         createGame(new CoreSiege(), GameConfig.TARGET_FPS);
@@ -146,11 +147,11 @@ public class CoreSiege extends GameEngine {
     public void paintComponent() {
         drawBackground();
         if (gameState == GameState.MENU) {
-            menuScreen.draw(this);
+            menuScreen.draw(this, mouseX, mouseY);
             return;
         }
         if (gameState == GameState.GAME_OVER || gameState == GameState.WIN) {
-            menuScreen.drawEndScreen(this, gameState == GameState.WIN);
+            menuScreen.drawEndScreen(this, gameState == GameState.WIN, mouseX, mouseY);
             return;
         }
         gridMap.draw(this);
@@ -201,11 +202,13 @@ public class CoreSiege extends GameEngine {
     }
 
     private void handleMenuClick(MouseEvent event) {
-        Difficulty difficulty = menuScreen.handleClick(event.getX(), event.getY());
-        if (difficulty != null) {
+        int action = menuScreen.handleClick(event.getX(), event.getY());
+        if (action == MenuScreen.MenuAction.PLAY) {
             soundManager.playButtonClick();
-            startNewGame(difficulty);
+            startNewGame(menuScreen.getSelectedDifficulty());
             gameState = GameState.PLAYING;
+        } else if (action == MenuScreen.MenuAction.SOUND) {
+            soundManager.playButtonClick();
         }
     }
 
@@ -297,5 +300,11 @@ public class CoreSiege extends GameEngine {
         } else if (keyCode == KeyEvent.VK_7) {
             selectedBuilding = BuildingType.DECOY;
         }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent event) {
+        mouseX = event.getX();
+        mouseY = event.getY();
     }
 }

@@ -11,7 +11,7 @@ public class Button {
     private final int y;
     private final int width;
     private final int height;
-    private final String text;
+    private String text;
     private final BuildingType buildingType;
     private final Color color;
 
@@ -39,26 +39,42 @@ public class Button {
     }
 
     public void draw(GameEngine engine, boolean selected) {
+        draw(engine, selected, -1, -1);
+    }
+
+    public void draw(GameEngine engine, boolean selected, int mouseX, int mouseY) {
+        boolean hovered = contains(mouseX, mouseY);
+
         if (selected) {
             engine.changeColor(new Color(55, 65, 80));
+            engine.drawSolidRectangle(x, y, width, height);
+        } else if (hovered) {
+            engine.changeColor(new Color(45, 52, 60));
             engine.drawSolidRectangle(x, y, width, height);
         } else {
             engine.changeColor(BG);
             engine.drawSolidRectangle(x, y, width, height);
         }
         if (color != null) {
-            engine.changeColor(color);
+            engine.changeColor(hovered ? color.brighter() : color);
             engine.drawSolidRectangle(x + 4, y + 4, 6, height - 8);
         }
         if (selected) {
             engine.changeColor(SELECTED_BORDER);
             engine.drawRectangle(x - 1, y - 1, width + 2, height + 2, 2);
+        } else if (hovered) {
+            engine.changeColor(HOVER_BORDER);
+            engine.drawRectangle(x, y, width, height);
         } else {
             engine.changeColor(BORDER);
             engine.drawRectangle(x, y, width, height);
         }
         engine.changeColor(Color.WHITE);
         engine.drawText(x + 16, y + 21, text, "Arial", 13);
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public BuildingType getBuildingType() {
