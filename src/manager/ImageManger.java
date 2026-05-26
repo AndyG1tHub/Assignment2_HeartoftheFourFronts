@@ -1,6 +1,7 @@
 package manager;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import enemy.EnemyType;
 import game.GameEngine;
@@ -8,6 +9,7 @@ import game.GameEngine;
 /** Loads image assets and serves animation frames. */
 public class ImageManger {
     private static final int ENEMY_FRAME_SIZE = 256;
+    private static final int ENEMY_FRAME_INSET = 14;
     private static final int ENEMY_SHEET_COLUMNS = 8;
     private static final int ENEMY_RUN_FRAME_COUNT = 16;
     private static final int ENEMY_ATTACK_FRAME_COUNT = 8;
@@ -42,15 +44,25 @@ public class ImageManger {
     private static Image pauseTL, pauseTR, pauseBL, pauseBR;
 
     private static Image[] meleeEnemyRun;
+    private static Image[] meleeEnemyRunLeft;
     private static Image[] meleeEnemyAttack;
+    private static Image[] meleeEnemyAttackLeft;
     private static Image[] tankEnemyRun;
+    private static Image[] tankEnemyRunLeft;
     private static Image[] tankEnemyAttack;
+    private static Image[] tankEnemyAttackLeft;
     private static Image[] assassinEnemyRun;
+    private static Image[] assassinEnemyRunLeft;
     private static Image[] assassinEnemyAttack;
+    private static Image[] assassinEnemyAttackLeft;
     private static Image[] archerEnemyRun;
+    private static Image[] archerEnemyRunLeft;
     private static Image[] archerEnemyAttack;
+    private static Image[] archerEnemyAttackLeft;
     private static Image[] healerEnemyRun;
+    private static Image[] healerEnemyRunLeft;
     private static Image[] healerEnemyAttack;
+    private static Image[] healerEnemyAttackLeft;
 
     public void loadImages(GameEngine engine) {
         this.engine = engine;
@@ -59,7 +71,14 @@ public class ImageManger {
     }
 
     public static Image getEnemySprite(EnemyType type, double animationTime) {
+        return getEnemySprite(type, animationTime, false);
+    }
+
+    public static Image getEnemySprite(EnemyType type, double animationTime, boolean facingLeft) {
         Image[] frames = getEnemyRunFrames(type);
+        if (facingLeft) {
+            frames = getEnemyRunLeftFrames(type);
+        }
         if (frames == null || frames.length == 0) {
             return null;
         }
@@ -68,7 +87,14 @@ public class ImageManger {
     }
 
     public static Image getEnemyAttackSprite(EnemyType type, double animationTime) {
+        return getEnemyAttackSprite(type, animationTime, false);
+    }
+
+    public static Image getEnemyAttackSprite(EnemyType type, double animationTime, boolean facingLeft) {
         Image[] frames = getEnemyAttackFrames(type);
+        if (facingLeft) {
+            frames = getEnemyAttackLeftFrames(type);
+        }
         if (frames == null || frames.length == 0) {
             return null;
         }
@@ -92,6 +118,22 @@ public class ImageManger {
         return meleeEnemyRun;
     }
 
+    private static Image[] getEnemyRunLeftFrames(EnemyType type) {
+        if (type == EnemyType.TANK) {
+            return tankEnemyRunLeft;
+        }
+        if (type == EnemyType.ASSASSIN) {
+            return assassinEnemyRunLeft;
+        }
+        if (type == EnemyType.ARCHER) {
+            return archerEnemyRunLeft;
+        }
+        if (type == EnemyType.HEALER) {
+            return healerEnemyRunLeft;
+        }
+        return meleeEnemyRunLeft;
+    }
+
     private static Image[] getEnemyAttackFrames(EnemyType type) {
         if (type == EnemyType.TANK) {
             return tankEnemyAttack;
@@ -106,6 +148,22 @@ public class ImageManger {
             return healerEnemyAttack;
         }
         return meleeEnemyAttack;
+    }
+
+    private static Image[] getEnemyAttackLeftFrames(EnemyType type) {
+        if (type == EnemyType.TANK) {
+            return tankEnemyAttackLeft;
+        }
+        if (type == EnemyType.ASSASSIN) {
+            return assassinEnemyAttackLeft;
+        }
+        if (type == EnemyType.ARCHER) {
+            return archerEnemyAttackLeft;
+        }
+        if (type == EnemyType.HEALER) {
+            return healerEnemyAttackLeft;
+        }
+        return meleeEnemyAttackLeft;
     }
 
     private void loadStaticImages(GameEngine engine) {
@@ -146,23 +204,33 @@ public class ImageManger {
     private void loadEnemySprites(GameEngine engine) {
         Image meleeSheet = engine.loadImage("Images/meleeEnemy.png");
         meleeEnemyRun = loadEnemyRunSprite(engine, meleeSheet);
+        meleeEnemyRunLeft = flipFrames(meleeEnemyRun);
         meleeEnemyAttack = loadEnemyAttackSprite(engine, meleeSheet);
+        meleeEnemyAttackLeft = flipFrames(meleeEnemyAttack);
 
         Image tankSheet = engine.loadImage("Images/tankEnemy.png");
         tankEnemyRun = loadEnemyRunSprite(engine, tankSheet);
+        tankEnemyRunLeft = flipFrames(tankEnemyRun);
         tankEnemyAttack = loadEnemyAttackSprite(engine, tankSheet);
+        tankEnemyAttackLeft = flipFrames(tankEnemyAttack);
 
         Image assassinSheet = engine.loadImage("Images/assassinEnemy.png");
         assassinEnemyRun = loadEnemyRunSprite(engine, assassinSheet);
+        assassinEnemyRunLeft = flipFrames(assassinEnemyRun);
         assassinEnemyAttack = loadEnemyAttackSprite(engine, assassinSheet);
+        assassinEnemyAttackLeft = flipFrames(assassinEnemyAttack);
 
         Image archerSheet = engine.loadImage("Images/archerEnemy.png");
         archerEnemyRun = loadEnemyRunSprite(engine, archerSheet);
+        archerEnemyRunLeft = flipFrames(archerEnemyRun);
         archerEnemyAttack = loadEnemyAttackSprite(engine, archerSheet);
+        archerEnemyAttackLeft = flipFrames(archerEnemyAttack);
 
         Image healerSheet = engine.loadImage("Images/healerEnemy.png");
         healerEnemyRun = loadEnemyRunSprite(engine, healerSheet);
+        healerEnemyRunLeft = flipFrames(healerEnemyRun);
         healerEnemyAttack = loadEnemyAttackSprite(engine, healerSheet);
+        healerEnemyAttackLeft = flipFrames(healerEnemyAttack);
     }
 
     private Image[] loadEnemyRunSprite(GameEngine engine, Image sheet) {
@@ -170,8 +238,7 @@ public class ImageManger {
         for (int i = 0; i < frames.length; i++) {
             int row = i / ENEMY_SHEET_COLUMNS;
             int col = i % ENEMY_SHEET_COLUMNS;
-            frames[i] = engine.subImage(sheet, col * ENEMY_FRAME_SIZE, row * ENEMY_FRAME_SIZE,
-                    ENEMY_FRAME_SIZE, ENEMY_FRAME_SIZE);
+            frames[i] = getEnemyFrame(engine, sheet, row, col);
         }
         return frames;
     }
@@ -179,10 +246,34 @@ public class ImageManger {
     private Image[] loadEnemyAttackSprite(GameEngine engine, Image sheet) {
         Image[] frames = new Image[ENEMY_ATTACK_FRAME_COUNT];
         for (int i = 0; i < frames.length; i++) {
-            frames[i] = engine.subImage(sheet, i * ENEMY_FRAME_SIZE, ENEMY_FRAME_SIZE * 2,
-                    ENEMY_FRAME_SIZE, ENEMY_FRAME_SIZE);
+            frames[i] = getEnemyFrame(engine, sheet, 2, i);
         }
         return frames;
+    }
+
+    private Image getEnemyFrame(GameEngine engine, Image sheet, int row, int col) {
+        int x = col * ENEMY_FRAME_SIZE + ENEMY_FRAME_INSET;
+        int y = row * ENEMY_FRAME_SIZE + ENEMY_FRAME_INSET;
+        int size = ENEMY_FRAME_SIZE - ENEMY_FRAME_INSET * 2;
+        return engine.subImage(sheet, x, y, size, size);
+    }
+
+    private Image[] flipFrames(Image[] frames) {
+        Image[] flipped = new Image[frames.length];
+        for (int i = 0; i < frames.length; i++) {
+            flipped[i] = flipImage(frames[i]);
+        }
+        return flipped;
+    }
+
+    private Image flipImage(Image image) {
+        int width = image.getWidth(null);
+        int height = image.getHeight(null);
+        BufferedImage flipped = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = flipped.createGraphics();
+        graphics.drawImage(image, width, 0, -width, height, null);
+        graphics.dispose();
+        return flipped;
     }
 
     public static Image getArrowTower() {

@@ -50,6 +50,7 @@ public class Enemy {
         this.scoreReward = scoreReward;
         this.state = EnemyState.SPAWNING;
         this.facingDown = true;
+        this.facingRight = true;
     }
 
     public void snapToMap(GridMap map) {
@@ -161,8 +162,13 @@ public class Enemy {
     private void updateFacing(GridPosition next) {
         facingUp = next.row < gridPosition.row;
         facingDown = next.row > gridPosition.row;
-        facingLeft = next.col < gridPosition.col;
-        facingRight = next.col > gridPosition.col;
+        if (next.col < gridPosition.col) {
+            facingLeft = true;
+            facingRight = false;
+        } else if (next.col > gridPosition.col) {
+            facingLeft = false;
+            facingRight = true;
+        }
     }
 
     public void attackBase(double dt, Base base) {
@@ -238,8 +244,8 @@ public class Enemy {
             y = map.tileCenterY(gridPosition);
         }
         Image sprite = isPlayingAttackAnimation()
-                ? ImageManger.getEnemyAttackSprite(type, animationTime)
-                : ImageManger.getEnemySprite(type, animationTime);
+                ? ImageManger.getEnemyAttackSprite(type, animationTime, facingLeft)
+                : ImageManger.getEnemySprite(type, animationTime, facingLeft);
         if (sprite != null) {
             double size = GameConfig.TILE_SIZE * 1.25;
             engine.drawImage(sprite, x - size / 2, y - size / 2, size, size);
