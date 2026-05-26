@@ -126,7 +126,7 @@ public class ImageManger {
         healRangeEffect = engine.subImage(homeItems, 555, 650, 340, 265);
         explosionFireball = engine.subImage(homeItems, 995, 630, 350, 285);
 
-        uiSheet = engine.loadImage("Images/FreeHorrorUi.png");
+        uiSheet = engine.loadImage("Images/Ui.png");
         btnPlayHover = engine.subImage(uiSheet, 0, 128, 64, 32);
         btnPlayNormal = engine.subImage(uiSheet, 64, 128, 64, 32);
         btnExitHover = engine.subImage(uiSheet, 0, 192, 64, 32);
