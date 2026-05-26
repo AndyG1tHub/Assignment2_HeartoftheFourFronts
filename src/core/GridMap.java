@@ -32,15 +32,14 @@ public class GridMap {
             for (int col = 0; col < GameConfig.GRID_COLS; col++) {
                 tiles[row][col] = new Tile(row, col, TileType.EMPTY);
                 if (mapTileCount > 0) {
-                    // Weighted random: 50% ground, 43% gross, 7% flower
                     double rand = random.nextDouble();
                     int variant;
                     if (rand < 0.50) {
-                        variant = 0; // mapGround
+                        variant = 0;
                     } else if (rand < 0.93) {
-                        variant = 1; // mapGross
+                        variant = 1;
                     } else {
-                        variant = 2; // mapFlower (7% chance)
+                        variant = 2;
                     }
                     tiles[row][col].setMapTileVariant(variant);
                 }
@@ -71,14 +70,13 @@ public class GridMap {
             if (canPlaceObstacle(position, spawnPositions, pathFinder)) {
                 setObstacle(row, col);
 
-                // 23% chance for fire obstacle, 77% for tree
                 boolean isFire = random.nextDouble() < 0.23;
                 tiles[row][col].setFireObstacle(isFire);
 
                 if (isFire) {
                     tiles[row][col].setObstacleVariant(0);
                 } else {
-                    tiles[row][col].setObstacleVariant(random.nextInt(4)); // 4 tree variants
+                    tiles[row][col].setObstacleVariant(random.nextInt(4));
                 }
 
                 placedObstacles++;
@@ -201,6 +199,10 @@ public class GridMap {
         return positions;
     }
 
+    public void update(double dt) {
+        animationTime += dt;
+    }
+
     public void draw(GameEngine engine) {
         drawTiles(engine);
         drawGridLines(engine);
@@ -223,21 +225,17 @@ public class GridMap {
         int x = toScreenX(position.col);
         int y = toScreenY(position.row);
 
-        // Draw map background tile with random variant
         Image mapTile = ImageManger.getMapTile(tile.getMapTileVariant());
         if (mapTile != null) {
             engine.drawImage(mapTile, x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
         } else {
-            // Fallback to colored background
             engine.changeColor(getTileColor(tile));
             engine.drawSolidRectangle(x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
         }
 
-        // Draw obstacle on top if present
         if (tile.getType() == TileType.OBSTACLE) {
             drawObstacle(engine, tile, x, y);
         } else if (tile.getType() == TileType.BASE) {
-            // Draw base color overlay
             engine.changeColor(new Color(80, 120, 210, 100));
             engine.drawSolidRectangle(x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
         }
@@ -247,11 +245,10 @@ public class GridMap {
         if (tile.isFireObstacle()) {
             Image fireFrame = ImageManger.getFireAnimationFrame(animationTime);
             if (fireFrame != null) {
-                // Larger fire and shift right more
-                int fireWidth = 40;  // Larger (was 35)
-                int fireHeight = (int) (fireWidth * 48.0 / 44.0); // About 44
-                int offsetX = x + (GameConfig.TILE_SIZE - fireWidth) / 2 + 6; // Shift right by 7 pixels
-                int offsetY = y + (GameConfig.TILE_SIZE - fireHeight) / 2 - 4; // Shift up by 10 pixels
+                int fireWidth = 40;
+                int fireHeight = (int) (fireWidth * 48.0 / 44.0);
+                int offsetX = x + (GameConfig.TILE_SIZE - fireWidth) / 2 + 6;
+                int offsetY = y + (GameConfig.TILE_SIZE - fireHeight) / 2 - 4;
                 engine.drawImage(fireFrame, offsetX, offsetY, fireWidth, fireHeight);
             } else {
                 engine.changeColor(new Color(255, 100, 30));
@@ -260,8 +257,7 @@ public class GridMap {
         } else {
             Image obstacleSprite = ImageManger.getObstacleSprite(tile.getObstacleVariant());
             if (obstacleSprite != null) {
-                // Larger trees
-                int treeSize = 45; // Larger than tile (was 30)
+                int treeSize = 45;
                 int offsetX = x + (GameConfig.TILE_SIZE - treeSize) / 2;
                 int offsetY = y + (GameConfig.TILE_SIZE - treeSize) / 2;
                 engine.drawImage(obstacleSprite, offsetX, offsetY, treeSize, treeSize);
