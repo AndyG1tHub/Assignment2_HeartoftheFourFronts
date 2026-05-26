@@ -68,9 +68,9 @@ public class HUD {
     }
 
     private void drawBaseHealthBar(GameEngine engine, Base base) {
-        int x = 660, y = 58;
-        int barWidth = 200, barHeight = 14;
-        double ratio = (double) base.getHp() / base.getMaxHp();
+        int x = 655, y = 56;
+        int barWidth = 210, barHeight = 16;
+        double ratio = Math.max(0, (double) base.getHp() / base.getMaxHp());
         Color barColor;
         if (ratio > 0.6) {
             barColor = new Color(70, 190, 100);
@@ -79,42 +79,36 @@ public class HUD {
         } else {
             barColor = new Color(210, 70, 60);
         }
-        engine.changeColor(new Color(40, 44, 48));
+        engine.changeColor(new Color(35, 40, 45));
         engine.drawSolidRectangle(x, y, barWidth, barHeight);
         engine.changeColor(barColor);
-        engine.drawSolidRectangle(x, y, (int) (barWidth * ratio), barHeight);
-        engine.changeColor(new Color(100, 105, 110));
+        engine.drawSolidRectangle(x + 1, y + 1, (int) ((barWidth - 2) * ratio), barHeight - 2);
+        engine.changeColor(new Color(80, 85, 90));
         engine.drawRectangle(x, y, barWidth, barHeight);
         engine.changeColor(Color.WHITE);
-        engine.drawText(x + 5, y + 12, "BASE  " + base.getHp() + "/" + base.getMaxHp(), "Arial", 11);
+        engine.drawText(x + 4, y + 13, "BASE  " + base.getHp() + "/" + base.getMaxHp(), "Arial", 11);
+    }
+
+    private void drawStatPanel(GameEngine engine, int x, int y, String label, String value) {
+        engine.changeColor(new Color(32, 36, 42));
+        engine.drawSolidRectangle(x, y, 100, 38);
+        engine.changeColor(new Color(55, 60, 68));
+        engine.drawRectangle(x, y, 100, 38);
+        engine.changeColor(TEXT_LABEL);
+        engine.drawText(x + 6, y + 6, label, "Arial", 10);
+        engine.changeColor(TEXT_VALUE);
+        engine.drawText(x + 6, y + 24, value, "Arial", 14);
     }
 
     private void drawStats(GameEngine engine, Base base, EconomyManager economy,
             ScoreManager score, WaveManager waves, Difficulty difficulty) {
-        int x = 660;
-        int y = 80;
-        engine.changeColor(TEXT_LABEL);
-        engine.drawText(x, y, "MONEY", "Arial", 11);
-        engine.changeColor(TEXT_VALUE);
-        engine.drawText(x, y + 16, "$" + economy.getMoney(), "Arial", 14);
-
-        y += 36;
-        engine.changeColor(TEXT_LABEL);
-        engine.drawText(x, y, "STAGE", "Arial", 11);
-        engine.changeColor(TEXT_VALUE);
-        engine.drawText(x, y + 16, waves.getStage() + "  " + difficulty, "Arial", 14);
-
-        y += 36;
-        engine.changeColor(TEXT_LABEL);
-        engine.drawText(x, y, "SCORE", "Arial", 11);
-        engine.changeColor(TEXT_VALUE);
-        engine.drawText(x, y + 16, String.valueOf(score.getScore()), "Arial", 14);
-
-        y += 36;
-        engine.changeColor(TEXT_LABEL);
-        engine.drawText(x, y, "KILLS", "Arial", 11);
-        engine.changeColor(TEXT_VALUE);
-        engine.drawText(x, y + 16, String.valueOf(score.getEnemiesKilled()), "Arial", 14);
+        int x = 655;
+        int y = 78;
+        drawStatPanel(engine, x, y, "MONEY", "$" + economy.getMoney());
+        drawStatPanel(engine, x + 108, y, "KILLS", String.valueOf(score.getEnemiesKilled()));
+        y += 46;
+        drawStatPanel(engine, x, y, "STAGE", waves.getStage() + "  " + difficulty);
+        drawStatPanel(engine, x + 108, y, "SCORE", String.valueOf(score.getScore()));
     }
 
     private void drawButtons(GameEngine engine, BuildingType selected) {

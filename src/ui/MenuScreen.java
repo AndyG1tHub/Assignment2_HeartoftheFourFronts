@@ -53,7 +53,7 @@ public class MenuScreen {
     }
 
     private void drawCastle(GameEngine engine) {
-        int cx = 410, cy = 90;
+        int cx = 750, cy = 70;
         engine.changeColor(new Color(55, 60, 70));
         engine.drawSolidRectangle(cx - 40, cy, 80, 50);
         engine.drawSolidRectangle(cx - 15, cy - 20, 30, 20);
