@@ -4,14 +4,14 @@ package game;
 public final class GameConfig {
     public static final String TITLE = "Heart of the Four Fronts: The Last Defence";
 
-    public static final int WINDOW_WIDTH = 900;
-    public static final int WINDOW_HEIGHT = 700;
+    public static int WINDOW_WIDTH = 900;
+    public static int WINDOW_HEIGHT = 700;
     public static final int TARGET_FPS = 60;
 
     public static final int GRID_ROWS = 20;
     public static final int GRID_COLS = 20;
     public static final int TILE_SIZE = 30;
-    public static final int MAP_OFFSET_X = 30;
+    public static int MAP_OFFSET_X = 30;
     public static final int MAP_OFFSET_Y = 50;
 
     public static final int BASE_MAX_HP = 1000;

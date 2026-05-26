@@ -1,9 +1,9 @@
 package game;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.*;
 import javax.swing.*;
-import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.Stack;
@@ -68,17 +68,43 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 
 		mWidth = width;
 		mHeight = height;
+		GameConfig.WINDOW_WIDTH = width;
+		GameConfig.WINDOW_HEIGHT = height;
+		int hudW = 260;
+		int playW = width - hudW;
+		int gridW = GameConfig.GRID_COLS * GameConfig.TILE_SIZE;
+		GameConfig.MAP_OFFSET_X = (playW - gridW) / 2;
 
 		mFrame.setSize(width, height);
 		mFrame.setLocation(200,200);
 		mFrame.setTitle("Window");
 		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mFrame.add(mPanel);
+		mFrame.setResizable(true);
 		mFrame.setVisible(true);
 
 		mPanel.setDoubleBuffered(true);
 		mPanel.addMouseListener(this);
 		mPanel.addMouseMotionListener(this);
+
+		mFrame.addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent e) {
+				Insets insets = mFrame.getInsets();
+				int w = mFrame.getWidth() - insets.left - insets.right;
+				int h = mFrame.getHeight() - insets.top - insets.bottom;
+				if (w < 640) w = 640;
+				if (h < 480) h = 480;
+				mWidth = w;
+				mHeight = h;
+				GameConfig.WINDOW_WIDTH = w;
+				GameConfig.WINDOW_HEIGHT = h;
+				int hudWidth = 260;
+				int playW = w - hudWidth;
+				int gridW = GameConfig.GRID_COLS * GameConfig.TILE_SIZE;
+				GameConfig.MAP_OFFSET_X = (playW - gridW) / 2;
+				mPanel.setSize(w, h);
+			}
+		});
 
 		// Register a key event dispatcher to get a turn in handling all
 		// key events, independent of which component currently has the focus
@@ -111,10 +137,15 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				// Resize the window (insets are just the boarders that the Operating System puts on the board)
 				Insets insets = mFrame.getInsets();
 				mWidth = width;
 				mHeight = height;
+				GameConfig.WINDOW_WIDTH = width;
+				GameConfig.WINDOW_HEIGHT = height;
+				int hudWidth = 260;
+				int playW = width - hudWidth;
+				int gridW = GameConfig.GRID_COLS * GameConfig.TILE_SIZE;
+				GameConfig.MAP_OFFSET_X = (playW - gridW) / 2;
 				mFrame.setSize(width + insets.left + insets.right, height + insets.top + insets.bottom);
 				mPanel.setSize(width, height);
 			}
