@@ -62,8 +62,12 @@ public class MenuScreen {
         drawFooter(engine);
     }
 
+    private int cx() {
+        return GameConfig.WINDOW_WIDTH / 2;
+    }
+
     private void drawCastle(GameEngine engine) {
-        int cx = 750, cy = 70;
+        int cx = cx() + 210, cy = 70;
         engine.changeColor(new Color(55, 60, 70));
         engine.drawSolidRectangle(cx - 40, cy, 80, 50);
         engine.drawSolidRectangle(cx - 15, cy - 20, 30, 20);
@@ -90,23 +94,30 @@ public class MenuScreen {
 
     private void drawTitle(GameEngine engine) {
         engine.changeColor(ACCENT);
-        engine.drawBoldText(180, 140, "HEART OF THE", "Arial", 26);
-        engine.drawBoldText(120, 175, "FOUR FRONTS", "Arial", 36);
-        engine.drawLine(250, 195, 590, 195);
+        engine.drawBoldText(cx() - 270, 140, "HEART OF THE", "Arial", 26);
+        engine.drawBoldText(cx() - 210, 175, "FOUR FRONTS", "Arial", 36);
+        engine.drawLine(cx() - 210, 195, cx() + 130, 195);
     }
 
     private void drawSubtitle(GameEngine engine) {
         engine.changeColor(SUBTITLE);
-        engine.drawText(260, 235, "The Last Defence", "Arial", 18);
+        engine.drawText(cx() - 130, 235, "The Last Defence", "Arial", 18);
     }
 
     private void drawMainButtons(GameEngine engine, int mouseX, int mouseY) {
+        int bx = cx() - 100;
+        int by = 280;
         if (hasContinue) {
+            continueButton.setPosition(bx, by); by += 38;
             drawPlainButton(engine, continueButton, mouseX, mouseY);
         }
+        playButton.setPosition(bx, by); by += 38;
         drawPlayButton(engine, playButton, mouseX, mouseY);
+        diffButton.setPosition(bx, by); by += 38;
         drawPlainButton(engine, diffButton, mouseX, mouseY);
+        helpButton.setPosition(bx, by); by += 38;
         drawPlainButton(engine, helpButton, mouseX, mouseY);
+        exitButton.setPosition(bx, by); by += 38;
         drawExitButton(engine, exitButton, mouseX, mouseY);
     }
 
@@ -138,19 +149,19 @@ public class MenuScreen {
 
     private void drawHelpContent(GameEngine engine, int mouseX, int mouseY) {
         engine.changeColor(Color.WHITE);
-        engine.drawBoldText(280, 280, "CONTROLS", "Arial", 22);
+        engine.drawBoldText(cx() - 80, 280, "CONTROLS", "Arial", 22);
         engine.changeColor(SUBTITLE);
-        engine.drawText(260, 310, "1-7 : Select building type", "Arial", 15);
-        engine.drawText(260, 330, "Click : Place selected building", "Arial", 15);
-        engine.drawText(260, 350, "Space : Pause / Resume", "Arial", 15);
-        engine.drawText(260, 370, "Esc   : Return to menu", "Arial", 15);
-        engine.drawText(260, 390, "M     : Toggle mute", "Arial", 15);
+        engine.drawText(cx() - 100, 310, "1-7 : Select building type", "Arial", 15);
+        engine.drawText(cx() - 100, 330, "Click : Place selected building", "Arial", 15);
+        engine.drawText(cx() - 100, 350, "Space : Pause / Resume", "Arial", 15);
+        engine.drawText(cx() - 100, 370, "Esc   : Return to menu", "Arial", 15);
+        engine.drawText(cx() - 100, 390, "M     : Toggle mute", "Arial", 15);
         backButton.draw(engine, false, mouseX, mouseY);
     }
 
     private void drawFooter(GameEngine engine) {
         engine.changeColor(new Color(100, 105, 110));
-        engine.drawText(230, 520, "Defend the heart from four fronts.", "Arial", 13);
+        engine.drawText(cx() - 130, GameConfig.WINDOW_HEIGHT - 30, "Defend the heart from four fronts.", "Arial", 13);
     }
 
     public int handleClick(int mouseX, int mouseY) {
@@ -201,9 +212,11 @@ public class MenuScreen {
         engine.drawSolidRectangle(0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
         drawBorder(engine);
         engine.changeColor(won ? new Color(80, 200, 120) : new Color(200, 60, 60));
-        engine.drawBoldText(won ? 280 : 250, 210, won ? "YOU WIN!" : "GAME OVER", "Arial", 42);
+        engine.drawBoldText(cx() - 90, 210, won ? "YOU WIN!" : "GAME OVER", "Arial", 42);
         engine.changeColor(SUBTITLE);
-        engine.drawText(310, 260, "Choose what to do next.", "Arial", 16);
+        engine.drawText(cx() - 80, 260, "Choose what to do next.", "Arial", 16);
+        restartButton.setPosition(cx() - 120, 320);
+        menuButton.setPosition(cx() - 120, 365);
         restartButton.draw(engine, true, mouseX, mouseY);
         menuButton.draw(engine, false, mouseX, mouseY);
     }
