@@ -20,12 +20,14 @@ public class HUD {
     public static final int PAUSE_SAVE = 2;
     public static final int PAUSE_RESTART = 3;
     public static final int PAUSE_MENU = 4;
+    public static final int PAUSE_DELETE_SAVE = 5;
 
     private final List<Button> buttons = new ArrayList<Button>();
-    private final Button resumeButton = new Button(200, 260, 240, 32, "RESUME", null, new Color(80, 200, 120));
-    private final Button saveButton = new Button(200, 300, 240, 32, "SAVE", null, new Color(80, 160, 200));
-    private final Button restartBtn = new Button(200, 340, 240, 32, "RESTART", null, new Color(200, 180, 80));
-    private final Button menuBtn = new Button(200, 380, 240, 32, "MAIN MENU", null, new Color(180, 100, 100));
+    private final Button resumeButton = new Button(200, 248, 240, 32, "RESUME", null, new Color(80, 200, 120));
+    private final Button saveButton = new Button(200, 286, 240, 32, "SAVE", null, new Color(80, 160, 200));
+    private final Button deleteSaveBtn = new Button(200, 324, 240, 32, "DELETE SAVE", null, new Color(200, 100, 80));
+    private final Button restartBtn = new Button(200, 362, 240, 32, "RESTART", null, new Color(200, 180, 80));
+    private final Button menuBtn = new Button(200, 400, 240, 32, "MAIN MENU", null, new Color(180, 100, 100));
 
     private static final Color PANEL_BG = new Color(28, 32, 36);
     private static final Color DIVIDER = new Color(55, 60, 65);
@@ -140,13 +142,14 @@ public class HUD {
         engine.changeColor(new Color(0, 0, 0, 140));
         engine.drawSolidRectangle(0, 0, 640, GameConfig.WINDOW_HEIGHT);
         engine.changeColor(new Color(20, 24, 28, 220));
-        engine.drawSolidRectangle(180, 230, 280, 210);
+        engine.drawSolidRectangle(180, 220, 280, 230);
         engine.changeColor(new Color(200, 180, 120));
-        engine.drawRectangle(180, 230, 280, 210, 2);
+        engine.drawRectangle(180, 220, 280, 230, 2);
         engine.changeColor(new Color(200, 180, 120));
-        engine.drawBoldText(255, 255, "PAUSED", "Arial", 24);
+        engine.drawBoldText(255, 243, "PAUSED", "Arial", 24);
         resumeButton.draw(engine, false, mouseX, mouseY);
         saveButton.draw(engine, false, mouseX, mouseY);
+        deleteSaveBtn.draw(engine, false, mouseX, mouseY);
         restartBtn.draw(engine, false, mouseX, mouseY);
         menuBtn.draw(engine, false, mouseX, mouseY);
     }
@@ -165,6 +168,7 @@ public class HUD {
     public int handlePauseClick(int mouseX, int mouseY) {
         if (resumeButton.contains(mouseX, mouseY)) return PAUSE_RESUME;
         if (saveButton.contains(mouseX, mouseY)) return PAUSE_SAVE;
+        if (deleteSaveBtn.contains(mouseX, mouseY)) return PAUSE_DELETE_SAVE;
         if (restartBtn.contains(mouseX, mouseY)) return PAUSE_RESTART;
         if (menuBtn.contains(mouseX, mouseY)) return PAUSE_MENU;
         return 0;

@@ -229,6 +229,8 @@ public class CoreSiege extends GameEngine {
                 gameState = GameState.PLAYING;
             } else if (action == HUD.PAUSE_SAVE) {
                 saveGame();
+            } else if (action == HUD.PAUSE_DELETE_SAVE) {
+                deleteSave();
             } else if (action == HUD.PAUSE_RESTART) {
                 restartGame();
             } else if (action == HUD.PAUSE_MENU) {
@@ -408,6 +410,17 @@ public class CoreSiege extends GameEngine {
             System.out.println("Load failed: " + e.getMessage());
             hasSave = false;
             menuScreen.setHasContinue(false);
+        }
+    }
+
+    public void deleteSave() {
+        try {
+            new java.io.File("save.dat").delete();
+            hasSave = false;
+            menuScreen.setHasContinue(false);
+            soundManager.playButtonClick();
+        } catch (Exception e) {
+            System.out.println("Delete save failed: " + e.getMessage());
         }
     }
 
