@@ -33,7 +33,8 @@ public class EnemyAI {
         }
         Decoy decoy = chooseTargetDecoy(enemy);
         if (decoy != null) {
-            enemy.chaseDecoy(dt, decoy, map);
+            enemy.chaseDecoy(decoy);
+            enemy.followPath(pathFinder.findPath(map, enemy.getGridPosition(), decoy.getGridPosition()), dt, map);
             return;
         }
         moveOrAttackBase(enemy, dt);
@@ -69,7 +70,7 @@ public class EnemyAI {
             return;
         }
         int targetIndex = blockedPath.indexOf(targetPosition);
-        if (targetIndex > 1) {
+        if (!isInAttackRange(enemy, targetPosition, 1.0) && targetIndex > 1) {
             enemy.followPath(blockedPath.subList(0, targetIndex), dt, map);
             return;
         }
@@ -87,11 +88,14 @@ public class EnemyAI {
     }
 
     private boolean isInBaseAttackRange(Enemy enemy) {
+        return isInAttackRange(enemy, base.getPosition(), enemy.getBaseAttackRange());
+    }
+
+    private boolean isInAttackRange(Enemy enemy, GridPosition target, double range) {
         GridPosition enemyPosition = enemy.getGridPosition();
-        GridPosition basePosition = base.getPosition();
-        int rowDiff = enemyPosition.row - basePosition.row;
-        int colDiff = enemyPosition.col - basePosition.col;
-        return Math.sqrt(rowDiff * rowDiff + colDiff * colDiff) <= enemy.getBaseAttackRange();
+        int rowDiff = Math.abs(enemyPosition.row - target.row);
+        int colDiff = Math.abs(enemyPosition.col - target.col);
+        return Math.max(rowDiff, colDiff) <= range;
     }
 
 }

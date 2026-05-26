@@ -27,10 +27,15 @@ public class Enemy {
     private final EnemyType type;
     private EnemyState state;
     private double attackCooldown;
+    private GridPosition moveTarget;
     private boolean slowed;
     private double slowTimer;
     private double animationTime;
     private double attackAnimationTimer;
+    private boolean facingUp;
+    private boolean facingDown;
+    private boolean facingLeft;
+    private boolean facingRight;
 
     public Enemy(GridPosition gridPosition, EnemyType type, int hp, int damage,
             double speed, int moneyReward, int scoreReward) {
@@ -43,6 +48,7 @@ public class Enemy {
         this.moneyReward = moneyReward;
         this.scoreReward = scoreReward;
         this.state = EnemyState.SPAWNING;
+        this.facingDown = true;
     }
 
     public void snapToMap(GridMap map) {
@@ -81,30 +87,83 @@ public class Enemy {
         if (path == null || path.size() < 2) {
             return;
         }
-        moveToward(path.get(1), dt, map);
+        GridPosition next = path.get(1);
+        if (moveTarget != null && !moveTarget.equals(next)) {
+            returnToCurrentTile(dt, map);
+            return;
+        }
+        if (moveTarget == null) {
+            moveTarget = next;
+        }
+        moveToward(moveTarget, dt, map);
+    }
+
+    private void returnToCurrentTile(double dt, GridMap map) {
+        double centerX = map.tileCenterX(gridPosition);
+        double centerY = map.tileCenterY(gridPosition);
+        double step = getCurrentSpeed() * GameConfig.TILE_SIZE * dt;
+        moveAxis(centerX, centerY, step);
+        if (Math.abs(x - centerX) < 1.0 && Math.abs(y - centerY) < 1.0) {
+            x = centerX;
+            y = centerY;
+            moveTarget = null;
+        }
     }
 
     private void moveToward(GridPosition next, double dt, GridMap map) {
-        double targetX = map.tileCenterX(next);
-        double targetY = map.tileCenterY(next);
-        double distance = Math.hypot(targetX - x, targetY - y);
-        if (distance <= 1.0) {
-            arriveAt(next, map);
+        if (!isNextToCurrentTile(next)) {
+            moveTarget = null;
             return;
         }
+        updateFacing(next);
+        double targetX = map.tileCenterX(next);
+        double targetY = map.tileCenterY(next);
         double step = getCurrentSpeed() * GameConfig.TILE_SIZE * dt;
-        x += ((targetX - x) / distance) * step;
-        y += ((targetY - y) / distance) * step;
+        moveAxis(targetX, targetY, step);
+        if (Math.abs(x - targetX) < 1.0 && Math.abs(y - targetY) < 1.0) {
+            arriveAt(next, map);
+        }
+    }
+
+    private void moveAxis(double targetX, double targetY, double step) {
+        if (Math.abs(targetX - x) > 0.0) {
+            x = moveValue(x, targetX, step);
+            return;
+        }
+        y = moveValue(y, targetY, step);
+    }
+
+    private double moveValue(double current, double target, double step) {
+        if (Math.abs(target - current) <= step) {
+            return target;
+        }
+        return current + Math.signum(target - current) * step;
+    }
+
+    private boolean isNextToCurrentTile(GridPosition next) {
+        int rowDiff = Math.abs(next.row - gridPosition.row);
+        int colDiff = Math.abs(next.col - gridPosition.col);
+        return rowDiff + colDiff == 1;
     }
 
     private void arriveAt(GridPosition next, GridMap map) {
+        updateFacing(next);
         gridPosition = next;
         x = map.tileCenterX(next);
         y = map.tileCenterY(next);
+        moveTarget = null;
         state = EnemyState.MOVING;
     }
 
+    private void updateFacing(GridPosition next) {
+        facingUp = next.row < gridPosition.row;
+        facingDown = next.row > gridPosition.row;
+        facingLeft = next.col < gridPosition.col;
+        facingRight = next.col > gridPosition.col;
+    }
+
     public void attackBase(double dt, Base base) {
+        moveTarget = null;
         attackCooldown -= dt;
         state = EnemyState.ATTACKING_BASE;
         if (attackCooldown <= 0.0) {
@@ -118,6 +177,7 @@ public class Enemy {
         if (building == null || building.isDestroyed()) {
             return;
         }
+        moveTarget = null;
         attackCooldown -= dt;
         state = EnemyState.ATTACKING_BASE;
         if (attackCooldown <= 0.0) {
@@ -127,12 +187,11 @@ public class Enemy {
         }
     }
 
-    public void chaseDecoy(double dt, Decoy decoy, GridMap map) {
+    public void chaseDecoy(Decoy decoy) {
         if (decoy == null || decoy.isDestroyed()) {
             return;
         }
         state = EnemyState.CHASING_DECOY;
-        moveToward(decoy.getGridPosition(), dt, map);
     }
 
     public void takeDamage(int amount) {
@@ -207,10 +266,27 @@ public class Enemy {
     public void stopAtCurrentTile(GridMap map) {
         x = map.tileCenterX(gridPosition);
         y = map.tileCenterY(gridPosition);
+        moveTarget = null;
     }
 
     public GridPosition getGridPosition() {
         return gridPosition;
+    }
+
+    public boolean isFacingUp() {
+        return facingUp;
+    }
+
+    public boolean isFacingDown() {
+        return facingDown;
+    }
+
+    public boolean isFacingLeft() {
+        return facingLeft;
+    }
+
+    public boolean isFacingRight() {
+        return facingRight;
     }
 
     public EnemyType getType() {
