@@ -149,13 +149,31 @@ public class MenuScreen {
 
     private void drawHelpContent(GameEngine engine, int mouseX, int mouseY) {
         engine.changeColor(Color.WHITE);
-        engine.drawBoldText(cx() - 80, 280, "CONTROLS", "Arial", 22);
+        engine.drawBoldText(cx() - 60, 220, "HOW TO PLAY", "Arial", 22);
         engine.changeColor(SUBTITLE);
-        engine.drawText(cx() - 100, 310, "1-7 : Select building type", "Arial", 15);
-        engine.drawText(cx() - 100, 330, "Click : Place selected building", "Arial", 15);
-        engine.drawText(cx() - 100, 350, "Space : Pause / Resume", "Arial", 15);
-        engine.drawText(cx() - 100, 370, "Esc   : Return to menu", "Arial", 15);
-        engine.drawText(cx() - 100, 390, "M     : Toggle mute", "Arial", 15);
+        int x = cx() - 170, y = 250, step = 20;
+        engine.drawText(x, y, "1-7 : Select building type", "Arial", 14); y += step;
+        engine.drawText(x, y, "Click map : Place selected building", "Arial", 14); y += step;
+        engine.drawText(x, y, "Click btn  : Select building from panel", "Arial", 14); y += step;
+        engine.drawText(x, y, "Space      : Pause / Resume game", "Arial", 14); y += step;
+        engine.drawText(x, y, "Esc         : Return to main menu", "Arial", 14); y += step;
+        engine.drawText(x, y, "M            : Toggle sound mute", "Arial", 14); y += step;
+        y += 10;
+        engine.changeColor(new Color(200, 180, 120));
+        engine.drawBoldText(x, y, "PAUSE MENU", "Arial", 15); y += step;
+        engine.changeColor(SUBTITLE);
+        engine.drawText(x, y, "Resume      : Continue playing", "Arial", 14); y += step;
+        engine.drawText(x, y, "Save          : Save current progress", "Arial", 14); y += step;
+        engine.drawText(x, y, "Delete Save : Remove saved data", "Arial", 14); y += step;
+        engine.drawText(x, y, "Restart      : Restart the game", "Arial", 14); y += step;
+        engine.drawText(x, y, "Main Menu : Go back to title screen", "Arial", 14); y += step;
+        y += 10;
+        engine.changeColor(new Color(200, 180, 120));
+        engine.drawBoldText(x, y, "TIPS", "Arial", 15); y += step;
+        engine.changeColor(SUBTITLE);
+        engine.drawText(x, y, "Hover building buttons to see stats", "Arial", 14); y += step;
+        engine.drawText(x, y, "Resize window - map auto-adjusts", "Arial", 14); y += step;
+        backButton.setPosition(cx() - 100, GameConfig.WINDOW_HEIGHT - 80);
         backButton.draw(engine, false, mouseX, mouseY);
     }
 
