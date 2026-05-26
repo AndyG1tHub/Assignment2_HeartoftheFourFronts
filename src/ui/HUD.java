@@ -30,14 +30,17 @@ public class HUD {
 
     private void createButtons() {
         int x = 660;
-        int y = 245;
-        buttons.add(new Button(x, y, 200, 26, "1 Arrow", BuildingType.ARROW_TOWER, new Color(70, 170, 95)));
-        buttons.add(new Button(x, y + 30, 200, 26, "2 Cannon", BuildingType.CANNON_TOWER, new Color(180, 110, 55)));
-        buttons.add(new Button(x, y + 60, 200, 26, "3 Ice", BuildingType.ICE_TOWER, new Color(65, 170, 200)));
-        buttons.add(new Button(x, y + 90, 200, 26, "4 Lightning", BuildingType.LIGHTNING_TOWER, new Color(175, 100, 200)));
-        buttons.add(new Button(x, y + 120, 200, 26, "5 Wall", BuildingType.WALL, new Color(110, 110, 120)));
-        buttons.add(new Button(x, y + 150, 200, 26, "6 Heal", BuildingType.HEAL_TOWER, new Color(75, 180, 145)));
-        buttons.add(new Button(x, y + 180, 200, 26, "7 Decoy", BuildingType.DECOY, new Color(200, 155, 80)));
+        int y = 260;
+        int[] costs = {GameConfig.ARROW_TOWER_COST, GameConfig.CANNON_TOWER_COST, GameConfig.ICE_TOWER_COST,
+                       GameConfig.LIGHTNING_TOWER_COST, GameConfig.WALL_COST, GameConfig.HEAL_TOWER_COST, GameConfig.DECOY_COST};
+        String[] labels = {"1 Arrow", "2 Cannon", "3 Ice", "4 Lightning", "5 Wall", "6 Heal", "7 Decoy"};
+        Color[] colors = {new Color(70, 170, 95), new Color(180, 110, 55), new Color(65, 170, 200),
+                          new Color(175, 100, 200), new Color(110, 110, 120), new Color(75, 180, 145), new Color(200, 155, 80)};
+        BuildingType[] types = {BuildingType.ARROW_TOWER, BuildingType.CANNON_TOWER, BuildingType.ICE_TOWER,
+                                BuildingType.LIGHTNING_TOWER, BuildingType.WALL, BuildingType.HEAL_TOWER, BuildingType.DECOY};
+        for (int i = 0; i < 7; i++) {
+            buttons.add(new Button(x, y + i * 26, 200, 24, labels[i] + "  $" + costs[i], types[i], colors[i]));
+        }
     }
 
     public void draw(GameEngine engine, Base base, EconomyManager economy,
@@ -45,8 +48,8 @@ public class HUD {
             BuildingType selected, GameState state) {
         drawPanel(engine);
         drawTitle(engine);
+        drawBaseHealthBar(engine, base);
         drawStats(engine, base, economy, score, waves, difficulty);
-        drawCosts(engine);
         drawButtons(engine, selected);
         drawStateOverlay(engine, state);
     }
@@ -64,46 +67,48 @@ public class HUD {
         engine.drawLine(655, 42, 870, 42);
     }
 
-    private void drawStats(GameEngine engine, Base base, EconomyManager economy,
-            ScoreManager score, WaveManager waves, Difficulty difficulty) {
-        int x = 660;
-        int y = 60;
-        engine.changeColor(TEXT_LABEL);
-        engine.drawText(x, y, "BASE", "Arial", 11);
-        engine.changeColor(TEXT_VALUE);
-        engine.drawText(x, y + 16, base.getHp() + " / " + base.getMaxHp(), "Arial", 14);
-
-        y += 44;
-        engine.changeColor(TEXT_LABEL);
-        engine.drawText(x, y, "MONEY", "Arial", 11);
-        engine.changeColor(TEXT_VALUE);
-        engine.drawText(x, y + 16, "$" + economy.getMoney(), "Arial", 14);
-
-        y += 44;
-        engine.changeColor(TEXT_LABEL);
-        engine.drawText(x, y, "STAGE", "Arial", 11);
-        engine.changeColor(TEXT_VALUE);
-        engine.drawText(x, y + 16, waves.getStage() + "  " + difficulty, "Arial", 14);
-
-        y += 44;
-        engine.changeColor(TEXT_LABEL);
-        engine.drawText(x, y, "SCORE", "Arial", 11);
-        engine.changeColor(TEXT_VALUE);
-        engine.drawText(x, y + 16, String.valueOf(score.getScore()), "Arial", 14);
+    private void drawBaseHealthBar(GameEngine engine, Base base) {
+        int x = 655, y = 56;
+        int barWidth = 210, barHeight = 16;
+        double ratio = Math.max(0, (double) base.getHp() / base.getMaxHp());
+        Color barColor;
+        if (ratio > 0.6) {
+            barColor = new Color(70, 190, 100);
+        } else if (ratio > 0.3) {
+            barColor = new Color(210, 190, 60);
+        } else {
+            barColor = new Color(210, 70, 60);
+        }
+        engine.changeColor(new Color(35, 40, 45));
+        engine.drawSolidRectangle(x, y, barWidth, barHeight);
+        engine.changeColor(barColor);
+        engine.drawSolidRectangle(x + 1, y + 1, (int) ((barWidth - 2) * ratio), barHeight - 2);
+        engine.changeColor(new Color(80, 85, 90));
+        engine.drawRectangle(x, y, barWidth, barHeight);
+        engine.changeColor(Color.WHITE);
+        engine.drawText(x + 4, y + 13, "BASE  " + base.getHp() + "/" + base.getMaxHp(), "Arial", 11);
     }
 
-    private void drawCosts(GameEngine engine) {
+    private void drawStatPanel(GameEngine engine, int x, int y, String label, String value) {
+        engine.changeColor(new Color(32, 36, 42));
+        engine.drawSolidRectangle(x, y, 100, 38);
+        engine.changeColor(new Color(55, 60, 68));
+        engine.drawRectangle(x, y, 100, 38);
         engine.changeColor(TEXT_LABEL);
-        engine.drawText(660, 440, "Costs:", "Arial", 11);
-        String[] costs = {
-            "$" + GameConfig.ARROW_TOWER_COST + "  $" + GameConfig.CANNON_TOWER_COST + "  $" + GameConfig.ICE_TOWER_COST,
-            "$" + GameConfig.LIGHTNING_TOWER_COST + "  $" + GameConfig.WALL_COST + "  $" + GameConfig.HEAL_TOWER_COST,
-            "$" + GameConfig.DECOY_COST
-        };
-        engine.changeColor(new Color(130, 135, 140));
-        engine.drawText(660, 458, costs[0], "Arial", 12);
-        engine.drawText(660, 475, costs[1], "Arial", 12);
-        if (costs.length > 2) engine.drawText(660, 492, costs[2], "Arial", 12);
+        engine.drawText(x + 6, y + 6, label, "Arial", 10);
+        engine.changeColor(TEXT_VALUE);
+        engine.drawText(x + 6, y + 24, value, "Arial", 14);
+    }
+
+    private void drawStats(GameEngine engine, Base base, EconomyManager economy,
+            ScoreManager score, WaveManager waves, Difficulty difficulty) {
+        int x = 655;
+        int y = 78;
+        drawStatPanel(engine, x, y, "MONEY", "$" + economy.getMoney());
+        drawStatPanel(engine, x + 108, y, "KILLS", String.valueOf(score.getEnemiesKilled()));
+        y += 46;
+        drawStatPanel(engine, x, y, "STAGE", waves.getStage() + "  " + difficulty);
+        drawStatPanel(engine, x + 108, y, "SCORE", String.valueOf(score.getScore()));
     }
 
     private void drawButtons(GameEngine engine, BuildingType selected) {
