@@ -10,9 +10,9 @@ public final class GameConfig {
 
     public static final int GRID_ROWS = 20;
     public static final int GRID_COLS = 20;
-    public static final int TILE_SIZE = 30;
+    public static int TILE_SIZE = 30;
     public static int MAP_OFFSET_X = 30;
-    public static final int MAP_OFFSET_Y = 50;
+    public static int MAP_OFFSET_Y = 50;
 
     public static final int BASE_MAX_HP = 1000;
     public static final int STARTING_MONEY = 150;
