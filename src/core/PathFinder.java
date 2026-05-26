@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-/** Breadth-first search pathfinder for direct eight-direction grid movement. */
+/** Breadth-first search pathfinder for four-direction grid movement. */
 public class PathFinder {
     public List<GridPosition> findPath(GridMap map, GridPosition start, GridPosition target) {
         if (!map.isInside(start) || !map.isInside(target)) {
@@ -89,10 +89,6 @@ public class PathFinder {
         neighbors.add(position.add(1, 0));
         neighbors.add(position.add(0, -1));
         neighbors.add(position.add(0, 1));
-        neighbors.add(position.add(-1, -1));
-        neighbors.add(position.add(-1, 1));
-        neighbors.add(position.add(1, -1));
-        neighbors.add(position.add(1, 1));
         Collections.sort(neighbors, new Comparator<GridPosition>() {
             public int compare(GridPosition first, GridPosition second) {
                 return Double.compare(distanceToTarget(first, target), distanceToTarget(second, target));

@@ -33,7 +33,8 @@ public class EnemyAI {
         }
         Decoy decoy = chooseTargetDecoy(enemy);
         if (decoy != null) {
-            enemy.chaseDecoy(dt, decoy, map);
+            enemy.chaseDecoy(decoy);
+            enemy.followPath(pathFinder.findPath(map, enemy.getGridPosition(), decoy.getGridPosition()), dt, map);
             return;
         }
         moveOrAttackBase(enemy, dt);
@@ -65,11 +66,11 @@ public class EnemyAI {
                 map, enemy.getGridPosition(), base.getPosition());
         GridPosition targetPosition = findFirstBuildingPosition(blockedPath);
         Building target = map.getBuildingAt(targetPosition);
-        if (target == null) {
+        if (target == null || target.isDestroyed()) {
             return;
         }
         int targetIndex = blockedPath.indexOf(targetPosition);
-        if (targetIndex > 1) {
+        if (!isInAttackRange(enemy, targetPosition, 1.0) && targetIndex > 1) {
             enemy.followPath(blockedPath.subList(0, targetIndex), dt, map);
             return;
         }
@@ -79,7 +80,8 @@ public class EnemyAI {
 
     private GridPosition findFirstBuildingPosition(List<GridPosition> path) {
         for (GridPosition position : path) {
-            if (map.getBuildingAt(position) != null) {
+            Building building = map.getBuildingAt(position);
+            if (building != null && !building.isDestroyed()) {
                 return position;
             }
         }
@@ -87,11 +89,14 @@ public class EnemyAI {
     }
 
     private boolean isInBaseAttackRange(Enemy enemy) {
+        return isInAttackRange(enemy, base.getPosition(), enemy.getBaseAttackRange());
+    }
+
+    private boolean isInAttackRange(Enemy enemy, GridPosition target, double range) {
         GridPosition enemyPosition = enemy.getGridPosition();
-        GridPosition basePosition = base.getPosition();
-        int rowDiff = enemyPosition.row - basePosition.row;
-        int colDiff = enemyPosition.col - basePosition.col;
-        return Math.sqrt(rowDiff * rowDiff + colDiff * colDiff) <= enemy.getBaseAttackRange();
+        int rowDiff = Math.abs(enemyPosition.row - target.row);
+        int colDiff = Math.abs(enemyPosition.col - target.col);
+        return Math.max(rowDiff, colDiff) <= range;
     }
 
 }
