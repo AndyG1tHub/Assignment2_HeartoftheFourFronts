@@ -208,6 +208,10 @@ public class GridMap {
         drawGridLines(engine);
     }
 
+    public void update(double dt) {
+        animationTime += dt;
+    }
+
     private void drawTiles(GameEngine engine) {
         for (int row = 0; row < GameConfig.GRID_ROWS; row++) {
             for (int col = 0; col < GameConfig.GRID_COLS; col++) {
