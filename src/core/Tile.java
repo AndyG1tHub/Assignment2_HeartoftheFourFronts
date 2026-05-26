@@ -22,6 +22,10 @@ public class Tile {
         return building == null;
     }
 
+    public boolean isWalkableIgnoringBuilding() {
+        return type != TileType.OBSTACLE;
+    }
+
     public boolean isBuildable() {
         return type == TileType.EMPTY && building == null;
     }
