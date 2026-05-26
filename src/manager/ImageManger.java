@@ -31,6 +31,16 @@ public class ImageManger {
     private static Image healRangeEffect;
     private static Image explosionFireball;
 
+    private static Image uiSheet;
+    private static Image btnPlayHover;
+    private static Image btnPlayNormal;
+    private static Image btnExitHover;
+    private static Image btnExitNormal;
+    private static Image btnPlainNormal;
+    private static Image btnPlainHover;
+    private static Image panelTL, panelTR, panelBL, panelBR;
+    private static Image pauseTL, pauseTR, pauseBL, pauseBR;
+
     private static Image[] meleeEnemyRun;
     private static Image[] meleeEnemyAttack;
     private static Image[] tankEnemyRun;
@@ -115,6 +125,22 @@ public class ImageManger {
         laserEffect = engine.subImage(homeItems, 170, 650, 300, 265);
         healRangeEffect = engine.subImage(homeItems, 555, 650, 340, 265);
         explosionFireball = engine.subImage(homeItems, 995, 630, 350, 285);
+
+        uiSheet = engine.loadImage("Images/FreeHorrorUi.png");
+        btnPlayHover = engine.subImage(uiSheet, 0, 128, 64, 32);
+        btnPlayNormal = engine.subImage(uiSheet, 64, 128, 64, 32);
+        btnExitHover = engine.subImage(uiSheet, 0, 192, 64, 32);
+        btnExitNormal = engine.subImage(uiSheet, 64, 192, 64, 32);
+        btnPlainHover = engine.subImage(uiSheet, 0, 224, 64, 32);
+        btnPlainNormal = engine.subImage(uiSheet, 64, 224, 64, 32);
+        panelTL = engine.subImage(uiSheet, 128, 0, 64, 64);
+        panelTR = engine.subImage(uiSheet, 192, 0, 64, 64);
+        panelBL = engine.subImage(uiSheet, 128, 64, 64, 64);
+        panelBR = engine.subImage(uiSheet, 192, 64, 64, 64);
+        pauseTL = engine.subImage(uiSheet, 128, 128, 64, 64);
+        pauseTR = engine.subImage(uiSheet, 192, 128, 64, 64);
+        pauseBL = engine.subImage(uiSheet, 128, 192, 64, 64);
+        pauseBR = engine.subImage(uiSheet, 192, 192, 64, 64);
     }
 
     private void loadEnemySprites(GameEngine engine) {
@@ -210,4 +236,19 @@ public class ImageManger {
     public static Image getExplosionFireball() {
         return explosionFireball;
     }
+
+    public static Image getBtnPlayNormal() { return btnPlayNormal; }
+    public static Image getBtnPlayHover() { return btnPlayHover; }
+    public static Image getBtnExitNormal() { return btnExitNormal; }
+    public static Image getBtnExitHover() { return btnExitHover; }
+    public static Image getBtnPlainNormal() { return btnPlainNormal; }
+    public static Image getBtnPlainHover() { return btnPlainHover; }
+    public static Image getPanelTL() { return panelTL; }
+    public static Image getPanelTR() { return panelTR; }
+    public static Image getPanelBL() { return panelBL; }
+    public static Image getPanelBR() { return panelBR; }
+    public static Image getPauseTL() { return pauseTL; }
+    public static Image getPauseTR() { return pauseTR; }
+    public static Image getPauseBL() { return pauseBL; }
+    public static Image getPauseBR() { return pauseBR; }
 }

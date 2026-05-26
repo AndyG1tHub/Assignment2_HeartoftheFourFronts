@@ -1,10 +1,12 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Image;
 
 import game.GameEngine;
 import game.GameConfig;
 import game.Difficulty;
+import manager.ImageManger;
 
 /** Main menu screen with Play, Difficulty, Help, Exit options. */
 public class MenuScreen {
@@ -100,12 +102,38 @@ public class MenuScreen {
 
     private void drawMainButtons(GameEngine engine, int mouseX, int mouseY) {
         if (hasContinue) {
-            continueButton.draw(engine, false, mouseX, mouseY);
+            drawPlainButton(engine, continueButton, mouseX, mouseY);
         }
-        playButton.draw(engine, false, mouseX, mouseY);
-        diffButton.draw(engine, false, mouseX, mouseY);
-        helpButton.draw(engine, false, mouseX, mouseY);
-        exitButton.draw(engine, false, mouseX, mouseY);
+        drawPlayButton(engine, playButton, mouseX, mouseY);
+        drawPlainButton(engine, diffButton, mouseX, mouseY);
+        drawPlainButton(engine, helpButton, mouseX, mouseY);
+        drawExitButton(engine, exitButton, mouseX, mouseY);
+    }
+
+    private void drawPlayButton(GameEngine engine, Button btn, int mouseX, int mouseY) {
+        boolean hovered = btn.contains(mouseX, mouseY);
+        engine.drawImage(hovered ? ImageManger.getBtnPlayHover() : ImageManger.getBtnPlayNormal(),
+                btn.getX() + 20, btn.getY() - 20, 160, 74);
+    }
+
+    private void drawExitButton(GameEngine engine, Button btn, int mouseX, int mouseY) {
+        boolean hovered = btn.contains(mouseX, mouseY);
+        engine.drawImage(hovered ? ImageManger.getBtnExitHover() : ImageManger.getBtnExitNormal(),
+                btn.getX() + 20, btn.getY() - 20, 160, 74);
+    }
+
+    private void drawPlainButton(GameEngine engine, Button btn, int mouseX, int mouseY) {
+        boolean hovered = btn.contains(mouseX, mouseY);
+        Image img = hovered ? ImageManger.getBtnPlainHover() : ImageManger.getBtnPlainNormal();
+        int iw = 170, ih = 60;
+        int ix = btn.getX() + (btn.getWidth() - iw) / 2;
+        int iy = btn.getY() + (btn.getHeight() - ih) / 2;
+        engine.drawImage(img, ix, iy, iw, ih);
+        engine.changeColor(ACCENT);
+        String t = btn.getText();
+        int size = t.length() > 14 ? 13 : 15;
+        int tw = (int)(t.length() * size * 0.6);
+        engine.drawBoldText(ix + (iw - tw) / 2, iy + 39, t, "Arial", size);
     }
 
     private void drawHelpContent(GameEngine engine, int mouseX, int mouseY) {
