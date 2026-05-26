@@ -1,9 +1,12 @@
 package enemy;
 
+import java.util.List;
+
 import core.GridPosition;
 import core.GridMap;
 import core.PathFinder;
 import building.Base;
+import building.Building;
 import building.Decoy;
 import manager.DecoyManager;
 
@@ -49,7 +52,38 @@ public class EnemyAI {
             enemy.attackBase(dt, base);
             return;
         }
-        enemy.followPath(pathFinder.findPath(map, enemy.getGridPosition(), base.getPosition()), dt, map);
+        List<GridPosition> path = pathFinder.findPath(map, enemy.getGridPosition(), base.getPosition());
+        if (!path.isEmpty()) {
+            enemy.followPath(path, dt, map);
+            return;
+        }
+        attackBlockingBuilding(enemy, dt);
+    }
+
+    private void attackBlockingBuilding(Enemy enemy, double dt) {
+        List<GridPosition> blockedPath = pathFinder.findPathIgnoringBuildings(
+                map, enemy.getGridPosition(), base.getPosition());
+        GridPosition targetPosition = findFirstBuildingPosition(blockedPath);
+        Building target = map.getBuildingAt(targetPosition);
+        if (target == null) {
+            return;
+        }
+        int targetIndex = blockedPath.indexOf(targetPosition);
+        if (targetIndex > 1) {
+            enemy.followPath(blockedPath.subList(0, targetIndex), dt, map);
+            return;
+        }
+        enemy.stopAtCurrentTile(map);
+        enemy.attackBuilding(dt, target);
+    }
+
+    private GridPosition findFirstBuildingPosition(List<GridPosition> path) {
+        for (GridPosition position : path) {
+            if (map.getBuildingAt(position) != null) {
+                return position;
+            }
+        }
+        return null;
     }
 
     private boolean isInBaseAttackRange(Enemy enemy) {

@@ -7,6 +7,7 @@ import java.util.List;
 import core.GridPosition;
 import core.GridMap;
 import building.Base;
+import building.Building;
 import building.Decoy;
 import game.GameEngine;
 import game.GameConfig;
@@ -108,6 +109,19 @@ public class Enemy {
         state = EnemyState.ATTACKING_BASE;
         if (attackCooldown <= 0.0) {
             base.takeDamage(damage);
+            attackAnimationTimer = 0.45;
+            attackCooldown = 1.0;
+        }
+    }
+
+    public void attackBuilding(double dt, Building building) {
+        if (building == null || building.isDestroyed()) {
+            return;
+        }
+        attackCooldown -= dt;
+        state = EnemyState.ATTACKING_BASE;
+        if (attackCooldown <= 0.0) {
+            building.takeDamage(damage);
             attackAnimationTimer = 0.45;
             attackCooldown = 1.0;
         }

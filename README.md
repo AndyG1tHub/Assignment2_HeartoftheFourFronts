@@ -115,11 +115,15 @@ Assignment2_HeartoftheFourFronts-main/
 
 - **EnemyAI.moveOrAttackBase**: 每次敌人更新时都检查是否进入基地攻击范围；未进入范围时立即调用 `PathFinder.findPath` 重新计算到基地的最短路径。
 - **PathFinder.findPath**: 使用 BFS 八方向搜索，返回从当前格到目标格的最短路径列表。
+- **PathFinder.findPathIgnoringBuildings**: 当所有可走路径被建筑堵住时，临时忽略建筑但仍避开障碍物，找出通向基地的理论最短路径。
 - **PathFinder.getNeighbors**: 每次扩展当前格周围 8 个邻居，并按到基地的直线距离从近到远排序，因此敌人会优先斜向靠近基地，避免先横向或纵向走到中线再转向。
 - **Enemy.followPath**: 不缓存旧路径，只读取 BFS 返回路径中的下一格并向该格移动。
 - **Tile.isWalkable**: 当前帧中有建筑或障碍物的格子不能作为路径；基地目标格由 `PathFinder` 特判允许进入或接近。
+- **EnemyAI.attackBlockingBuilding**: 如果正常 BFS 找不到到基地的路，就沿 `findPathIgnoringBuildings` 的结果找到最短路径上的第一个建筑。敌人会先走到该建筑前一格，然后攻击建筑。
 
 因此敌人会根据当前地图状态持续重新规划路线，玩家新建或移除建筑后，下一次敌人更新就会重新选择当前最短路径。
+
+所有建筑都继承 `Building` 的 `hp/maxHp` 血量逻辑，被敌人攻击或灾难伤害打到 0 后，会在 `CoreSiege.removeDestroyedBuildings` 中从地图移除。城墙 `Wall` 的生命值最高，用于承担主要阻挡压力。
 
 ## GameConfig 配置项说明
 
