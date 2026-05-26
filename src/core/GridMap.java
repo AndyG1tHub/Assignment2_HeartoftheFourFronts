@@ -147,6 +147,10 @@ public class GridMap {
         return isInside(position) && getTile(position).isWalkable();
     }
 
+    public boolean isWalkableIgnoringBuilding(GridPosition position) {
+        return isInside(position) && getTile(position).isWalkableIgnoringBuilding();
+    }
+
     public boolean isBuildable(GridPosition position) {
         return isInside(position) && getTile(position).isBuildable();
     }

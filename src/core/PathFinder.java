@@ -11,16 +11,24 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-/** Breadth-first search pathfinder for direct eight-direction grid movement. */
+/** Breadth-first search pathfinder for four-direction grid movement. */
 public class PathFinder {
     public List<GridPosition> findPath(GridMap map, GridPosition start, GridPosition target) {
         if (!map.isInside(start) || !map.isInside(target)) {
             return Collections.emptyList();
         }
-        return search(map, start, target);
+        return search(map, start, target, false);
     }
 
-    private List<GridPosition> search(GridMap map, GridPosition start, GridPosition target) {
+    public List<GridPosition> findPathIgnoringBuildings(GridMap map, GridPosition start, GridPosition target) {
+        if (!map.isInside(start) || !map.isInside(target)) {
+            return Collections.emptyList();
+        }
+        return search(map, start, target, true);
+    }
+
+    private List<GridPosition> search(GridMap map, GridPosition start, GridPosition target,
+            boolean ignoreBuildings) {
         Queue<GridPosition> queue = new LinkedList<GridPosition>();
         Map<GridPosition, GridPosition> cameFrom = new HashMap<GridPosition, GridPosition>();
         Set<GridPosition> visited = new HashSet<GridPosition>();
@@ -32,16 +40,16 @@ public class PathFinder {
             if (current.equals(target)) {
                 return reconstructPath(cameFrom, current);
             }
-            addNeighbors(map, current, target, queue, visited, cameFrom);
+            addNeighbors(map, current, target, queue, visited, cameFrom, ignoreBuildings);
         }
         return Collections.emptyList();
     }
 
     private void addNeighbors(GridMap map, GridPosition current, GridPosition target,
             Queue<GridPosition> queue, Set<GridPosition> visited,
-            Map<GridPosition, GridPosition> cameFrom) {
+            Map<GridPosition, GridPosition> cameFrom, boolean ignoreBuildings) {
         for (GridPosition next : getNeighbors(current, target)) {
-            if (isValidNeighbor(map, next, target, visited)) {
+            if (isValidNeighbor(map, next, target, visited, ignoreBuildings)) {
                 visited.add(next);
                 cameFrom.put(next, current);
                 queue.add(next);
@@ -50,9 +58,15 @@ public class PathFinder {
     }
 
     private boolean isValidNeighbor(GridMap map, GridPosition next, GridPosition target,
-            Set<GridPosition> visited) {
+            Set<GridPosition> visited, boolean ignoreBuildings) {
         if (visited.contains(next) || !map.isInside(next)) {
             return false;
+        }
+        if (next.equals(target)) {
+            return true;
+        }
+        if (ignoreBuildings) {
+            return map.isWalkableIgnoringBuilding(next);
         }
         return next.equals(target) || map.isWalkable(next);
     }
@@ -75,10 +89,6 @@ public class PathFinder {
         neighbors.add(position.add(1, 0));
         neighbors.add(position.add(0, -1));
         neighbors.add(position.add(0, 1));
-        neighbors.add(position.add(-1, -1));
-        neighbors.add(position.add(-1, 1));
-        neighbors.add(position.add(1, -1));
-        neighbors.add(position.add(1, 1));
         Collections.sort(neighbors, new Comparator<GridPosition>() {
             public int compare(GridPosition first, GridPosition second) {
                 return Double.compare(distanceToTarget(first, target), distanceToTarget(second, target));

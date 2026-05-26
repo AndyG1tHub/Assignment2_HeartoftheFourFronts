@@ -8,10 +8,10 @@ import enemy.EnemyType;
 
 /** Fast enemy with low health but high base damage. */
 public class AssassinEnemy extends Enemy {
-    public static final int BASE_HP = 55;
+    public static final int BASE_HP = 60;
 
     public AssassinEnemy(GridPosition position, int hp) {
-        super(position, EnemyType.ASSASSIN, hp, 28, 1.55, 18, 90);
+        super(position, EnemyType.ASSASSIN, hp, 28, 1.55, 28, 90);
     }
 
     @Override

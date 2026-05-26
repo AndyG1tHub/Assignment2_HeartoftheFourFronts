@@ -7,8 +7,8 @@ import game.GameEngine;
 
 /** UI button with optional type-specific color and selected state. */
 public class Button {
-    private final int x;
-    private final int y;
+    private int x;
+    private int y;
     private final int width;
     private final int height;
     private String text;
@@ -75,6 +75,16 @@ public class Button {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public int getX() { return x; }
+    public int getY() { return y; }
+    public int getWidth() { return width; }
+    public int getHeight() { return height; }
+    public String getText() { return text; }
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public BuildingType getBuildingType() {

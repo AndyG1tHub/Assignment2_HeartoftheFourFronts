@@ -18,7 +18,7 @@ import manager.SoundManager;
 
 /** Support building that heals nearby damaged buildings. */
 public class HealTower extends Building {
-    private static final int HEAL_AMOUNT = 12;
+    private static final int HEAL_AMOUNT = 20;
     private static final double HEAL_INTERVAL = 2.0;
     private double cooldown;
 
