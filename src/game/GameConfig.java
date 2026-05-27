@@ -39,7 +39,7 @@ public final class GameConfig {
     public static final int[] HEAL_AMOUNT_UPGRADE = {20, 30, 45};
     public static final double BOSS_INTERVAL = 40.0;
     public static final int BOSS_BASE_HP = 800;
-    public static final int BOSS_DAMAGE = 40;
+    public static final int BOSS_DAMAGE = 60;
     public static final double BOSS_SPEED = 0.6;
 
     public static final int REWARD_MONEY = 25;

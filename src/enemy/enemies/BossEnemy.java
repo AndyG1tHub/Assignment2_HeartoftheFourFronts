@@ -11,7 +11,7 @@ public class BossEnemy extends Enemy {
     public static final int BASE_HP = GameConfig.BOSS_BASE_HP;
 
     public BossEnemy(GridPosition position, int hp) {
-        super(position, EnemyType.BOSS, hp, GameConfig.BOSS_DAMAGE * 2,
+        super(position, EnemyType.BOSS, hp, GameConfig.BOSS_DAMAGE,
                 GameConfig.BOSS_SPEED, 100, 500);
     }
 
