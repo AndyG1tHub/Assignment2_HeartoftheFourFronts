@@ -15,7 +15,7 @@ public final class GameConfig {
     public static int MAP_OFFSET_Y = 50;
 
     public static final int BASE_MAX_HP = 1200;
-    public static final int STARTING_MONEY = 200;
+    public static final int STARTING_MONEY = 250;
     public static final double BASE_INCOME_PER_SECOND = 2.5;
 
     public static final int ARROW_TOWER_COST = 55;
