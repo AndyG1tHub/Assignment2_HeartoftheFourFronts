@@ -262,7 +262,6 @@ public class CoreSiege extends GameEngine {
         } else if (action == MenuScreen.END_MENU) {
             soundManager.playButtonClick();
             gameState = GameState.MENU;
-            gameState = GameState.INTRO;
         }
     }
 

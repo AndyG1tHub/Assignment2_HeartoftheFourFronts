@@ -230,12 +230,18 @@ public class HUD {
     }
 
     private void drawBossWarning(GameEngine engine, WaveManager waves) {
-        if (waves.isBossWave()) {
-            int cx = (GameConfig.WINDOW_WIDTH - 260) / 2;
-            if ((System.currentTimeMillis() / 500) % 2 == 0) {
-                engine.changeColor(new Color(255, 50, 50));
-                engine.drawBoldText(cx - 60, 80, "!! BOSS WAVE !!", "Arial", 22);
-            }
+        if (!waves.isBossWave()) return;
+        int cx = (GameConfig.WINDOW_WIDTH - 260) / 2;
+        boolean visible = (System.currentTimeMillis() / 500) % 2 == 0;
+        int boxW = 220, boxH = 40;
+        int bx = cx - boxW / 2, by = 80;
+        if (visible) {
+            engine.changeColor(new Color(180, 20, 20, 200));
+            engine.drawSolidRectangle(bx, by, boxW, boxH);
+            engine.changeColor(new Color(255, 100, 100));
+            engine.drawRectangle(bx, by, boxW, boxH, 2);
+            engine.changeColor(new Color(255, 200, 200));
+            engine.drawBoldText(cx - 60, by + 27, "!! BOSS WAVE !!", "Arial", 18);
         }
     }
 
@@ -243,15 +249,29 @@ public class HUD {
         if (!waves.isPrepTime()) return;
         int cx = (GameConfig.WINDOW_WIDTH - 260) / 2;
         int remaining = (int) Math.ceil(waves.getPrepTimer());
+        int boxW = 240, boxH = 50;
+        int bx = cx - boxW / 2, by = 40;
+        engine.changeColor(new Color(0, 0, 0, 160));
+        engine.drawSolidRectangle(bx, by, boxW, boxH);
         engine.changeColor(new Color(255, 200, 50));
-        engine.drawBoldText(cx - 80, 50, "Wave starts in  " + remaining, "Arial", 20);
+        engine.drawRectangle(bx, by, boxW, boxH, 2);
+        engine.drawBoldText(cx - 70, by + 32, "Wave starts in " + remaining, "Arial", 18);
+        engine.changeColor(new Color(60, 60, 70));
+        engine.drawSolidRectangle(bx + 10, by + boxH - 10, boxW - 20, 5);
+        double ratio = waves.getPrepTimer() / 5.0;
+        engine.changeColor(new Color(255, 200, 50));
+        engine.drawSolidRectangle(bx + 10, by + boxH - 10, (int) ((boxW - 20) * ratio), 5);
     }
 
     private void drawSpeedIndicator(GameEngine engine, double speedMul) {
         if (speedMul != 2.0) return;
-        int x = GameConfig.WINDOW_WIDTH - 65;
+        int x = GameConfig.WINDOW_WIDTH - 70, y = 6;
+        int w = 55, h = 26;
+        engine.changeColor(new Color(0, 0, 0, 180));
+        engine.drawSolidRectangle(x, y, w, h);
         engine.changeColor(new Color(255, 220, 80));
-        engine.drawBoldText(x, 8, "2x", "Arial", 18);
+        engine.drawRectangle(x, y, w, h, 2);
+        engine.drawBoldText(x + 12, y + 18, "2x", "Arial", 16);
     }
 
     public BuildingType getClickedBuildingType(int mouseX, int mouseY) {
