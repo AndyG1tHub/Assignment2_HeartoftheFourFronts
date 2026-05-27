@@ -61,5 +61,9 @@ public class IntroScreen {
             game.changeColor(currentLine >= 5 ? new Color(255, 230, 180) : Color.WHITE);
             game.drawText(x, y, story[currentLine], "Georgia", fontSize);
         }
+        if ((System.currentTimeMillis() / 600) % 2 == 0) {
+            game.changeColor(new Color(255, 220, 80));
+            game.drawBoldText(w / 2 - 90, h - 40, "Press SPACE to skip", "Arial", 18);
+        }
     }
 }

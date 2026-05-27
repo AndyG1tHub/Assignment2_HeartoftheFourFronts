@@ -141,6 +141,13 @@ public class HUD {
         engine.drawSolidRectangle(x, y, 208, 18);
         engine.changeColor(new Color(140, 145, 150));
         engine.drawText(x + 4, y + 13, "Right-click to sell (60%)", "Arial", 10);
+        y += 22;
+        if ((System.currentTimeMillis() / 600) % 2 == 0) {
+            engine.changeColor(new Color(50, 55, 60));
+            engine.drawSolidRectangle(x, y, 208, 20);
+            engine.changeColor(new Color(255, 220, 80));
+            engine.drawBoldText(x + 4, y + 14, "SPACE to pause", "Arial", 12);
+        }
     }
 
     private void drawButtons(GameEngine engine, BuildingType selected) {
