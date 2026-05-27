@@ -246,17 +246,22 @@ public class Enemy {
         Image sprite = isPlayingAttackAnimation()
                 ? ImageManger.getEnemyAttackSprite(type, animationTime, facingLeft)
                 : ImageManger.getEnemySprite(type, animationTime, facingLeft);
+        double drawMul = getDrawSizeMultiplier();
         if (sprite != null) {
-            double size = GameConfig.TILE_SIZE * 1.25;
+            double size = GameConfig.TILE_SIZE * 1.25 * drawMul;
             engine.drawImage(sprite, x - size / 2, y - size / 2, size, size);
             drawHealthBar(engine);
             return;
         }
         engine.changeColor(getColor());
-        engine.drawSolidCircle(x, y, GameConfig.TILE_SIZE * 0.35);
+        engine.drawSolidCircle(x, y, GameConfig.TILE_SIZE * 0.35 * drawMul);
         engine.changeColor(Color.WHITE);
         engine.drawText(x - 5, y + 5, getDrawLabel(), "Arial", 12);
         drawHealthBar(engine);
+    }
+
+    protected double getDrawSizeMultiplier() {
+        return 1.0;
     }
 
     protected Color getColor() {
@@ -268,11 +273,13 @@ public class Enemy {
     }
 
     private void drawHealthBar(GameEngine engine) {
-        double ratio = maxHp == 0 ? 0.0 : (double) hp / maxHp;
+        double drawMul = getDrawSizeMultiplier();
+        double barW = 24 * drawMul;
         engine.changeColor(Color.RED);
-        engine.drawSolidRectangle(x - 12, y - 18, 24, 3);
+        engine.drawSolidRectangle(x - barW / 2, y - 20 * drawMul, barW, 4);
+        double ratio = maxHp == 0 ? 0.0 : (double) hp / maxHp;
         engine.changeColor(Color.GREEN);
-        engine.drawSolidRectangle(x - 12, y - 18, 24 * ratio, 3);
+        engine.drawSolidRectangle(x - barW / 2, y - 20 * drawMul, barW * ratio, 4);
     }
 
     private double getCurrentSpeed() {

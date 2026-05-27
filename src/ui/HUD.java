@@ -135,8 +135,11 @@ public class HUD {
         drawStatPanel(engine, x, y, "MONEY", String.valueOf(economy.getMoney()), coinIcon);
         drawStatPanel(engine, x + 108, y, "KILLS", String.valueOf(score.getEnemiesKilled()));
         y += 46;
-        drawStatPanel(engine, x, y, "STAGE", waves.getStage() + "  " + difficulty);
+        drawStatPanel(engine, x, y, "WAVE", String.valueOf((int)(waves.getElapsedTime() / GameConfig.WAVE_LENGTH_SECONDS + 1)));
         drawStatPanel(engine, x + 108, y, "SCORE", String.valueOf(score.getScore()));
+        y += 46;
+        drawStatPanel(engine, x, y, "STAGE", waves.getStage() + "  " + difficulty);
+        drawStatPanel(engine, x + 108, y, "TIME", formatTime(waves.getElapsedTime()));
         y += 48;
         engine.changeColor(new Color(50, 55, 60));
         engine.drawSolidRectangle(x, y, 208, 18);
@@ -216,6 +219,11 @@ public class HUD {
         if (restartBtn.contains(mouseX, mouseY)) return PAUSE_RESTART;
         if (menuBtn.contains(mouseX, mouseY)) return PAUSE_MENU;
         return 0;
+    }
+
+    private String formatTime(double seconds) {
+        int sec = (int) seconds;
+        return String.format("%02d:%02d", sec / 60, sec % 60);
     }
 
     private void drawBossWarning(GameEngine engine, WaveManager waves) {

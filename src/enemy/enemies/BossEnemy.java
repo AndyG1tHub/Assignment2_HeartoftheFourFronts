@@ -11,17 +11,22 @@ public class BossEnemy extends Enemy {
     public static final int BASE_HP = GameConfig.BOSS_BASE_HP;
 
     public BossEnemy(GridPosition position, int hp) {
-        super(position, EnemyType.BOSS, hp, GameConfig.BOSS_DAMAGE,
+        super(position, EnemyType.BOSS, hp, GameConfig.BOSS_DAMAGE * 2,
                 GameConfig.BOSS_SPEED, 100, 500);
     }
 
     @Override
+    protected double getDrawSizeMultiplier() {
+        return 1.8;
+    }
+
+    @Override
     protected Color getColor() {
-        return new Color(180, 40, 200);
+        return new Color(200, 40, 220);
     }
 
     @Override
     protected String getDrawLabel() {
-        return "B";
+        return "BOSS";
     }
 }
