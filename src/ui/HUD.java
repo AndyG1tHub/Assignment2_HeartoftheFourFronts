@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import game.GameConfig;
 import game.GameState;
 import game.Difficulty;
 import manager.EconomyManager;
+import manager.ImageManger;
 import manager.ScoreManager;
 import manager.WaveManager;
 
@@ -103,21 +105,33 @@ public class HUD {
     }
 
     private void drawStatPanel(GameEngine engine, int x, int y, String label, String value) {
+        drawStatPanel(engine, x, y, label, value, null);
+    }
+
+    private void drawStatPanel(GameEngine engine, int x, int y, String label, String value, Image icon) {
         engine.changeColor(new Color(32, 36, 42));
         engine.drawSolidRectangle(x, y, 100, 38);
         engine.changeColor(new Color(55, 60, 68));
         engine.drawRectangle(x, y, 100, 38);
         engine.changeColor(TEXT_LABEL);
         engine.drawText(x + 6, y + 6, label, "Arial", 10);
-        engine.changeColor(TEXT_VALUE);
-        engine.drawText(x + 6, y + 24, value, "Arial", 14);
+
+        if (icon != null) {
+            engine.drawImage(icon, x + 6, y + 10, 16, 16);
+            engine.changeColor(TEXT_VALUE);
+            engine.drawText(x + 26, y + 24, value, "Arial", 14);
+        } else {
+            engine.changeColor(TEXT_VALUE);
+            engine.drawText(x + 6, y + 24, value, "Arial", 14);
+        }
     }
 
     private void drawStats(GameEngine engine, Base base, EconomyManager economy,
             ScoreManager score, WaveManager waves, Difficulty difficulty) {
         int x = GameConfig.WINDOW_WIDTH - 245;
         int y = 78;
-        drawStatPanel(engine, x, y, "MONEY", "$" + economy.getMoney());
+        Image coinIcon = ImageManger.getCoin();
+        drawStatPanel(engine, x, y, "MONEY", String.valueOf(economy.getMoney()), coinIcon);
         drawStatPanel(engine, x + 108, y, "KILLS", String.valueOf(score.getEnemiesKilled()));
         y += 46;
         drawStatPanel(engine, x, y, "STAGE", waves.getStage() + "  " + difficulty);

@@ -22,6 +22,8 @@ public class ImageManger {
     private static Image lightningTower;
     private static Image wall;
     private static Image bait;
+    private static Image coin;
+    private static Image[] coinTurnFrames;
     Image homeItems;
     Image enemies;
     Image naturalDisaster;
@@ -178,6 +180,7 @@ public class ImageManger {
         lightningTower = engine.loadImage("Images/lightningTower.png");
         wall = engine.loadImage("Images/wall.png");
         bait = engine.loadImage("Images/bait.png");
+        coin = engine.loadImage("Images/coin.png");
         homeItems = engine.loadImage("Images/homeItems.png");
         naturalDisaster = engine.loadImage("Images/naturalDisaster.png");
         baseImage = engine.subImage(homeItems, 45, 80, 470, 500);
@@ -207,6 +210,7 @@ public class ImageManger {
         loadMapTiles(engine);
         loadObstacleSprites(engine);
         loadFireAnimationFrames(engine);
+        loadCoinTurnFrames(engine);
     }
 
     private void loadEnemySprites(GameEngine engine) {
@@ -312,6 +316,13 @@ public class ImageManger {
         return bait;
     }
 
+    public static Image getCoin() {
+        if (coinTurnFrames != null && coinTurnFrames.length > 0) {
+            return coinTurnFrames[0];
+        }
+        return coin;
+    }
+
     public static Image getBaseImage() {
         return baseImage;
     }
@@ -405,5 +416,29 @@ public class ImageManger {
         for (int i = 0; i < rows; i++) {
             fireAnimationFrames[i] = engine.subImage(fireSheet, column * frameWidth, i * frameHeight, frameWidth, frameHeight);
         }
+    }
+
+    private void loadCoinTurnFrames(GameEngine engine) {
+        Image coinSheet = engine.loadImage("Images/coinTurn.png");
+        int columns = 8;
+        int rows = 1;
+        int totalFrames = columns * rows;
+        coinTurnFrames = new Image[totalFrames];
+
+        int frameWidth = coinSheet.getWidth(null) / columns;
+        int frameHeight = coinSheet.getHeight(null) / rows;
+
+        for (int i = 0; i < totalFrames; i++) {
+            int col = i % columns;
+            coinTurnFrames[i] = engine.subImage(coinSheet, col * frameWidth, 0, frameWidth, frameHeight);
+        }
+    }
+
+    public static Image getCoinTurnFrame(double animationTime) {
+        if (coinTurnFrames == null || coinTurnFrames.length == 0) {
+            return coin;
+        }
+        int frameIndex = ((int) (animationTime * 10)) % coinTurnFrames.length;
+        return coinTurnFrames[frameIndex];
     }
 }

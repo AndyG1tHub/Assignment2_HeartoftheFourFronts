@@ -160,6 +160,11 @@ public class CoreSiege extends GameEngine {
         }
         gridMap.draw(this);
         for (Building building : buildings) {
+            if (building instanceof HealTower) {
+                ((HealTower) building).drawRangeEffect(this, gridMap);
+            }
+        }
+        for (Building building : buildings) {
             building.draw(this, gridMap);
         }
         base.draw(this, gridMap);

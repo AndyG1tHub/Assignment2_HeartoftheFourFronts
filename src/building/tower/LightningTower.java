@@ -45,7 +45,9 @@ public class LightningTower extends AttackTower {
         int y = map.toScreenY(position.row);
         Image image = ImageManger.getLightningTower();
         if (image != null) {
-            engine.drawImage(image, x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
+            int size = (int) (GameConfig.TILE_SIZE * 1.4);
+            int offset = (size - GameConfig.TILE_SIZE) / 2;
+            engine.drawImage(image, x - offset, y - offset, size, size);
             drawHealthBar(engine, map);
             return;
         }
