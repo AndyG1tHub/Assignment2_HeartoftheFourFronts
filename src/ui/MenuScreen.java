@@ -158,6 +158,7 @@ public class MenuScreen {
         engine.drawText(x, y, "Click btn   : Select building from panel", "Arial", 14); y += step;
         engine.drawText(x, y, "Space       : Pause / Resume game", "Arial", 14); y += step;
         engine.drawText(x, y, "Esc          : Return to main menu", "Arial", 14); y += step;
+        engine.drawText(x, y, "F              : Toggle 2x speed", "Arial", 14); y += step;
         engine.drawText(x, y, "M             : Toggle sound mute", "Arial", 14); y += step;
         y += 10;
         engine.changeColor(new Color(200, 180, 120));
@@ -176,6 +177,8 @@ public class MenuScreen {
         engine.drawText(x, y, "Resize window - map auto-adjusts", "Arial", 14); y += step;
         engine.drawText(x, y, "Intro cutscene - press Space to skip", "Arial", 14); y += step;
         engine.drawText(x, y, "Wall limit: Easy=unlimited, N=16, H=8", "Arial", 14); y += step;
+        engine.drawText(x, y, "5s prep time before each wave", "Arial", 14); y += step;
+        engine.drawText(x, y, "Win: survive 3 waves (135s)", "Arial", 14); y += step;
         engine.drawText(x, y, "Save deletes on win or game over", "Arial", 14); y += step;
         backButton.setPosition(cx() - 100, GameConfig.WINDOW_HEIGHT - 100);
         backButton.draw(engine, false, mouseX, mouseY);
