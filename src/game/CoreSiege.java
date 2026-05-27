@@ -50,6 +50,7 @@ public class CoreSiege extends GameEngine {
     private BuildingType selectedBuilding = BuildingType.ARROW_TOWER;
     private int mouseX = -1, mouseY = -1;
     private boolean hasSave;
+    private double speedMultiplier = 1.0;
 
     public static void main(String[] args) {
         createGame(new CoreSiege(), GameConfig.TARGET_FPS);
@@ -111,6 +112,8 @@ public class CoreSiege extends GameEngine {
         if (gameState != GameState.PLAYING) {
             return;
         }
+
+        dt *= speedMultiplier;
 
         gridMap.update(dt);
         economyManager.updateIncome(dt);
@@ -218,7 +221,7 @@ public class CoreSiege extends GameEngine {
         eventManager.draw(this, gridMap);
         particleSystem.draw(this);
         hud.draw(this, base, economyManager, scoreManager, waveManager,
-                selectedDifficulty, selectedBuilding, gameState, mouseX, mouseY);
+                selectedDifficulty, selectedBuilding, gameState, mouseX, mouseY, speedMultiplier);
     }
 
     private void drawBackground() {
@@ -389,6 +392,8 @@ public class CoreSiege extends GameEngine {
             togglePause();
         } else if (keyCode == KeyEvent.VK_M) {
             soundManager.toggleMute();
+        } else if (keyCode == KeyEvent.VK_F) {
+            speedMultiplier = (speedMultiplier == 2.0) ? 1.0 : 2.0;
         } else {
             selectBuildingByKey(keyCode);
         }

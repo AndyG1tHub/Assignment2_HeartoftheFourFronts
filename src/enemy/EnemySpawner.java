@@ -32,6 +32,7 @@ public class EnemySpawner {
     }
 
     public void update(double dt, WaveManager waveManager) {
+        if (waveManager.isPrepTime()) return;
         spawnTimer += dt;
         if (waveManager.isBossWave()) {
             for (int i = 0; i < waveManager.getBossCount(); i++) {

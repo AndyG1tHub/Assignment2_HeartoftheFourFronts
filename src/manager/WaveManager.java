@@ -7,13 +7,20 @@ public class WaveManager {
     private double elapsedTime;
     private int stage = 1;
     private double lastBossTime = 0;
+    private double prepTimer = 5.0;
 
     public void update(double dt, ScoreManager score) {
         int oldStage = stage;
+        if (prepTimer > 0) {
+            prepTimer = Math.max(0, prepTimer - dt);
+            return;
+        }
         elapsedTime += dt;
         stage = calculateStage();
         if (stage > oldStage) {
             score.addWaveScore(stage * 250);
+            prepTimer = 5.0;
+            elapsedTime += dt;
             SoundManager sm = SoundManager.getInstance();
             if (sm != null) sm.playWaveStart();
         }
@@ -29,8 +36,16 @@ public class WaveManager {
         return 1;
     }
 
+    public boolean isPrepTime() {
+        return prepTimer > 0;
+    }
+
+    public double getPrepTimer() {
+        return prepTimer;
+    }
+
     public boolean isBossWave() {
-        return elapsedTime - lastBossTime >= GameConfig.BOSS_INTERVAL;
+        return !isPrepTime() && elapsedTime - lastBossTime >= GameConfig.BOSS_INTERVAL;
     }
 
     public void markBossSpawned() {
@@ -54,10 +69,15 @@ public class WaveManager {
         return stage;
     }
 
+    public int getWaveNumber() {
+        return (int) (elapsedTime / GameConfig.WAVE_LENGTH_SECONDS) + 1;
+    }
+
     public void setElapsedTime(double elapsedTime, int stage) {
         this.elapsedTime = elapsedTime;
         this.stage = stage;
         this.lastBossTime = elapsedTime - GameConfig.BOSS_INTERVAL;
+        this.prepTimer = 0;
     }
 
     public double getElapsedTime() {

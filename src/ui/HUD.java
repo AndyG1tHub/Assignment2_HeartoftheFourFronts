@@ -58,7 +58,7 @@ public class HUD {
 
     public void draw(GameEngine engine, Base base, EconomyManager economy,
             ScoreManager score, WaveManager waves, Difficulty difficulty,
-            BuildingType selected, GameState state, int mouseX, int mouseY) {
+            BuildingType selected, GameState state, int mouseX, int mouseY, double speedMul) {
         drawPanel(engine);
         drawTitle(engine);
         drawBaseHealthBar(engine, base);
@@ -66,6 +66,8 @@ public class HUD {
         drawButtons(engine, selected);
         drawTowerTooltip(engine, mouseX, mouseY, difficulty);
         drawBossWarning(engine, waves);
+        drawPrepTimer(engine, waves);
+        drawSpeedIndicator(engine, speedMul);
         drawStateOverlay(engine, state, mouseX, mouseY);
     }
 
@@ -235,6 +237,21 @@ public class HUD {
                 engine.drawBoldText(cx - 60, 80, "!! BOSS WAVE !!", "Arial", 22);
             }
         }
+    }
+
+    private void drawPrepTimer(GameEngine engine, WaveManager waves) {
+        if (!waves.isPrepTime()) return;
+        int cx = (GameConfig.WINDOW_WIDTH - 260) / 2;
+        int remaining = (int) Math.ceil(waves.getPrepTimer());
+        engine.changeColor(new Color(255, 200, 50));
+        engine.drawBoldText(cx - 80, 50, "Wave starts in  " + remaining, "Arial", 20);
+    }
+
+    private void drawSpeedIndicator(GameEngine engine, double speedMul) {
+        if (speedMul != 2.0) return;
+        int x = GameConfig.WINDOW_WIDTH - 65;
+        engine.changeColor(new Color(255, 220, 80));
+        engine.drawBoldText(x, 8, "2x", "Arial", 18);
     }
 
     public BuildingType getClickedBuildingType(int mouseX, int mouseY) {
