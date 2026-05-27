@@ -135,10 +135,14 @@ public class GridMap {
 
     private List<GridPosition> getEdgeSpawnPositions() {
         List<GridPosition> positions = new ArrayList<GridPosition>();
-        positions.add(new GridPosition(0, GameConfig.GRID_COLS / 2));
-        positions.add(new GridPosition(GameConfig.GRID_ROWS - 1, GameConfig.GRID_COLS / 2));
-        positions.add(new GridPosition(GameConfig.GRID_ROWS / 2, 0));
-        positions.add(new GridPosition(GameConfig.GRID_ROWS / 2, GameConfig.GRID_COLS - 1));
+        for (int col = 0; col < GameConfig.GRID_COLS; col++) {
+            positions.add(new GridPosition(0, col));
+            positions.add(new GridPosition(GameConfig.GRID_ROWS - 1, col));
+        }
+        for (int row = 0; row < GameConfig.GRID_ROWS; row++) {
+            positions.add(new GridPosition(row, 0));
+            positions.add(new GridPosition(row, GameConfig.GRID_COLS - 1));
+        }
         return positions;
     }
 
