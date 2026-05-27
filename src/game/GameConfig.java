@@ -46,6 +46,7 @@ public final class GameConfig {
     public static final int REWARD_SCORE = 100;
     public static final double REWARD_SPAWN_INTERVAL = 12.0;
 
+    public static final int TOTAL_LEVELS = 5;
     public static final int TOTAL_STAGES = 5;
     public static final double DEFAULT_SPAWN_INTERVAL = 2.0;
     public static final double WAVE_LENGTH_SECONDS = 40.0;
@@ -72,6 +73,16 @@ public final class GameConfig {
     public static final double STAGE_FIVE_ASSASSIN_CHANCE = 0.20;
     public static final double STAGE_FIVE_ARCHER_CHANCE = 0.20;
     public static final double STAGE_FIVE_HEALER_CHANCE = 0.18;
+
+    public static java.util.List<building.BuildingType> getUnlockedTowers(int level) {
+        java.util.List<building.BuildingType> list = new java.util.ArrayList<>();
+        list.add(building.BuildingType.ARROW_TOWER);
+        if (level >= 2) { list.add(building.BuildingType.WALL); list.add(building.BuildingType.CANNON_TOWER); }
+        if (level >= 3) { list.add(building.BuildingType.ICE_TOWER); list.add(building.BuildingType.HEAL_TOWER); }
+        if (level >= 4) { list.add(building.BuildingType.LIGHTNING_TOWER); }
+        if (level >= 5) { list.add(building.BuildingType.DECOY); }
+        return list;
+    }
 
     private GameConfig() {
     }

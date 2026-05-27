@@ -38,10 +38,11 @@ public class HUD {
     private static final Color SECTION_TITLE = new Color(200, 180, 120);
 
     public HUD() {
-        createButtons();
     }
 
-    private void createButtons() {
+    private void createButtons(int level) {
+        buttons.clear();
+        java.util.List<BuildingType> unlocked = GameConfig.getUnlockedTowers(level);
         int x = GameConfig.WINDOW_WIDTH - 240;
         int y = 260;
         int[] costs = {GameConfig.ARROW_TOWER_COST, GameConfig.CANNON_TOWER_COST, GameConfig.ICE_TOWER_COST,
@@ -49,18 +50,23 @@ public class HUD {
         String[] labels = {"1 Arrow", "2 Cannon", "3 Ice", "4 Lightning", "5 Wall", "6 Heal", "7 Decoy"};
         Color[] colors = {new Color(70, 170, 95), new Color(180, 110, 55), new Color(65, 170, 200),
                           new Color(175, 100, 200), new Color(110, 110, 120), new Color(75, 180, 145), new Color(200, 155, 80)};
-        BuildingType[] types = {BuildingType.ARROW_TOWER, BuildingType.CANNON_TOWER, BuildingType.ICE_TOWER,
-                                BuildingType.LIGHTNING_TOWER, BuildingType.WALL, BuildingType.HEAL_TOWER, BuildingType.DECOY};
+        BuildingType[] allTypes = {BuildingType.ARROW_TOWER, BuildingType.CANNON_TOWER, BuildingType.ICE_TOWER,
+                                   BuildingType.LIGHTNING_TOWER, BuildingType.WALL, BuildingType.HEAL_TOWER, BuildingType.DECOY};
         for (int i = 0; i < 7; i++) {
-            buttons.add(new Button(x, y + i * 26, 200, 24, labels[i] + "  $" + costs[i], types[i], colors[i]));
+            if (unlocked.contains(allTypes[i])) {
+                buttons.add(new Button(x, y + buttons.size() * 26, 200, 24,
+                    labels[i] + "  $" + costs[i], allTypes[i], colors[i]));
+            }
         }
     }
 
     public void draw(GameEngine engine, Base base, EconomyManager economy,
             ScoreManager score, WaveManager waves, Difficulty difficulty,
-            BuildingType selected, GameState state, int mouseX, int mouseY, double speedMul) {
+            BuildingType selected, GameState state, int mouseX, int mouseY, double speedMul, int level) {
+        createButtons(level);
         drawPanel(engine);
         drawTitle(engine);
+        drawLevelInfo(engine, level);
         drawBaseHealthBar(engine, base);
         drawStats(engine, base, economy, score, waves, difficulty);
         drawButtons(engine, selected);
@@ -238,6 +244,12 @@ public class HUD {
     private String formatTime(double seconds) {
         int sec = (int) seconds;
         return String.format("%02d:%02d", sec / 60, sec % 60);
+    }
+
+    private void drawLevelInfo(GameEngine engine, int level) {
+        int px = GameConfig.WINDOW_WIDTH - 245;
+        engine.changeColor(new Color(200, 180, 120));
+        engine.drawBoldText(px, 18, "Level " + level + " / " + GameConfig.TOTAL_LEVELS, "Arial", 14);
     }
 
     private void drawBossWarning(GameEngine engine, WaveManager waves) {

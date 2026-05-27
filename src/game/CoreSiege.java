@@ -51,6 +51,7 @@ public class CoreSiege extends GameEngine {
     private int mouseX = -1, mouseY = -1;
     private boolean hasSave;
     private double speedMultiplier = 1.0;
+    private int currentLevel = 1;
 
     public static void main(String[] args) {
         createGame(new CoreSiege(), GameConfig.TARGET_FPS);
@@ -72,6 +73,14 @@ public class CoreSiege extends GameEngine {
         startNewGame(selectedDifficulty);
         gameState = GameState.MENU;
         gameState = GameState.INTRO;
+    }
+
+    void setCurrentLevel(int level) {
+        currentLevel = Math.min(level, GameConfig.TOTAL_LEVELS);
+    }
+
+    int getCurrentLevel() {
+        return currentLevel;
     }
 
     private void startNewGame(Difficulty difficulty) {
@@ -181,6 +190,9 @@ public class CoreSiege extends GameEngine {
                 soundManager.playGameWin();
                 hasTriggeredEndSound = true;
             }
+            if (currentLevel < GameConfig.TOTAL_LEVELS) {
+                currentLevel++;
+            }
         }
     }
 
@@ -221,7 +233,7 @@ public class CoreSiege extends GameEngine {
         eventManager.draw(this, gridMap);
         particleSystem.draw(this);
         hud.draw(this, base, economyManager, scoreManager, waveManager,
-                selectedDifficulty, selectedBuilding, gameState, mouseX, mouseY, speedMultiplier);
+                selectedDifficulty, selectedBuilding, gameState, mouseX, mouseY, speedMultiplier, currentLevel);
     }
 
     private void drawBackground() {
@@ -269,6 +281,7 @@ public class CoreSiege extends GameEngine {
         int action = menuScreen.handleClick(event.getX(), event.getY());
         if (action == MenuScreen.MenuAction.PLAY) {
             soundManager.playButtonClick();
+            currentLevel = 1;
             startNewGame(menuScreen.getSelectedDifficulty());
             gameState = GameState.PLAYING;
         } else if (action == MenuScreen.CONTINUE) {
@@ -407,20 +420,15 @@ public class CoreSiege extends GameEngine {
     }
 
     private void selectBuildingByKey(int keyCode) {
-        if (keyCode == KeyEvent.VK_1) {
-            selectedBuilding = BuildingType.ARROW_TOWER;
-        } else if (keyCode == KeyEvent.VK_2) {
-            selectedBuilding = BuildingType.CANNON_TOWER;
-        } else if (keyCode == KeyEvent.VK_3) {
-            selectedBuilding = BuildingType.ICE_TOWER;
-        } else if (keyCode == KeyEvent.VK_4) {
-            selectedBuilding = BuildingType.LIGHTNING_TOWER;
-        } else if (keyCode == KeyEvent.VK_5) {
-            selectedBuilding = BuildingType.WALL;
-        } else if (keyCode == KeyEvent.VK_6) {
-            selectedBuilding = BuildingType.HEAL_TOWER;
-        } else if (keyCode == KeyEvent.VK_7) {
-            selectedBuilding = BuildingType.DECOY;
+        BuildingType[] all = {BuildingType.ARROW_TOWER, BuildingType.CANNON_TOWER, BuildingType.ICE_TOWER,
+                              BuildingType.LIGHTNING_TOWER, BuildingType.WALL, BuildingType.HEAL_TOWER, BuildingType.DECOY};
+        int[] keys = {KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4, KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7};
+        java.util.List<BuildingType> unlocked = GameConfig.getUnlockedTowers(currentLevel);
+        for (int i = 0; i < 7; i++) {
+            if (keyCode == keys[i] && unlocked.contains(all[i])) {
+                selectedBuilding = all[i];
+                return;
+            }
         }
     }
 
@@ -445,6 +453,7 @@ public class CoreSiege extends GameEngine {
             out.println("kills=" + scoreManager.getEnemiesKilled());
             out.println("rewards=" + scoreManager.getRewardPointsCollected());
             out.println("buildingsBuilt=" + scoreManager.getBuildingsBuilt());
+            out.println("level=" + currentLevel);
             out.println("baseHp=" + base.getHp());
             out.println("waveTime=" + waveManager.getElapsedTime());
             out.println("stage=" + waveManager.getStage());
@@ -464,7 +473,7 @@ public class CoreSiege extends GameEngine {
         try {
             java.io.BufferedReader in = new java.io.BufferedReader(new java.io.FileReader("save.dat"));
             String line;
-            int diffOrd = 0, money = 0, score = 0, kills = 0, rewards = 0, buildingsBuilt = 0;
+            int diffOrd = 0, money = 0, score = 0, kills = 0, rewards = 0, buildingsBuilt = 0, level = 1;
             int baseHp = GameConfig.BASE_MAX_HP;
             double waveTime = 0;
             int stage = 1;
@@ -476,6 +485,7 @@ public class CoreSiege extends GameEngine {
                 else if (line.startsWith("kills=")) kills = Integer.parseInt(line.substring(6));
                 else if (line.startsWith("rewards=")) rewards = Integer.parseInt(line.substring(8));
                 else if (line.startsWith("buildingsBuilt=")) buildingsBuilt = Integer.parseInt(line.substring(15));
+                else if (line.startsWith("level=")) level = Integer.parseInt(line.substring(6));
                 else if (line.startsWith("baseHp=")) baseHp = Integer.parseInt(line.substring(7));
                 else if (line.startsWith("waveTime=")) waveTime = Double.parseDouble(line.substring(9));
                 else if (line.startsWith("stage=")) stage = Integer.parseInt(line.substring(6));
@@ -484,6 +494,7 @@ public class CoreSiege extends GameEngine {
             in.close();
 
             Difficulty diff = Difficulty.values()[diffOrd];
+            currentLevel = level;
             startNewGame(diff);
             base.setHp(baseHp);
             economyManager.setMoney(money);
