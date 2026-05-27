@@ -75,7 +75,8 @@ Assignment2_HeartoftheFourFronts-main/
 │   │
 │   ├── ui/                       # 用户界面
 │   │   ├── HUD.java             # 抬头显示，显示金币、生命值等信息
-│   │   ├── MenuScreen.java      # 菜单屏幕
+│   │   ├── MenuScreen.java      # 菜单屏幕、帮助界面、结束界面
+│   │   ├── IntroScreen.java     # 开场剧情（Space跳过）
 │   │   └── Button.java          # 按钮UI组件
 │   │
 │   ├── effect/                   # 视觉效果
@@ -98,8 +99,8 @@ Assignment2_HeartoftheFourFronts-main/
 - **CoreSiege**: 主游戏类，继承自GameEngine，协调所有子系统
 - **GameEngine**: 提供窗口管理、渲染、输入处理、音频播放等基础功能
 - **GameConfig**: 定义游戏配置常量
-- **GameState**: 游戏状态枚举
-- **Difficulty**: 难度级别枚举
+- **GameState**: 游戏状态枚举（INTRO, MENU, PLAYING, PAUSED 等）
+- **Difficulty**: 难度级别枚举（EASY, NORMAL, HARD）
 
 ### 2. core 包 - 核心游戏机制
 包含地图、网格、寻路等基础游戏机制。
@@ -160,6 +161,8 @@ Assignment2_HeartoftheFourFronts-main/
 - **STAGE_THREE_ASSASSIN_CHANCE**: 第 3 阶段刷出刺客的概率。
 - **STAGE_THREE_ARCHER_CHANCE**: 第 3 阶段刷出射手的概率。
 - **STAGE_THREE_HEALER_CHANCE**: 第 3 阶段刷出治疗敌人的概率。
+- **BUILDING_SELL_RATIO**: 出售建筑返还比例（0.6，即60%）。
+- **MAX_WALLS_EASY / MAX_WALLS_NORMAL / MAX_WALLS_HARD**: 三档难度城墙数量上限（无限/16/8），通过 `getMaxWalls(Difficulty)` 获取。
 
 ### 3. building 包 - 建筑系统
 包含所有建筑相关的类，防御塔单独放在tower子包中。
@@ -201,7 +204,7 @@ Assignment2_HeartoftheFourFronts-main/
 - **DecoyManager**: 诱饵管理
 - **RewardPointManager**: 奖励点管理
 - **SoundManager**: 音效和音乐播放
-- **ImageManger**: 图片加载和精灵图切割，集中管理塔、敌人、基地、诱饵和特效图片
+- **ImageManger**: 图片加载和精灵图切割，集中管理塔、敌人、基地、诱饵、地图瓦片、火动画、树木障碍物和特效图片
 
 ### 8. ui 包 - 用户界面
 包含所有UI组件。
@@ -223,13 +226,14 @@ Assignment2_HeartoftheFourFronts-main/
 
 ### 编译
 ```bash
-cd src
-javac Main.java
+find src -name "*.java" > sources.txt && javac -d out @sources.txt && java -cp out Main
 ```
 
-### 运行
+### 或分步运行
 ```bash
-java Main
+find src -name "*.java" > sources.txt
+javac -d out @sources.txt
+java -cp out Main
 ```
 
 ## 设计模式
@@ -286,6 +290,7 @@ java Main
 
 - **v2.0** (2026-05-24): 重构为包结构，提高代码组织性
 - **v1.0**: 初始版本，所有类在同一目录下
+- **v3.0** (2026-05-27): 新增出售塔、城墙数量限制、开场剧情、自适应窗口、寻路障碍物全面验证、地图瓦片变体、火焰动画。平衡性大幅调整。所有分支同步。
 
 ## Enemy enemies 子包说明
 
@@ -305,12 +310,35 @@ java Main
 
 ## 游戏结束界面
 
-当基地血量归零时进入 `GAME_OVER` 界面；通关后进入 `WIN` 界面。结束界面提供两个按钮：
+当基地血量归零时进入 `GAME_OVER` 界面；通关后进入 `WIN` 界面。存档会在胜利或失败时自动删除。结束界面提供两个按钮：
 
 - **Restart**: 使用当前难度重新开始游戏。
 - **Main Menu**: 返回主菜单重新选择难度。
 
 在结束界面也可以按 Enter 使用当前难度快速重新开始，按 Esc 返回主菜单。
+
+## 操作说明
+
+| 按键 | 功能 |
+|------|------|
+| 1-7 | 选择建筑类型 |
+| 点击地图 | 放置选中建筑 |
+| 右键点击建筑 | 出售塔（返还 60% 费用） |
+| 空格 | 游戏中暂停/继续；开场剧情时跳过 |
+| Esc | 返回主菜单 |
+| M | 开关音效静音 |
+
+## 难度特性
+
+| 难度 | 城墙上限 |
+|------|---------|
+| 简单 | 无限制 |
+| 普通 | 16 个 |
+| 困难 | 8 个 |
+
+## 自适应窗口
+
+窗口可拖拽缩放（最小 640×480），地图网格自动居中适应窗口大小。
 
 ## 图片资源说明
 
@@ -320,3 +348,8 @@ java Main
 - **homeItems.png**: 物品合集图，按像素范围切出基地、弓箭、炮弹、ice、激光、治疗范围特效和爆炸火球。
 - **弓箭投射物**: 使用 `homeItems.png` 中切出的弓箭图片，并在 `Projectile` 中根据起点和目标位置旋转到目标方向。
 - **meleeEnemy.png / tankEnemy.png / assassinEnemy.png / archerEnemy.png / healerEnemy.png**: 敌人精灵图，按固定 256x256 分割，前两排为跑步动画，第三排为攻击动画。
+- **Ui.png**: UI按钮精灵图。
+- **background.png / coin.png / coinTurn.png**: 菜单背景、金币图标。
+- **mapTileset.png**: 地图瓦片（地面/草地/花朵变体）。
+- **tree_1.png ~ tree_4.png / fireAnimation.png**: 障碍物（树木、火焰动画）。
+- 敌人支持 `facingLeft` / `facingRight` / `facingUp` / `facingDown` 四个朝向的精灵帧。
