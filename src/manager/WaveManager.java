@@ -6,7 +6,7 @@ import game.GameConfig;
 public class WaveManager {
     private double elapsedTime;
     private int stage = 1;
-    private double lastBossTime = -GameConfig.BOSS_INTERVAL;
+    private double lastBossTime = 0;
 
     public void update(double dt, ScoreManager score) {
         int oldStage = stage;

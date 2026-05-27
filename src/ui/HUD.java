@@ -135,7 +135,8 @@ public class HUD {
         drawStatPanel(engine, x, y, "MONEY", String.valueOf(economy.getMoney()), coinIcon);
         drawStatPanel(engine, x + 108, y, "KILLS", String.valueOf(score.getEnemiesKilled()));
         y += 46;
-        drawStatPanel(engine, x, y, "WAVE", String.valueOf((int)(waves.getElapsedTime() / GameConfig.WAVE_LENGTH_SECONDS + 1)));
+        int waveNum = (int)(waves.getElapsedTime() / GameConfig.WAVE_LENGTH_SECONDS + 1);
+        drawStatPanel(engine, x, y, "WAVE", String.valueOf(waveNum));
         drawStatPanel(engine, x + 108, y, "SCORE", String.valueOf(score.getScore()));
         y += 46;
         drawStatPanel(engine, x, y, "STAGE", waves.getStage() + "  " + difficulty);
