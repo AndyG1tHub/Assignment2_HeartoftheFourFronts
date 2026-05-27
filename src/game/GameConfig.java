@@ -25,6 +25,8 @@ public final class GameConfig {
     public static final int WALL_COST = 35;
     public static final int HEAL_TOWER_COST = 65;
     public static final int DECOY_COST = 40;
+    public static final int MAX_WALLS = 8;
+    public static final double BUILDING_SELL_RATIO = 0.6;
 
     public static final int REWARD_MONEY = 25;
     public static final int REWARD_SCORE = 100;

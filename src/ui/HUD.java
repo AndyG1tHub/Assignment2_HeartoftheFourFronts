@@ -136,6 +136,11 @@ public class HUD {
         y += 46;
         drawStatPanel(engine, x, y, "STAGE", waves.getStage() + "  " + difficulty);
         drawStatPanel(engine, x + 108, y, "SCORE", String.valueOf(score.getScore()));
+        y += 48;
+        engine.changeColor(new Color(50, 55, 60));
+        engine.drawSolidRectangle(x, y, 208, 18);
+        engine.changeColor(new Color(140, 145, 150));
+        engine.drawText(x + 4, y + 13, "Right-click to sell (60%)", "Arial", 10);
     }
 
     private void drawButtons(GameEngine engine, BuildingType selected) {
@@ -282,6 +287,10 @@ public class HUD {
             engine.drawText(tx + 8, ly + 32, "Type", "Arial", 11);
             engine.changeColor(new Color(150, 150, 160));
             engine.drawText(tx + 80, ly + 32, "Barrier", "Arial", 11);
+            engine.changeColor(new Color(120, 125, 130));
+            engine.drawText(tx + 8, ly + 48, "Max", "Arial", 11);
+            engine.changeColor(new Color(200, 180, 120));
+            engine.drawText(tx + 80, ly + 48, String.valueOf(GameConfig.MAX_WALLS), "Arial", 11);
         } else if (type == BuildingType.DECOY) {
             engine.changeColor(new Color(120, 125, 130));
             engine.drawText(tx + 8, ly + 32, "Type", "Arial", 11);

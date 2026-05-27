@@ -241,7 +241,11 @@ public class CoreSiege extends GameEngine {
         if (gameState != GameState.PLAYING) {
             return;
         }
-        handlePlayClick(event);
+        if (event.getButton() == MouseEvent.BUTTON3) {
+            handleRightClick(event);
+        } else {
+            handlePlayClick(event);
+        }
     }
 
     private void handleEndClick(MouseEvent event) {
@@ -317,7 +321,29 @@ public class CoreSiege extends GameEngine {
         }
     }
 
+    private void handleRightClick(MouseEvent event) {
+        GridPosition position = gridMap.mouseToGrid(event.getX(), event.getY());
+        if (position == null) return;
+        Building building = gridMap.getBuildingAt(position);
+        if (building == null) return;
+        int refund = (int) (building.getCost() * GameConfig.BUILDING_SELL_RATIO);
+        economyManager.addMoney(refund);
+        gridMap.removeBuilding(position);
+        buildings.remove(building);
+        soundManager.playButtonClick();
+    }
+
     private void placeBuilding(GridPosition position) {
+        if (selectedBuilding == BuildingType.WALL) {
+            int wallCount = 0;
+            for (Building b : buildings) {
+                if (b.getType() == BuildingType.WALL) wallCount++;
+            }
+            if (wallCount >= GameConfig.MAX_WALLS) {
+                soundManager.playInsufficientMoney();
+                return;
+            }
+        }
         Building building = buildingFactory.createBuilding(selectedBuilding, position);
         if (building == null || !economyManager.spendMoney(building.getCost())) {
             if (building != null) soundManager.playInsufficientMoney();
