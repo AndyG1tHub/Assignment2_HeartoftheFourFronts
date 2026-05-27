@@ -97,6 +97,9 @@ public class GridMap {
         if (isNearBase(position, 2)) {
             return false;
         }
+        if (isAdjacentToObstacle(position)) {
+            return false;
+        }
 
         tiles[position.row][position.col].setType(TileType.OBSTACLE);
 
@@ -110,6 +113,18 @@ public class GridMap {
 
         tiles[position.row][position.col].setType(TileType.EMPTY);
         return true;
+    }
+
+    private boolean isAdjacentToObstacle(GridPosition position) {
+        int[][] dirs = {{-1,0},{1,0},{0,-1},{0,1}};
+        for (int[] d : dirs) {
+            int r = position.row + d[0];
+            int c = position.col + d[1];
+            if (isInside(r, c) && tiles[r][c].getType() == TileType.OBSTACLE) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isNearBase(GridPosition position, int distance) {
