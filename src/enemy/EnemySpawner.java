@@ -148,7 +148,7 @@ public class EnemySpawner {
         return new GridPosition(0, 0);
     }
 
-    public void updateEnemies(double dt, EnemyAI enemyAI, EconomyManager economy, ScoreManager score) {
+    public void updateEnemies(double dt, EnemyAI enemyAI, EconomyManager economy, ScoreManager score, WaveManager waveManager) {
         for (Enemy enemy : new ArrayList<>(enemies)) {
             if (enemy instanceof HealerEnemy) {
                 ((HealerEnemy) enemy).supportAllies(dt, enemies);
@@ -162,6 +162,9 @@ public class EnemySpawner {
             Enemy enemy = iterator.next();
             enemy.update(dt, enemyAI);
             if (enemy.isDead()) {
+                if (enemy.getType() == EnemyType.FINAL_BOSS) {
+                    waveManager.markFinalBossDefeated();
+                }
                 economy.addMoney(enemy.getMoneyReward());
                 score.addKillScore(enemy.getScoreReward());
                 iterator.remove();

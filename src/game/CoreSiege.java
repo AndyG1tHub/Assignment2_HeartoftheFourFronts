@@ -139,7 +139,7 @@ public class CoreSiege extends GameEngine {
         particleSystem.update(dt);
 
         enemySpawner.updateEnemies(dt, enemyAI,
-                economyManager, scoreManager);
+                economyManager, scoreManager, waveManager);
 
         for (Building building : new ArrayList<Building>(buildings)) {
 

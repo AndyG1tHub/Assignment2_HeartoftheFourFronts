@@ -9,6 +9,7 @@ public class WaveManager {
     private double lastEliteTime = 0;
     private double prepTimer = 5.0;
     private boolean finalBossSpawned;
+    private boolean finalBossDefeated;
 
     public void update(double dt, ScoreManager score) {
         int oldStage = stage;
@@ -61,7 +62,11 @@ public class WaveManager {
     }
 
     public boolean isFinalBossActive() {
-        return finalBossSpawned && !hasWon();
+        return finalBossSpawned && !finalBossDefeated;
+    }
+
+    public void markFinalBossDefeated() {
+        finalBossDefeated = true;
     }
 
     public void markFinalBossSpawned() {
@@ -77,7 +82,7 @@ public class WaveManager {
     }
 
     public boolean hasWon() {
-        return elapsedTime >= GameConfig.WAVE_LENGTH_SECONDS * GameConfig.TOTAL_STAGES;
+        return finalBossDefeated;
     }
 
     public int getStage() {
