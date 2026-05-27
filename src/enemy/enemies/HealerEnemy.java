@@ -10,8 +10,8 @@ import enemy.EnemyType;
 /** Support enemy that periodically restores nearby damaged enemies. */
 public class HealerEnemy extends Enemy {
     public static final int BASE_HP = 90;
-    private static final int HEAL_AMOUNT = 10;
-    private static final double HEAL_INTERVAL = 2.0;
+    private static final int HEAL_AMOUNT = 20;
+    private static final double HEAL_INTERVAL = 1.5;
     private static final double HEAL_RANGE = 2.5;
 
     private double healCooldown;

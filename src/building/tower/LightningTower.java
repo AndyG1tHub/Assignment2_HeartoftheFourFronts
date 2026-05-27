@@ -17,7 +17,7 @@ import manager.ImageManger;
 public class LightningTower extends AttackTower {
     public LightningTower(GridPosition position) {
         super(position, 110, GameConfig.LIGHTNING_TOWER_COST, 5,
-                BuildingType.LIGHTNING_TOWER, 25, 1.4);
+                BuildingType.LIGHTNING_TOWER, 28, 1.4);
     }
 
     @Override
@@ -45,7 +45,9 @@ public class LightningTower extends AttackTower {
         int y = map.toScreenY(position.row);
         Image image = ImageManger.getLightningTower();
         if (image != null) {
-            engine.drawImage(image, x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
+            int size = (int) (GameConfig.TILE_SIZE * 1.4);
+            int offset = (size - GameConfig.TILE_SIZE) / 2;
+            engine.drawImage(image, x - offset, y - offset, size, size);
             drawHealthBar(engine, map);
             return;
         }

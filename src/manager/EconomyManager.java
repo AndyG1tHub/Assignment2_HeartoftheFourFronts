@@ -36,6 +36,10 @@ public class EconomyManager {
         money += amount;
     }
 
+    public void setMoney(int amount) {
+        money = Math.max(0, amount);
+    }
+
     public int getMoney() {
         return money;
     }

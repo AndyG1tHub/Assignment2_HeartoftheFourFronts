@@ -17,7 +17,7 @@ import manager.ImageManger;
 public class IceTower extends AttackTower {
     public IceTower(GridPosition position) {
         super(position, 120, GameConfig.ICE_TOWER_COST, 4,
-                BuildingType.ICE_TOWER, 10, 1.2);
+                BuildingType.ICE_TOWER, 18, 1.0);
     }
 
     @Override
@@ -39,7 +39,9 @@ public class IceTower extends AttackTower {
         int y = map.toScreenY(position.row);
         Image image = ImageManger.getIceTower();
         if (image != null) {
-            engine.drawImage(image, x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
+            int size = (int) (GameConfig.TILE_SIZE * 1.3);
+            int offset = (size - GameConfig.TILE_SIZE) / 2;
+            engine.drawImage(image, x - offset, y - offset, size, size);
             drawHealthBar(engine, map);
             return;
         }

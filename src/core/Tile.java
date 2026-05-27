@@ -8,18 +8,28 @@ public class Tile {
     private final int col;
     private TileType type;
     private Building building;
+    private int obstacleVariant;
+    private boolean isFireObstacle;
+    private int mapTileVariant;
 
     public Tile(int row, int col, TileType type) {
         this.row = row;
         this.col = col;
         this.type = type;
+        this.obstacleVariant = 0;
+        this.isFireObstacle = false;
+        this.mapTileVariant = 0;
     }
 
     public boolean isWalkable() {
         if (type == TileType.OBSTACLE) {
             return false;
         }
-        return building == null;
+        return building == null || building.isDestroyed();
+    }
+
+    public boolean isWalkableIgnoringBuilding() {
+        return type != TileType.OBSTACLE;
     }
 
     public boolean isBuildable() {
@@ -45,5 +55,29 @@ public class Tile {
     public void setBuilding(Building building) {
         this.building = building;
         this.type = building == null ? TileType.EMPTY : TileType.BUILDING;
+    }
+
+    public int getObstacleVariant() {
+        return obstacleVariant;
+    }
+
+    public void setObstacleVariant(int variant) {
+        this.obstacleVariant = variant;
+    }
+
+    public boolean isFireObstacle() {
+        return isFireObstacle;
+    }
+
+    public void setFireObstacle(boolean isFireObstacle) {
+        this.isFireObstacle = isFireObstacle;
+    }
+
+    public int getMapTileVariant() {
+        return mapTileVariant;
+    }
+
+    public void setMapTileVariant(int variant) {
+        this.mapTileVariant = variant;
     }
 }

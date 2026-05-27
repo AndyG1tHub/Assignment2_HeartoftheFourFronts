@@ -18,7 +18,7 @@ import manager.SoundManager;
 
 /** Support building that heals nearby damaged buildings. */
 public class HealTower extends Building {
-    private static final int HEAL_AMOUNT = 12;
+    private static final int HEAL_AMOUNT = 20;
     private static final double HEAL_INTERVAL = 2.0;
     private double cooldown;
 
@@ -68,19 +68,24 @@ public class HealTower extends Building {
         return Math.sqrt(rowDiff * rowDiff + colDiff * colDiff) <= range;
     }
 
-    @Override
-    public void draw(GameEngine engine, GridMap map) {
-        int x = map.toScreenX(position.col);
-        int y = map.toScreenY(position.row);
+    public void drawRangeEffect(GameEngine engine, GridMap map) {
         Image rangeImage = ImageManger.getHealRangeEffect();
         if (rangeImage != null) {
             int size = (range * 2 + 1) * GameConfig.TILE_SIZE;
             engine.drawImage(rangeImage, map.tileCenterX(position) - size / 2,
                     map.tileCenterY(position) - size / 2, size, size);
         }
+    }
+
+    @Override
+    public void draw(GameEngine engine, GridMap map) {
+        int x = map.toScreenX(position.col);
+        int y = map.toScreenY(position.row);
         Image image = ImageManger.getHealTower();
         if (image != null) {
-            engine.drawImage(image, x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
+            int size = (int) (GameConfig.TILE_SIZE * 1.4);
+            int offset = (size - GameConfig.TILE_SIZE) / 2;
+            engine.drawImage(image, x - offset, y - offset, size, size);
             drawHealthBar(engine, map);
             return;
         }

@@ -17,7 +17,7 @@ import manager.ImageManger;
 public class CannonTower extends AttackTower {
     public CannonTower(GridPosition position) {
         super(position, 150, GameConfig.CANNON_TOWER_COST, 4,
-                BuildingType.CANNON_TOWER, 35, 1.8);
+                BuildingType.CANNON_TOWER, 45, 1.5);
     }
 
     @Override
@@ -42,7 +42,9 @@ public class CannonTower extends AttackTower {
         int y = map.toScreenY(position.row);
         Image image = ImageManger.getAttackTower();
         if (image != null) {
-            engine.drawImage(image, x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
+            int size = (int) (GameConfig.TILE_SIZE * 1.4);
+            int offset = (size - GameConfig.TILE_SIZE) / 2;
+            engine.drawImage(image, x - offset, y - offset, size, size);
             drawHealthBar(engine, map);
             return;
         }
