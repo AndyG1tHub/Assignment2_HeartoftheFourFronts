@@ -339,7 +339,8 @@ public class CoreSiege extends GameEngine {
             for (Building b : buildings) {
                 if (b.getType() == BuildingType.WALL) wallCount++;
             }
-            if (wallCount >= GameConfig.MAX_WALLS) {
+            int maxWalls = GameConfig.getMaxWalls(selectedDifficulty);
+            if (wallCount >= maxWalls) {
                 soundManager.playInsufficientMoney();
                 return;
             }

@@ -64,7 +64,7 @@ public class HUD {
         drawBaseHealthBar(engine, base);
         drawStats(engine, base, economy, score, waves, difficulty);
         drawButtons(engine, selected);
-        drawTowerTooltip(engine, mouseX, mouseY);
+        drawTowerTooltip(engine, mouseX, mouseY, difficulty);
         drawStateOverlay(engine, state, mouseX, mouseY);
     }
 
@@ -228,7 +228,7 @@ public class HUD {
         return null;
     }
 
-    private void drawTowerTooltip(GameEngine engine, int mouseX, int mouseY) {
+    private void drawTowerTooltip(GameEngine engine, int mouseX, int mouseY, Difficulty difficulty) {
         BuildingType type = getHoveredBuildingType(mouseX, mouseY);
         if (type == null) return;
         int tw = 170, th = 100;
@@ -290,7 +290,9 @@ public class HUD {
             engine.changeColor(new Color(120, 125, 130));
             engine.drawText(tx + 8, ly + 48, "Max", "Arial", 11);
             engine.changeColor(new Color(200, 180, 120));
-            engine.drawText(tx + 80, ly + 48, String.valueOf(GameConfig.MAX_WALLS), "Arial", 11);
+            int maxWalls = GameConfig.getMaxWalls(difficulty);
+            String maxStr = maxWalls == Integer.MAX_VALUE ? "Unlimited" : String.valueOf(maxWalls);
+            engine.drawText(tx + 80, ly + 48, maxStr, "Arial", 11);
         } else if (type == BuildingType.DECOY) {
             engine.changeColor(new Color(120, 125, 130));
             engine.drawText(tx + 8, ly + 32, "Type", "Arial", 11);
