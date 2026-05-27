@@ -22,7 +22,7 @@ public class EnemySpawner {
     private final EnemyFactory enemyFactory;
     private final DifficultyManager difficultyManager;
     private final Random random = new Random();
-    private final List<Enemy> enemies = new ArrayList<Enemy>();
+    private final List<Enemy> enemies = new ArrayList<>();
     private double spawnTimer;
 
     public EnemySpawner(GridMap map, EnemyFactory enemyFactory, DifficultyManager difficultyManager) {
@@ -107,21 +107,28 @@ public class EnemySpawner {
     }
 
     private GridPosition getSpawnPosition() {
-        int side = random.nextInt(4);
-        if (side == 0) {
-            return new GridPosition(0, random.nextInt(GameConfig.GRID_COLS));
+        int maxAttempts = 50;
+        for (int attempt = 0; attempt < maxAttempts; attempt++) {
+            int side = random.nextInt(4);
+            GridPosition position;
+            if (side == 0) {
+                position = new GridPosition(0, random.nextInt(GameConfig.GRID_COLS));
+            } else if (side == 1) {
+                position = new GridPosition(GameConfig.GRID_ROWS - 1, random.nextInt(GameConfig.GRID_COLS));
+            } else if (side == 2) {
+                position = new GridPosition(random.nextInt(GameConfig.GRID_ROWS), 0);
+            } else {
+                position = new GridPosition(random.nextInt(GameConfig.GRID_ROWS), GameConfig.GRID_COLS - 1);
+            }
+            if (map.isWalkable(position)) {
+                return position;
+            }
         }
-        if (side == 1) {
-            return new GridPosition(GameConfig.GRID_ROWS - 1, random.nextInt(GameConfig.GRID_COLS));
-        }
-        if (side == 2) {
-            return new GridPosition(random.nextInt(GameConfig.GRID_ROWS), 0);
-        }
-        return new GridPosition(random.nextInt(GameConfig.GRID_ROWS), GameConfig.GRID_COLS - 1);
+        return new GridPosition(0, 0);
     }
 
     public void updateEnemies(double dt, EnemyAI enemyAI, EconomyManager economy, ScoreManager score) {
-        for (Enemy enemy : new ArrayList<Enemy>(enemies)) {
+        for (Enemy enemy : new ArrayList<>(enemies)) {
             if (enemy instanceof HealerEnemy) {
                 ((HealerEnemy) enemy).supportAllies(dt, enemies);
             }
