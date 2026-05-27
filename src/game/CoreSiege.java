@@ -164,6 +164,7 @@ public class CoreSiege extends GameEngine {
     private void checkGameEnd() {
         if (base.isDestroyed()) {
             gameState = GameState.GAME_OVER;
+            deleteSave();
             if (!hasTriggeredEndSound) {
                 soundManager.stopBgm();
                 soundManager.playGameOver();
@@ -171,6 +172,7 @@ public class CoreSiege extends GameEngine {
             }
         } else if (waveManager.hasWon()) {
             gameState = GameState.WIN;
+            deleteSave();
             if (!hasTriggeredEndSound) {
                 soundManager.stopBgm();
                 soundManager.playGameWin();
