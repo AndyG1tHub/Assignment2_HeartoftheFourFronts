@@ -9,7 +9,6 @@ import java.util.List;
 
 import core.*;
 import building.*;
-import building.tower.*;
 import enemy.*;
 import combat.*;
 import event.*;
@@ -41,6 +40,8 @@ public class CoreSiege extends GameEngine {
     private WaveManager waveManager;
     private HUD hud;
     private MenuScreen menuScreen;
+    private IntroScreen introScreen;
+
     private ImageManger imageManger;
     private SoundManager soundManager;
     private ParticleSystem particleSystem;
@@ -56,6 +57,7 @@ public class CoreSiege extends GameEngine {
     public void init() {
         setWindowSize(GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
         menuScreen = new MenuScreen();
+        introScreen = new IntroScreen();
         hud = new HUD();
         imageManger = new ImageManger();
         SoundManager.init(this);
@@ -64,6 +66,7 @@ public class CoreSiege extends GameEngine {
         imageManger.loadImages(this);
         startNewGame(selectedDifficulty);
         gameState = GameState.MENU;
+        gameState = GameState.INTRO;
     }
 
     private void startNewGame(Difficulty difficulty) {
@@ -91,21 +94,49 @@ public class CoreSiege extends GameEngine {
 
     @Override
     public void update(double dt) {
+
+        // INTRO
+        if (gameState == GameState.INTRO) {
+
+            introScreen.update(this);
+
+            return;
+        }
+
+        // MENU
         if (gameState != GameState.PLAYING) {
             return;
         }
+
         economyManager.updateIncome(dt);
+
         waveManager.update(dt, scoreManager);
+
         enemySpawner.update(dt, waveManager);
-        eventManager.update(dt, gridMap, waveManager, enemySpawner, buildings);
+
+        eventManager.update(dt, gridMap, waveManager,
+                enemySpawner, buildings);
+
         particleSystem.update(dt);
-        enemySpawner.updateEnemies(dt, enemyAI, economyManager, scoreManager);
+
+        enemySpawner.updateEnemies(dt, enemyAI,
+                economyManager, scoreManager);
+
         for (Building building : new ArrayList<Building>(buildings)) {
-            building.update(dt, enemySpawner.getEnemies(), projectileManager, gridMap, buildings);
+
+            building.update(dt,
+                    enemySpawner.getEnemies(),
+                    projectileManager,
+                    gridMap,
+                    buildings);
         }
+
         removeDestroyedBuildings();
+
         projectileManager.update(dt);
+
         decoyManager.update(dt);
+
         checkGameEnd();
     }
 
@@ -144,8 +175,18 @@ public class CoreSiege extends GameEngine {
     }
 
     @Override
+
     public void paintComponent() {
+
         drawBackground();
+        // INTRO SCREEN
+        if (gameState == GameState.INTRO) {
+
+            introScreen.draw(this);
+
+            return;
+        }
+
         if (gameState == GameState.MENU) {
             menuScreen.draw(this, mouseX, mouseY);
             return;
@@ -198,6 +239,7 @@ public class CoreSiege extends GameEngine {
         } else if (action == MenuScreen.END_MENU) {
             soundManager.playButtonClick();
             gameState = GameState.MENU;
+            gameState = GameState.INTRO;
         }
     }
 
@@ -306,5 +348,10 @@ public class CoreSiege extends GameEngine {
     public void mouseMoved(MouseEvent event) {
         mouseX = event.getX();
         mouseY = event.getY();
+    }
+
+    public void setGameState(GameState state) {
+
+        gameState = state;
     }
 }
