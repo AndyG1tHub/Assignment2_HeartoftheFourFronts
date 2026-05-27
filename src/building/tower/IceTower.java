@@ -26,7 +26,7 @@ public class IceTower extends AttackTower {
         if (target == null) {
             return;
         }
-        target.takeDamage(damage);
+        target.takeDamage(getDamage());
         target.applySlow(2.0);
         projectiles.addProjectile(position, target.getGridPosition(), Color.CYAN);
         resetCooldown();
@@ -43,6 +43,7 @@ public class IceTower extends AttackTower {
             int offset = (size - GameConfig.TILE_SIZE) / 2;
             engine.drawImage(image, x - offset, y - offset, size, size);
             drawHealthBar(engine, map);
+            drawLevelIndicator(engine, map);
             return;
         }
         engine.changeColor(new Color(70, 175, 205));
@@ -50,5 +51,6 @@ public class IceTower extends AttackTower {
         engine.changeColor(Color.WHITE);
         engine.drawText(x + 11, y + 22, "I", "Arial", 15);
         drawHealthBar(engine, map);
+        drawLevelIndicator(engine, map);
     }
 }

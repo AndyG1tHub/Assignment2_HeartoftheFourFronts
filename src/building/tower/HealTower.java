@@ -18,12 +18,15 @@ import manager.SoundManager;
 
 /** Support building that heals nearby damaged buildings. */
 public class HealTower extends Building {
-    private static final int HEAL_AMOUNT = 20;
     private static final double HEAL_INTERVAL = 2.0;
     private double cooldown;
 
     public HealTower(GridPosition position) {
         super(position, 120, GameConfig.HEAL_TOWER_COST, 3, BuildingType.HEAL_TOWER);
+    }
+
+    private int getHealAmount() {
+        return GameConfig.HEAL_AMOUNT_UPGRADE[upgradeLevel];
     }
 
     @Override
@@ -59,7 +62,7 @@ public class HealTower extends Building {
     }
 
     private void healBuilding(Building building) {
-        building.heal(HEAL_AMOUNT);
+        building.heal(getHealAmount());
     }
 
     private boolean isInHealRange(Building building) {
@@ -87,6 +90,7 @@ public class HealTower extends Building {
             int offset = (size - GameConfig.TILE_SIZE) / 2;
             engine.drawImage(image, x - offset, y - offset, size, size);
             drawHealthBar(engine, map);
+            drawLevelIndicator(engine, map);
             return;
         }
         engine.changeColor(new Color(95, 205, 165));
@@ -94,5 +98,6 @@ public class HealTower extends Building {
         engine.changeColor(Color.WHITE);
         engine.drawText(x + 8, y + 22, "H", "Arial", 15);
         drawHealthBar(engine, map);
+        drawLevelIndicator(engine, map);
     }
 }

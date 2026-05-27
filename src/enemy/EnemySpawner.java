@@ -33,6 +33,14 @@ public class EnemySpawner {
 
     public void update(double dt, WaveManager waveManager) {
         spawnTimer += dt;
+        if (waveManager.isBossWave()) {
+            for (int i = 0; i < waveManager.getBossCount(); i++) {
+                Enemy boss = enemyFactory.createEnemy(EnemyType.BOSS, getSpawnPosition());
+                boss.snapToMap(map);
+                enemies.add(boss);
+            }
+            waveManager.markBossSpawned();
+        }
         if (shouldSpawn(waveManager)) {
             spawnEnemy(waveManager);
             spawnTimer = 0.0;

@@ -28,7 +28,7 @@ public class CannonTower extends AttackTower {
         }
         for (Enemy enemy : enemies) {
             if (!enemy.isDead() && target.getGridPosition().equals(enemy.getGridPosition())) {
-                enemy.takeDamage(damage);
+                enemy.takeDamage(getDamage());
             }
         }
         projectiles.addProjectile(position, target.getGridPosition(), Color.ORANGE);
@@ -46,6 +46,7 @@ public class CannonTower extends AttackTower {
             int offset = (size - GameConfig.TILE_SIZE) / 2;
             engine.drawImage(image, x - offset, y - offset, size, size);
             drawHealthBar(engine, map);
+            drawLevelIndicator(engine, map);
             return;
         }
         engine.changeColor(new Color(180, 110, 55));
@@ -53,5 +54,6 @@ public class CannonTower extends AttackTower {
         engine.changeColor(Color.WHITE);
         engine.drawText(x + 8, y + 22, "C", "Arial", 15);
         drawHealthBar(engine, map);
+        drawLevelIndicator(engine, map);
     }
 }

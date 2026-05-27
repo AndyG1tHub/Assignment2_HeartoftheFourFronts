@@ -32,6 +32,7 @@ src/enemy/enemies/AssassinEnemy.java
 src/enemy/enemies/TankEnemy.java
 src/enemy/enemies/ArcherEnemy.java
 src/enemy/enemies/MeleeEnemy.java
+src/enemy/enemies/BossEnemy.java
 src/manager/WaveManager.java
 src/manager/ImageManger.java
 src/manager/ScoreManager.java

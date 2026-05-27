@@ -3,6 +3,7 @@ package enemy;
 import core.GridPosition;
 import enemy.enemies.ArcherEnemy;
 import enemy.enemies.AssassinEnemy;
+import enemy.enemies.BossEnemy;
 import enemy.enemies.HealerEnemy;
 import enemy.enemies.MeleeEnemy;
 import enemy.enemies.TankEnemy;
@@ -28,6 +29,9 @@ public class EnemyFactory {
         }
         if (type == EnemyType.HEALER) {
             return new HealerEnemy(position, scaleHp(HealerEnemy.BASE_HP));
+        }
+        if (type == EnemyType.BOSS) {
+            return new BossEnemy(position, scaleHp(BossEnemy.BASE_HP));
         }
         return new MeleeEnemy(position, scaleHp(MeleeEnemy.BASE_HP));
     }

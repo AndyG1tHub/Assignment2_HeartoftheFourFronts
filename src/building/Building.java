@@ -2,6 +2,8 @@ package building;
 
 import java.util.List;
 
+import java.awt.Color;
+
 import core.GridPosition;
 import core.GridMap;
 import enemy.Enemy;
@@ -17,6 +19,7 @@ public abstract class Building {
     protected final int cost;
     protected final int range;
     protected final BuildingType type;
+    protected int upgradeLevel;
 
     protected Building(GridPosition position, int maxHp, int cost, int range,
             BuildingType type) {
@@ -26,6 +29,7 @@ public abstract class Building {
         this.cost = cost;
         this.range = range;
         this.type = type;
+        this.upgradeLevel = 0;
     }
 
     public void update(double dt, List<Enemy> enemies, ProjectileManager projectiles,
@@ -71,6 +75,29 @@ public abstract class Building {
         return type;
     }
 
+    public int getUpgradeLevel() {
+        return upgradeLevel;
+    }
+
+    public void setUpgradeLevel(int level) {
+        upgradeLevel = Math.min(level, GameConfig.MAX_UPGRADE_LEVEL);
+    }
+
+    public boolean canUpgrade() {
+        return upgradeLevel < GameConfig.MAX_UPGRADE_LEVEL;
+    }
+
+    public int getUpgradeCost() {
+        return (int) (cost * (upgradeLevel + 1) * GameConfig.UPGRADE_COST_MULTIPLIER);
+    }
+
+    public void upgrade() {
+        if (canUpgrade()) {
+            upgradeLevel++;
+            hp = maxHp;
+        }
+    }
+
     protected void drawHealthBar(GameEngine engine, GridMap map) {
         int x = map.toScreenX(position.col) + 4;
         int y = map.toScreenY(position.row) + GameConfig.TILE_SIZE - 6;
@@ -79,5 +106,18 @@ public abstract class Building {
         engine.drawSolidRectangle(x, y, GameConfig.TILE_SIZE - 8, 3);
         engine.changeColor(java.awt.Color.GREEN);
         engine.drawSolidRectangle(x, y, (GameConfig.TILE_SIZE - 8) * ratio, 3);
+    }
+
+    protected void drawLevelIndicator(GameEngine engine, GridMap map) {
+        if (upgradeLevel == 0) return;
+        int cx = map.tileCenterX(position);
+        int cy = map.toScreenY(position.row) + 2;
+        int dotSize = 4;
+        int gap = 2;
+        int startX = cx - (upgradeLevel * (dotSize + gap)) / 2;
+        for (int i = 0; i < upgradeLevel; i++) {
+            engine.changeColor(new Color(255, 220, 80));
+            engine.drawSolidCircle(startX + i * (dotSize + gap), cy, dotSize);
+        }
     }
 }

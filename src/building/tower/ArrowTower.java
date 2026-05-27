@@ -27,6 +27,7 @@ public class ArrowTower extends AttackTower {
             int offset = (size - GameConfig.TILE_SIZE) / 2;
             engine.drawImage(image, x - offset, y - offset, size, size);
             drawHealthBar(engine, map);
+            drawLevelIndicator(engine, map);
             return;
         }
         engine.changeColor(new Color(70, 170, 95));
@@ -34,5 +35,6 @@ public class ArrowTower extends AttackTower {
         engine.changeColor(Color.WHITE);
         engine.drawText(x + 9, y + 22, "A", "Arial", 15);
         drawHealthBar(engine, map);
+        drawLevelIndicator(engine, map);
     }
 }

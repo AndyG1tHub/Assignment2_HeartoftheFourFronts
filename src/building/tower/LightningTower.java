@@ -28,7 +28,7 @@ public class LightningTower extends AttackTower {
                 break;
             }
             if (isEnemyInRange(enemy)) {
-                enemy.takeDamage(damage);
+                enemy.takeDamage(getDamage());
                 projectiles.addProjectile(position, enemy.getGridPosition(), Color.MAGENTA);
                 hitCount++;
             }
@@ -49,6 +49,7 @@ public class LightningTower extends AttackTower {
             int offset = (size - GameConfig.TILE_SIZE) / 2;
             engine.drawImage(image, x - offset, y - offset, size, size);
             drawHealthBar(engine, map);
+            drawLevelIndicator(engine, map);
             return;
         }
         engine.changeColor(new Color(165, 90, 210));
@@ -56,5 +57,6 @@ public class LightningTower extends AttackTower {
         engine.changeColor(Color.WHITE);
         engine.drawText(x + 9, y + 22, "L", "Arial", 15);
         drawHealthBar(engine, map);
+        drawLevelIndicator(engine, map);
     }
 }

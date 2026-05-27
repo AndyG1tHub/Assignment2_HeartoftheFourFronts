@@ -7,21 +7,37 @@ import building.Building;
 import building.BuildingType;
 import core.GridPosition;
 import core.GridMap;
+import game.GameConfig;
 import enemy.Enemy;
 import combat.ProjectileManager;
 import manager.SoundManager;
 
 /** Shared targeting and cooldown logic for attack towers. */
 public abstract class AttackTower extends Building {
-    protected final int damage;
-    protected final double attackInterval;
+    protected final int baseDamage;
+    protected final double baseAttackInterval;
+    protected final int baseRange;
     protected double cooldown;
 
     protected AttackTower(GridPosition position, int maxHp, int cost, int range,
             BuildingType type, int damage, double attackInterval) {
         super(position, maxHp, cost, range, type);
-        this.damage = damage;
-        this.attackInterval = attackInterval;
+        this.baseDamage = damage;
+        this.baseAttackInterval = attackInterval;
+        this.baseRange = range;
+    }
+
+    public int getDamage() {
+        return (int) (baseDamage * GameConfig.DAMAGE_MULTIPLIER[upgradeLevel]);
+    }
+
+    @Override
+    public int getRange() {
+        return baseRange + GameConfig.RANGE_BONUS[upgradeLevel];
+    }
+
+    public double getAttackInterval() {
+        return baseAttackInterval * GameConfig.ATTACK_INTERVAL_MULTIPLIER[upgradeLevel];
     }
 
     @Override
@@ -38,7 +54,7 @@ public abstract class AttackTower extends Building {
         if (target == null) {
             return;
         }
-        target.takeDamage(damage);
+        target.takeDamage(getDamage());
         projectiles.addProjectile(position, target.getGridPosition(), Color.YELLOW);
         resetCooldown();
         playShootSound();
@@ -58,9 +74,10 @@ public abstract class AttackTower extends Building {
     protected Enemy findClosestEnemy(List<Enemy> enemies) {
         Enemy closest = null;
         double bestDistance = Double.MAX_VALUE;
+        int currentRange = getRange();
         for (Enemy enemy : enemies) {
             double distance = distanceTo(enemy.getGridPosition());
-            if (!enemy.isDead() && distance <= range && distance < bestDistance) {
+            if (!enemy.isDead() && distance <= currentRange && distance < bestDistance) {
                 closest = enemy;
                 bestDistance = distance;
             }
@@ -69,7 +86,7 @@ public abstract class AttackTower extends Building {
     }
 
     protected boolean isEnemyInRange(Enemy enemy) {
-        return !enemy.isDead() && distanceTo(enemy.getGridPosition()) <= range;
+        return !enemy.isDead() && distanceTo(enemy.getGridPosition()) <= getRange();
     }
 
     protected double distanceTo(GridPosition other) {
@@ -83,6 +100,6 @@ public abstract class AttackTower extends Building {
     }
 
     protected void resetCooldown() {
-        cooldown = attackInterval;
+        cooldown = getAttackInterval();
     }
 }

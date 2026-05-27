@@ -65,6 +65,7 @@ public class HUD {
         drawStats(engine, base, economy, score, waves, difficulty);
         drawButtons(engine, selected);
         drawTowerTooltip(engine, mouseX, mouseY, difficulty);
+        drawBossWarning(engine, waves);
         drawStateOverlay(engine, state, mouseX, mouseY);
     }
 
@@ -215,6 +216,16 @@ public class HUD {
         if (restartBtn.contains(mouseX, mouseY)) return PAUSE_RESTART;
         if (menuBtn.contains(mouseX, mouseY)) return PAUSE_MENU;
         return 0;
+    }
+
+    private void drawBossWarning(GameEngine engine, WaveManager waves) {
+        if (waves.isBossWave()) {
+            int cx = (GameConfig.WINDOW_WIDTH - 260) / 2;
+            if ((System.currentTimeMillis() / 500) % 2 == 0) {
+                engine.changeColor(new Color(255, 50, 50));
+                engine.drawBoldText(cx - 60, 80, "!! BOSS WAVE !!", "Arial", 22);
+            }
+        }
     }
 
     public BuildingType getClickedBuildingType(int mouseX, int mouseY) {

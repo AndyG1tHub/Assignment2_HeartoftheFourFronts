@@ -6,5 +6,6 @@ public enum EnemyType {
     TANK,
     ASSASSIN,
     ARCHER,
-    HEALER
+    HEALER,
+    BOSS
 }

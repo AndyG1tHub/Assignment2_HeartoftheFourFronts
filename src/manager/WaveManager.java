@@ -6,6 +6,7 @@ import game.GameConfig;
 public class WaveManager {
     private double elapsedTime;
     private int stage = 1;
+    private double lastBossTime = -GameConfig.BOSS_INTERVAL;
 
     public void update(double dt, ScoreManager score) {
         int oldStage = stage;
@@ -28,6 +29,19 @@ public class WaveManager {
         return 1;
     }
 
+    public boolean isBossWave() {
+        return elapsedTime - lastBossTime >= GameConfig.BOSS_INTERVAL;
+    }
+
+    public void markBossSpawned() {
+        lastBossTime = elapsedTime;
+    }
+
+    public int getBossCount() {
+        int bosses = (int) (elapsedTime / GameConfig.BOSS_INTERVAL);
+        return Math.min(bosses + 1, stage);
+    }
+
     public double getSpawnIntervalMultiplier() {
         return Math.max(0.55, 1.0 - (stage - 1) * 0.2);
     }
@@ -43,6 +57,7 @@ public class WaveManager {
     public void setElapsedTime(double elapsedTime, int stage) {
         this.elapsedTime = elapsedTime;
         this.stage = stage;
+        this.lastBossTime = elapsedTime - GameConfig.BOSS_INTERVAL;
     }
 
     public double getElapsedTime() {

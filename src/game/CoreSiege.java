@@ -303,6 +303,17 @@ public class CoreSiege extends GameEngine {
         if (position == null || eventManager.handleClick(position, economyManager, scoreManager)) {
             return;
         }
+        Building existing = gridMap.getBuildingAt(position);
+        if (existing != null && existing.canUpgrade()) {
+            int cost = existing.getUpgradeCost();
+            if (economyManager.spendMoney(cost)) {
+                existing.upgrade();
+                soundManager.playButtonClick();
+            } else {
+                soundManager.playInsufficientMoney();
+            }
+            return;
+        }
         handleGridClick(position);
     }
 
@@ -434,7 +445,7 @@ public class CoreSiege extends GameEngine {
             out.println("waveTime=" + waveManager.getElapsedTime());
             out.println("stage=" + waveManager.getStage());
             for (Building b : buildings) {
-                out.println("building=" + b.getType().ordinal() + "," + b.getPosition().row + "," + b.getPosition().col + "," + b.getHp());
+                out.println("building=" + b.getType().ordinal() + "," + b.getPosition().row + "," + b.getPosition().col + "," + b.getHp() + "," + b.getUpgradeLevel());
             }
             out.close();
             hasSave = true;
@@ -479,9 +490,11 @@ public class CoreSiege extends GameEngine {
                 int row = Integer.parseInt(parts[1]);
                 int col = Integer.parseInt(parts[2]);
                 int hp = Integer.parseInt(parts[3]);
+                int lvl = parts.length > 4 ? Integer.parseInt(parts[4]) : 0;
                 GridPosition pos = new GridPosition(row, col);
                 Building b = buildingFactory.createBuilding(type, pos);
                 if (b != null && gridMap.placeBuilding(b)) {
+                    b.setUpgradeLevel(lvl);
                     while (b.getHp() > hp) b.takeDamage(1);
                     buildings.add(b);
                 }
