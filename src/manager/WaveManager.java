@@ -57,7 +57,11 @@ public class WaveManager {
     }
 
     public boolean isFinalBossTime() {
-        return !finalBossSpawned && elapsedTime >= GameConfig.WAVE_LENGTH_SECONDS * GameConfig.TOTAL_STAGES - 5.0;
+        return !finalBossSpawned && elapsedTime >= GameConfig.WAVE_LENGTH_SECONDS * GameConfig.TOTAL_STAGES - 20.0;
+    }
+
+    public boolean isFinalBossActive() {
+        return finalBossSpawned && !hasWon();
     }
 
     public void markFinalBossSpawned() {

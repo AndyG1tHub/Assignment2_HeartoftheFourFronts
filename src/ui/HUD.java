@@ -255,7 +255,7 @@ public class HUD {
     private void drawBossWarning(GameEngine engine, WaveManager waves) {
         int cx = (GameConfig.WINDOW_WIDTH - 260) / 2;
         boolean visible = (System.currentTimeMillis() / 500) % 2 == 0;
-        if (waves.isEliteWave() && visible) {
+        if (waves.isEliteWave() && !waves.isFinalBossActive() && visible) {
             int boxW = 200, boxH = 36;
             int bx = cx - boxW / 2, by = 80;
             engine.changeColor(new Color(160, 60, 180, 200));
@@ -264,15 +264,16 @@ public class HUD {
             engine.drawRectangle(bx, by, boxW, boxH, 2);
             engine.changeColor(new Color(230, 200, 255));
             engine.drawBoldText(cx - 56, by + 24, "!! ELITE WAVE !!", "Arial", 16);
-        } else if (waves.isFinalBossTime() && visible) {
-            int boxW = 240, boxH = 44;
-            int bx = cx - boxW / 2, by = 130;
+        }
+        if (waves.isFinalBossActive() && visible) {
+            int boxW = 260, boxH = 50;
+            int bx = cx - boxW / 2, by = 80;
             engine.changeColor(new Color(180, 10, 10, 220));
             engine.drawSolidRectangle(bx, by, boxW, boxH);
             engine.changeColor(new Color(255, 50, 50));
             engine.drawRectangle(bx, by, boxW, boxH, 3);
             engine.changeColor(new Color(255, 180, 180));
-            engine.drawBoldText(cx - 85, by + 30, "!! FINAL BOSS !!", "Arial", 20);
+            engine.drawBoldText(cx - 90, by + 32, "!! FINAL BOSS !!", "Arial", 22);
         }
     }
 
