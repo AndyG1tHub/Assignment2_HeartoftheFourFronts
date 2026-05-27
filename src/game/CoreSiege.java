@@ -364,6 +364,10 @@ public class CoreSiege extends GameEngine {
     @Override
     public void keyPressed(KeyEvent event) {
         int keyCode = event.getKeyCode();
+        if (gameState == GameState.INTRO && keyCode == KeyEvent.VK_SPACE) {
+            gameState = GameState.MENU;
+            return;
+        }
         if ((gameState == GameState.GAME_OVER || gameState == GameState.WIN)
                 && keyCode == KeyEvent.VK_ENTER) {
             startNewGame(selectedDifficulty);
