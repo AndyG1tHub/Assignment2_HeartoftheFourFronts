@@ -13,15 +13,19 @@ public class MenuScreen {
     private static final Color BG = new Color(20, 24, 28);
     private static final Color ACCENT = new Color(200, 180, 120);
     private static final Color SUBTITLE = new Color(160, 165, 170);
+    private static final Color LOCKED = new Color(80, 50, 50);
 
     public static final int END_NONE = 0;
     public static final int END_RESTART = 1;
     public static final int END_MENU = 2;
     public static final int CONTINUE = 3;
+    public static final int LEVEL_PLAY = 10;
 
     private int menuState;
     private boolean hasContinue;
     private Difficulty currentDifficulty = Difficulty.NORMAL;
+    private int maxUnlockedLevel = 1;
+    private int pendingLevel;
 
     private final Button continueButton = new Button(320, 270, 200, 34, "CONTINUE", null, new Color(80, 200, 160));
     private final Button playButton = new Button(320, 312, 200, 34, "PLAY", null, new Color(80, 180, 120));
@@ -31,10 +35,22 @@ public class MenuScreen {
     private final Button backButton = new Button(320, 420, 200, 34, "BACK", null, SUBTITLE);
     private final Button restartButton = new Button(330, 320, 240, 34, "RESTART", null, new Color(200, 180, 80));
     private final Button menuButton = new Button(330, 365, 240, 34, "MAIN MENU", null, SUBTITLE);
+    private final Button[] levelButtons = new Button[5];
 
     public MenuScreen() {
         menuState = 0;
         updateDiffLabel();
+        for (int i = 0; i < 5; i++) {
+            levelButtons[i] = new Button(0, 0, 160, 50, "Level " + (i + 1), null, new Color(80, 180, 120));
+        }
+    }
+
+    public void setMaxUnlockedLevel(int level) {
+        maxUnlockedLevel = Math.max(1, Math.min(level, GameConfig.TOTAL_LEVELS));
+    }
+
+    public int getSelectedLevel() {
+        return pendingLevel;
     }
 
     public void setHasContinue(boolean exists) {
@@ -56,6 +72,8 @@ public class MenuScreen {
 
         if (menuState == 1) {
             drawHelpContent(engine, mouseX, mouseY);
+        } else if (menuState == 2) {
+            drawLevelSelect(engine, mouseX, mouseY);
         } else {
             drawMainButtons(engine, mouseX, mouseY);
         }
@@ -184,6 +202,42 @@ public class MenuScreen {
         backButton.draw(engine, false, mouseX, mouseY);
     }
 
+    private void drawLevelSelect(GameEngine engine, int mouseX, int mouseY) {
+        engine.changeColor(ACCENT);
+        engine.drawBoldText(cx() - 80, 180, "SELECT LEVEL", "Arial", 24);
+        engine.changeColor(SUBTITLE);
+        engine.drawText(cx() - 100, 210, "Complete a level to unlock the next", "Arial", 13);
+        int startX = cx() - 85;
+        int startY = 240;
+        for (int i = 0; i < 5; i++) {
+            int lvl = i + 1;
+            boolean unlocked = lvl <= maxUnlockedLevel;
+            Button btn = levelButtons[i];
+            int col = i % 2;
+            int row = i / 2;
+            int bx = startX + col * 180;
+            int by = startY + row * 70;
+            btn.setPosition(bx, by);
+            boolean hovered = btn.contains(mouseX, mouseY);
+            if (unlocked) {
+                if (hovered) {
+                    engine.changeColor(new Color(55, 80, 55));
+                    engine.drawSolidRectangle(bx, by, 160, 50);
+                }
+                btn.draw(engine, false);
+            } else {
+                engine.changeColor(new Color(35, 25, 25));
+                engine.drawSolidRectangle(bx, by, 160, 50);
+                engine.changeColor(new Color(60, 40, 40));
+                engine.drawRectangle(bx, by, 160, 50);
+                engine.changeColor(LOCKED);
+                engine.drawBoldText(bx + 40, by + 32, "Level " + lvl + " ?", "Arial", 14);
+            }
+        }
+        backButton.setPosition(cx() - 100, GameConfig.WINDOW_HEIGHT - 100);
+        backButton.draw(engine, false, mouseX, mouseY);
+    }
+
     private void drawFooter(GameEngine engine) {
         engine.changeColor(new Color(100, 105, 110));
         engine.drawText(cx() - 130, GameConfig.WINDOW_HEIGHT - 30, "Defend the heart from four fronts.", "Arial", 13);
@@ -197,11 +251,27 @@ public class MenuScreen {
             }
             return MenuAction.NONE;
         }
+        if (menuState == 2) {
+            if (backButton.contains(mouseX, mouseY)) {
+                menuState = 0;
+                return MenuAction.SOUND;
+            }
+            for (int i = 0; i < 5; i++) {
+                int lvl = i + 1;
+                if (lvl <= maxUnlockedLevel && levelButtons[i].contains(mouseX, mouseY)) {
+                    pendingLevel = lvl;
+                    menuState = 0;
+                    return LEVEL_PLAY;
+                }
+            }
+            return MenuAction.NONE;
+        }
         if (hasContinue && continueButton.contains(mouseX, mouseY)) {
             return CONTINUE;
         }
         if (playButton.contains(mouseX, mouseY)) {
-            return MenuAction.PLAY;
+            menuState = 2;
+            return MenuAction.SOUND;
         }
         if (diffButton.contains(mouseX, mouseY)) {
             cycleDifficulty();

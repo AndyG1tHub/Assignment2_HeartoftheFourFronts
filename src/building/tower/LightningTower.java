@@ -17,7 +17,7 @@ import manager.ImageManger;
 public class LightningTower extends AttackTower {
     public LightningTower(GridPosition position) {
         super(position, 110, GameConfig.LIGHTNING_TOWER_COST, 5,
-                BuildingType.LIGHTNING_TOWER, 28, 1.4);
+                BuildingType.LIGHTNING_TOWER, 28, 2.2);
     }
 
     @Override

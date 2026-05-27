@@ -52,6 +52,7 @@ public class CoreSiege extends GameEngine {
     private boolean hasSave;
     private double speedMultiplier = 1.0;
     private int currentLevel = 1;
+    private int maxUnlockedLevel = 1;
 
     public static void main(String[] args) {
         createGame(new CoreSiege(), GameConfig.TARGET_FPS);
@@ -70,6 +71,8 @@ public class CoreSiege extends GameEngine {
         imageManger.loadImages(this);
         hasSave = saveFileExists();
         menuScreen.setHasContinue(hasSave);
+        loadProgress();
+        menuScreen.setMaxUnlockedLevel(maxUnlockedLevel);
         startNewGame(selectedDifficulty);
         gameState = GameState.MENU;
         gameState = GameState.INTRO;
@@ -193,6 +196,11 @@ public class CoreSiege extends GameEngine {
             if (currentLevel < GameConfig.TOTAL_LEVELS) {
                 currentLevel++;
             }
+            if (currentLevel > maxUnlockedLevel) {
+                maxUnlockedLevel = currentLevel;
+                saveProgress();
+                menuScreen.setMaxUnlockedLevel(maxUnlockedLevel);
+            }
         }
     }
 
@@ -279,9 +287,9 @@ public class CoreSiege extends GameEngine {
 
     private void handleMenuClick(MouseEvent event) {
         int action = menuScreen.handleClick(event.getX(), event.getY());
-        if (action == MenuScreen.MenuAction.PLAY) {
+        if (action == MenuScreen.LEVEL_PLAY) {
             soundManager.playButtonClick();
-            currentLevel = 1;
+            currentLevel = menuScreen.getSelectedLevel();
             startNewGame(menuScreen.getSelectedDifficulty());
             gameState = GameState.PLAYING;
         } else if (action == MenuScreen.CONTINUE) {
@@ -531,6 +539,32 @@ public class CoreSiege extends GameEngine {
             soundManager.playButtonClick();
         } catch (Exception e) {
             System.out.println("Delete save failed: " + e.getMessage());
+        }
+    }
+
+    private void saveProgress() {
+        try {
+            java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter("progress.dat"));
+            out.println("unlockedLevel=" + maxUnlockedLevel);
+            out.close();
+        } catch (Exception e) {
+            System.out.println("Save progress failed: " + e.getMessage());
+        }
+    }
+
+    private void loadProgress() {
+        try {
+            java.io.BufferedReader in = new java.io.BufferedReader(new java.io.FileReader("progress.dat"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                if (line.startsWith("unlockedLevel=")) {
+                    maxUnlockedLevel = Integer.parseInt(line.substring(14));
+                }
+            }
+            in.close();
+            if (maxUnlockedLevel < 1 || maxUnlockedLevel > GameConfig.TOTAL_LEVELS) maxUnlockedLevel = 1;
+        } catch (Exception e) {
+            maxUnlockedLevel = 1;
         }
     }
 

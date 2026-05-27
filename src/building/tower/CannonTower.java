@@ -17,7 +17,7 @@ import manager.ImageManger;
 public class CannonTower extends AttackTower {
     public CannonTower(GridPosition position) {
         super(position, 150, GameConfig.CANNON_TOWER_COST, 4,
-                BuildingType.CANNON_TOWER, 45, 1.5);
+                BuildingType.CANNON_TOWER, 45, 2.4);
     }
 
     @Override
