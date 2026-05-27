@@ -109,7 +109,7 @@ public class ImageManger {
     }
 
     private static Image[] getEnemyRunFrames(EnemyType type) {
-        if (type == EnemyType.BOSS) {
+        if (type == EnemyType.BOSS || type == EnemyType.ELITE || type == EnemyType.FINAL_BOSS) {
             return tankEnemyRun;
         }
         if (type == EnemyType.TANK) {
@@ -128,7 +128,7 @@ public class ImageManger {
     }
 
     private static Image[] getEnemyRunLeftFrames(EnemyType type) {
-        if (type == EnemyType.BOSS) {
+        if (type == EnemyType.BOSS || type == EnemyType.ELITE || type == EnemyType.FINAL_BOSS) {
             return tankEnemyRunLeft;
         }
         if (type == EnemyType.TANK) {
@@ -147,7 +147,7 @@ public class ImageManger {
     }
 
     private static Image[] getEnemyAttackFrames(EnemyType type) {
-        if (type == EnemyType.BOSS) {
+        if (type == EnemyType.BOSS || type == EnemyType.ELITE || type == EnemyType.FINAL_BOSS) {
             return tankEnemyAttack;
         }
         if (type == EnemyType.TANK) {
@@ -166,7 +166,7 @@ public class ImageManger {
     }
 
     private static Image[] getEnemyAttackLeftFrames(EnemyType type) {
-        if (type == EnemyType.BOSS) {
+        if (type == EnemyType.BOSS || type == EnemyType.ELITE || type == EnemyType.FINAL_BOSS) {
             return tankEnemyAttackLeft;
         }
         if (type == EnemyType.TANK) {

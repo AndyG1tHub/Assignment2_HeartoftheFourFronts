@@ -7,6 +7,7 @@ import java.util.Random;
 
 import core.GridPosition;
 import core.GridMap;
+import enemy.enemies.FinalBossEnemy;
 import enemy.enemies.HealerEnemy;
 import game.GameEngine;
 import game.GameConfig;
@@ -34,14 +35,23 @@ public class EnemySpawner {
     public void update(double dt, WaveManager waveManager) {
         if (waveManager.isPrepTime()) return;
         spawnTimer += dt;
-        if (waveManager.isBossWave()) {
-            for (int i = 0; i < waveManager.getBossCount(); i++) {
-                Enemy boss = enemyFactory.createEnemy(EnemyType.BOSS, getSpawnPosition());
-                boss.snapToMap(map);
-                enemies.add(boss);
+
+        if (waveManager.isEliteWave()) {
+            for (int i = 0; i < waveManager.getEliteCount(); i++) {
+                Enemy elite = enemyFactory.createEnemy(EnemyType.ELITE, getSpawnPosition());
+                elite.snapToMap(map);
+                enemies.add(elite);
             }
-            waveManager.markBossSpawned();
+            waveManager.markEliteSpawned();
         }
+
+        if (waveManager.isFinalBossTime()) {
+            Enemy boss = enemyFactory.createEnemy(EnemyType.FINAL_BOSS, getSpawnPosition());
+            boss.snapToMap(map);
+            enemies.add(boss);
+            waveManager.markFinalBossSpawned();
+        }
+
         if (shouldSpawn(waveManager)) {
             spawnEnemy(waveManager);
             spawnTimer = 0.0;
@@ -142,6 +152,9 @@ public class EnemySpawner {
         for (Enemy enemy : new ArrayList<>(enemies)) {
             if (enemy instanceof HealerEnemy) {
                 ((HealerEnemy) enemy).supportAllies(dt, enemies);
+            }
+            if (enemy instanceof FinalBossEnemy) {
+                ((FinalBossEnemy) enemy).applySkills(enemies);
             }
         }
         Iterator<Enemy> iterator = enemies.iterator();

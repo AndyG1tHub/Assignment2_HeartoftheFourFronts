@@ -41,6 +41,12 @@ public final class GameConfig {
     public static final int BOSS_BASE_HP = 600;
     public static final int BOSS_DAMAGE = 60;
     public static final double BOSS_SPEED = 0.85;
+    public static final int ELITE_BASE_HP = 400;
+    public static final int ELITE_DAMAGE = 40;
+    public static final double ELITE_SPEED = 0.9;
+    public static final int FINAL_BOSS_BASE_HP = 1200;
+    public static final int FINAL_BOSS_DAMAGE = 50;
+    public static final double FINAL_BOSS_SPEED = 0.7;
 
     public static final int REWARD_MONEY = 40;
     public static final int REWARD_SCORE = 100;

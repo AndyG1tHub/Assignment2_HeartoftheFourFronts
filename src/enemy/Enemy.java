@@ -31,6 +31,8 @@ public class Enemy {
     private Building attackTarget;
     private boolean slowed;
     private double slowTimer;
+    private double speedBoostTimer;
+    private double damageBoostTimer;
     private double animationTime;
     private double attackAnimationTimer;
     private boolean facingUp;
@@ -77,12 +79,17 @@ public class Enemy {
     }
 
     private void updateStatusEffects(double dt) {
-        if (!slowed) {
-            return;
+        if (slowed) {
+            slowTimer -= dt;
+            if (slowTimer <= 0.0) {
+                slowed = false;
+            }
         }
-        slowTimer -= dt;
-        if (slowTimer <= 0.0) {
-            slowed = false;
+        if (speedBoostTimer > 0) {
+            speedBoostTimer -= dt;
+        }
+        if (damageBoostTimer > 0) {
+            damageBoostTimer -= dt;
         }
     }
 
@@ -177,7 +184,7 @@ public class Enemy {
         attackCooldown -= dt;
         state = EnemyState.ATTACKING_BASE;
         if (attackCooldown <= 0.0) {
-            base.takeDamage(damage);
+            base.takeDamage(getEffectiveDamage());
             attackAnimationTimer = 0.45;
             attackCooldown = 1.0;
         }
@@ -193,7 +200,7 @@ public class Enemy {
         attackCooldown -= dt;
         state = EnemyState.ATTACKING_BASE;
         if (attackCooldown <= 0.0) {
-            building.takeDamage(damage);
+            building.takeDamage(getEffectiveDamage());
             clearDeadAttackTarget();
             attackAnimationTimer = 0.45;
             attackCooldown = 1.0;
@@ -283,7 +290,10 @@ public class Enemy {
     }
 
     private double getCurrentSpeed() {
-        return slowed ? speed * 0.5 : speed;
+        double mul = 1.0;
+        if (slowed) mul *= 0.5;
+        if (speedBoostTimer > 0) mul *= 1.6;
+        return speed * mul;
     }
 
     private boolean isPlayingAttackAnimation() {
@@ -334,5 +344,25 @@ public class Enemy {
 
     public int getScoreReward() {
         return scoreReward;
+    }
+
+    public int getEffectiveDamage() {
+        return damageBoostTimer > 0 ? (int)(damage * 1.5) : damage;
+    }
+
+    public void applySpeedBoost(double duration) {
+        speedBoostTimer = Math.max(speedBoostTimer, duration);
+    }
+
+    public void applyDamageBoost(double duration) {
+        damageBoostTimer = Math.max(damageBoostTimer, duration);
+    }
+
+    public boolean hasSpeedBoost() {
+        return speedBoostTimer > 0;
+    }
+
+    public boolean hasDamageBoost() {
+        return damageBoostTimer > 0;
     }
 }

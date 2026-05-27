@@ -7,5 +7,7 @@ public enum EnemyType {
     ASSASSIN,
     ARCHER,
     HEALER,
-    BOSS
+    BOSS,
+    ELITE,
+    FINAL_BOSS
 }

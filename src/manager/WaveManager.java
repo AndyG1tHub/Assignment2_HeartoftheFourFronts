@@ -6,8 +6,9 @@ import game.GameConfig;
 public class WaveManager {
     private double elapsedTime;
     private int stage = 1;
-    private double lastBossTime = 0;
+    private double lastEliteTime = 0;
     private double prepTimer = 5.0;
+    private boolean finalBossSpawned;
 
     public void update(double dt, ScoreManager score) {
         int oldStage = stage;
@@ -43,16 +44,28 @@ public class WaveManager {
         return prepTimer;
     }
 
-    public boolean isBossWave() {
-        return !isPrepTime() && elapsedTime - lastBossTime >= GameConfig.BOSS_INTERVAL;
+    public boolean isEliteWave() {
+        return !isPrepTime() && !finalBossSpawned && elapsedTime - lastEliteTime >= GameConfig.BOSS_INTERVAL;
     }
 
-    public void markBossSpawned() {
-        lastBossTime = elapsedTime;
+    public void markEliteSpawned() {
+        lastEliteTime = elapsedTime;
     }
 
-    public int getBossCount() {
+    public int getEliteCount() {
         return Math.min(stage, 4);
+    }
+
+    public boolean isFinalBossTime() {
+        return !finalBossSpawned && elapsedTime >= GameConfig.WAVE_LENGTH_SECONDS * GameConfig.TOTAL_STAGES - 5.0;
+    }
+
+    public void markFinalBossSpawned() {
+        finalBossSpawned = true;
+    }
+
+    public boolean hasFinalBossSpawned() {
+        return finalBossSpawned;
     }
 
     public double getSpawnIntervalMultiplier() {
@@ -74,7 +87,7 @@ public class WaveManager {
     public void setElapsedTime(double elapsedTime, int stage) {
         this.elapsedTime = elapsedTime;
         this.stage = stage;
-        this.lastBossTime = elapsedTime - GameConfig.BOSS_INTERVAL;
+        this.lastEliteTime = elapsedTime - GameConfig.BOSS_INTERVAL;
         this.prepTimer = 0;
     }
 
