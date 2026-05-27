@@ -20,7 +20,7 @@ public class ImageManger {
     private static Image healTower;
     private static Image iceTower;
     private static Image lightningTower;
-    Image wall;
+    private static Image wall;
     private static Image bait;
     Image homeItems;
     Image enemies;
@@ -302,6 +302,10 @@ public class ImageManger {
 
     public static Image getLightningTower() {
         return lightningTower;
+    }
+
+    public static Image getWall() {
+        return wall;
     }
 
     public static Image getBait() {
