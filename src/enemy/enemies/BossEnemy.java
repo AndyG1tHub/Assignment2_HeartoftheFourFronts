@@ -12,7 +12,7 @@ public class BossEnemy extends Enemy {
 
     public BossEnemy(GridPosition position, int hp) {
         super(position, EnemyType.BOSS, hp, GameConfig.BOSS_DAMAGE,
-                GameConfig.BOSS_SPEED, 100, 500);
+                GameConfig.BOSS_SPEED, 150, 500);
     }
 
     @Override

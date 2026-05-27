@@ -32,15 +32,15 @@ public final class GameConfig {
     }
     public static final double BUILDING_SELL_RATIO = 0.6;
     public static final int MAX_UPGRADE_LEVEL = 2;
-    public static final double UPGRADE_COST_MULTIPLIER = 0.7;
+    public static final double UPGRADE_COST_MULTIPLIER = 0.8;
     public static final double[] DAMAGE_MULTIPLIER = {1.0, 1.5, 2.0};
     public static final int[] RANGE_BONUS = {0, 1, 1};
     public static final double[] ATTACK_INTERVAL_MULTIPLIER = {1.0, 0.85, 0.7};
     public static final int[] HEAL_AMOUNT_UPGRADE = {20, 30, 45};
     public static final double BOSS_INTERVAL = 40.0;
-    public static final int BOSS_BASE_HP = 800;
+    public static final int BOSS_BASE_HP = 600;
     public static final int BOSS_DAMAGE = 60;
-    public static final double BOSS_SPEED = 0.6;
+    public static final double BOSS_SPEED = 0.85;
 
     public static final int REWARD_MONEY = 25;
     public static final int REWARD_SCORE = 100;
