@@ -128,7 +128,6 @@ public class CoreSiege extends GameEngine {
         dt *= speedMultiplier;
 
         gridMap.update(dt);
-        economyManager.updateIncome(dt);
 
         waveManager.update(dt, scoreManager);
 
