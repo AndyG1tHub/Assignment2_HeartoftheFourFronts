@@ -172,21 +172,15 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 	// Main Game function
 	//-------------------------------------------------------
 
-	// GameEngine Constructor
 	public GameEngine() {
-		// Create graphics transform stack
 		mTransforms = new Stack<AffineTransform>();
+		mWidth = GameConfig.WINDOW_WIDTH;
+		mHeight = GameConfig.WINDOW_HEIGHT;
 
-		// Set default width, height
-		mWidth = 500;
-		mHeight = 500;
-
-		// Create window
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				// Create the window	
-				setupWindow(500,500);
+				setupWindow(GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
 			}
 		});
 	}

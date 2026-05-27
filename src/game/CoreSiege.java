@@ -112,6 +112,7 @@ public class CoreSiege extends GameEngine {
             return;
         }
 
+        gridMap.update(dt);
         economyManager.updateIncome(dt);
 
         waveManager.update(dt, scoreManager);
