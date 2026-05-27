@@ -204,6 +204,12 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 		// Call CreateGame
 		createGame(game, 30);
 	}
+	public static GameState gameState;
+	public void setGameState(GameState state) {
+
+		gameState = state;
+	}
+
 
 	// Game Timer
 	protected class GameTimer extends Timer {
