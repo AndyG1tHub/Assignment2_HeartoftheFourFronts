@@ -64,6 +64,7 @@ public class HUD {
         drawBaseHealthBar(engine, base);
         drawStats(engine, base, economy, score, waves, difficulty);
         drawButtons(engine, selected);
+        drawHints(engine);
         drawTowerTooltip(engine, mouseX, mouseY, difficulty);
         drawBossWarning(engine, waves);
         drawPrepTimer(engine, waves);
@@ -144,6 +145,11 @@ public class HUD {
         drawStatPanel(engine, x, y, "STAGE", waves.getStage() + "  " + difficulty);
         drawStatPanel(engine, x + 108, y, "TIME", formatTime(waves.getElapsedTime()));
         y += 48;
+    }
+
+    private void drawHints(GameEngine engine) {
+        int x = GameConfig.WINDOW_WIDTH - 245;
+        int y = 450;
         engine.changeColor(new Color(50, 55, 60));
         engine.drawSolidRectangle(x, y, 208, 18);
         engine.changeColor(new Color(140, 145, 150));
@@ -155,11 +161,11 @@ public class HUD {
             engine.changeColor(new Color(255, 220, 80));
             engine.drawBoldText(x + 4, y + 13, "SPACE to pause", "Arial", 11);
         }
-        y += 18;
+        y += 20;
         engine.changeColor(new Color(45, 50, 55));
-        engine.drawSolidRectangle(x, y, 208, 16);
+        engine.drawSolidRectangle(x, y, 208, 18);
         engine.changeColor(new Color(120, 180, 230));
-        engine.drawBoldText(x + 4, y + 12, "F - 2x speed", "Arial", 11);
+        engine.drawBoldText(x + 4, y + 13, "F - 2x speed", "Arial", 11);
     }
 
     private void drawButtons(GameEngine engine, BuildingType selected) {
