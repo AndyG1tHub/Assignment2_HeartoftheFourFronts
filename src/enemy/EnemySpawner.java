@@ -66,23 +66,37 @@ public class EnemySpawner {
     private EnemyType chooseEnemyType(WaveManager waveManager) {
         int stage = waveManager.getStage();
         double roll = random.nextDouble();
+        if (stage >= 5) {
+            double tankLimit = GameConfig.STAGE_FIVE_TANK_CHANCE;
+            double assassinLimit = tankLimit + GameConfig.STAGE_FIVE_ASSASSIN_CHANCE;
+            double archerLimit = assassinLimit + GameConfig.STAGE_FIVE_ARCHER_CHANCE;
+            double healerLimit = archerLimit + GameConfig.STAGE_FIVE_HEALER_CHANCE;
+            if (roll < tankLimit) return EnemyType.TANK;
+            if (roll < assassinLimit) return EnemyType.ASSASSIN;
+            if (roll < archerLimit) return EnemyType.ARCHER;
+            if (roll < healerLimit) return EnemyType.HEALER;
+            return EnemyType.MELEE;
+        }
+        if (stage >= 4) {
+            double tankLimit = GameConfig.STAGE_FOUR_TANK_CHANCE;
+            double assassinLimit = tankLimit + GameConfig.STAGE_FOUR_ASSASSIN_CHANCE;
+            double archerLimit = assassinLimit + GameConfig.STAGE_FOUR_ARCHER_CHANCE;
+            double healerLimit = archerLimit + GameConfig.STAGE_FOUR_HEALER_CHANCE;
+            if (roll < tankLimit) return EnemyType.TANK;
+            if (roll < assassinLimit) return EnemyType.ASSASSIN;
+            if (roll < archerLimit) return EnemyType.ARCHER;
+            if (roll < healerLimit) return EnemyType.HEALER;
+            return EnemyType.MELEE;
+        }
         if (stage >= 3) {
             double tankLimit = GameConfig.STAGE_THREE_TANK_CHANCE;
             double assassinLimit = tankLimit + GameConfig.STAGE_THREE_ASSASSIN_CHANCE;
             double archerLimit = assassinLimit + GameConfig.STAGE_THREE_ARCHER_CHANCE;
             double healerLimit = archerLimit + GameConfig.STAGE_THREE_HEALER_CHANCE;
-            if (roll < tankLimit) {
-                return EnemyType.TANK;
-            }
-            if (roll < assassinLimit) {
-                return EnemyType.ASSASSIN;
-            }
-            if (roll < archerLimit) {
-                return EnemyType.ARCHER;
-            }
-            if (roll < healerLimit) {
-                return EnemyType.HEALER;
-            }
+            if (roll < tankLimit) return EnemyType.TANK;
+            if (roll < assassinLimit) return EnemyType.ASSASSIN;
+            if (roll < archerLimit) return EnemyType.ARCHER;
+            if (roll < healerLimit) return EnemyType.HEALER;
             return EnemyType.MELEE;
         }
         if (stage >= 2) {
@@ -90,28 +104,16 @@ public class EnemySpawner {
             double assassinLimit = tankLimit + GameConfig.STAGE_TWO_ASSASSIN_CHANCE;
             double archerLimit = assassinLimit + GameConfig.STAGE_TWO_ARCHER_CHANCE;
             double healerLimit = archerLimit + GameConfig.STAGE_TWO_HEALER_CHANCE;
-            if (roll < tankLimit) {
-                return EnemyType.TANK;
-            }
-            if (roll < assassinLimit) {
-                return EnemyType.ASSASSIN;
-            }
-            if (roll < archerLimit) {
-                return EnemyType.ARCHER;
-            }
-            if (roll < healerLimit) {
-                return EnemyType.HEALER;
-            }
+            if (roll < tankLimit) return EnemyType.TANK;
+            if (roll < assassinLimit) return EnemyType.ASSASSIN;
+            if (roll < archerLimit) return EnemyType.ARCHER;
+            if (roll < healerLimit) return EnemyType.HEALER;
             return EnemyType.MELEE;
         }
         double assassinLimit = GameConfig.STAGE_ONE_ASSASSIN_CHANCE;
         double archerLimit = assassinLimit + GameConfig.STAGE_ONE_ARCHER_CHANCE;
-        if (roll < assassinLimit) {
-            return EnemyType.ASSASSIN;
-        }
-        if (roll < archerLimit) {
-            return EnemyType.ARCHER;
-        }
+        if (roll < assassinLimit) return EnemyType.ASSASSIN;
+        if (roll < archerLimit) return EnemyType.ARCHER;
         return EnemyType.MELEE;
     }
 

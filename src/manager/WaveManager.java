@@ -20,18 +20,17 @@ public class WaveManager {
         if (stage > oldStage) {
             score.addWaveScore(stage * 250);
             prepTimer = 5.0;
-            elapsedTime += dt;
             SoundManager sm = SoundManager.getInstance();
             if (sm != null) sm.playWaveStart();
         }
     }
 
     private int calculateStage() {
-        if (elapsedTime >= GameConfig.WAVE_LENGTH_SECONDS * 2) {
-            return 3;
-        }
-        if (elapsedTime >= GameConfig.WAVE_LENGTH_SECONDS) {
-            return 2;
+        double t = elapsedTime;
+        for (int i = GameConfig.TOTAL_STAGES; i >= 1; i--) {
+            if (t >= GameConfig.WAVE_LENGTH_SECONDS * (i - 1)) {
+                return i;
+            }
         }
         return 1;
     }
@@ -53,16 +52,15 @@ public class WaveManager {
     }
 
     public int getBossCount() {
-        int bosses = (int) (elapsedTime / GameConfig.BOSS_INTERVAL);
-        return Math.min(bosses + 1, stage);
+        return Math.min(stage, 4);
     }
 
     public double getSpawnIntervalMultiplier() {
-        return Math.max(0.55, 1.0 - (stage - 1) * 0.2);
+        return Math.max(0.35, 1.0 - (stage - 1) * 0.12);
     }
 
     public boolean hasWon() {
-        return elapsedTime >= GameConfig.WAVE_LENGTH_SECONDS * 3;
+        return elapsedTime >= GameConfig.WAVE_LENGTH_SECONDS * GameConfig.TOTAL_STAGES;
     }
 
     public int getStage() {

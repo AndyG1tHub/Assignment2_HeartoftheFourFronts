@@ -178,7 +178,7 @@ public class MenuScreen {
         engine.drawText(x, y, "Intro cutscene - press Space to skip", "Arial", 14); y += step;
         engine.drawText(x, y, "Wall limit: Easy=unlimited, N=16, H=8", "Arial", 14); y += step;
         engine.drawText(x, y, "5s prep time before each wave", "Arial", 14); y += step;
-        engine.drawText(x, y, "Win: survive 3 waves (135s)", "Arial", 14); y += step;
+        engine.drawText(x, y, "Win: survive 5 waves (200s)", "Arial", 14); y += step;
         engine.drawText(x, y, "Save deletes on win or game over", "Arial", 14); y += step;
         backButton.setPosition(cx() - 100, GameConfig.WINDOW_HEIGHT - 100);
         backButton.draw(engine, false, mouseX, mouseY);

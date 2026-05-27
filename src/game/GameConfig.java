@@ -46,8 +46,9 @@ public final class GameConfig {
     public static final int REWARD_SCORE = 100;
     public static final double REWARD_SPAWN_INTERVAL = 12.0;
 
+    public static final int TOTAL_STAGES = 5;
     public static final double DEFAULT_SPAWN_INTERVAL = 2.0;
-    public static final double WAVE_LENGTH_SECONDS = 45.0;
+    public static final double WAVE_LENGTH_SECONDS = 40.0;
 
     public static final double STAGE_ONE_ASSASSIN_CHANCE = 0.20;
     public static final double STAGE_ONE_ARCHER_CHANCE = 0.15;
@@ -61,6 +62,16 @@ public final class GameConfig {
     public static final double STAGE_THREE_ASSASSIN_CHANCE = 0.16;
     public static final double STAGE_THREE_ARCHER_CHANCE = 0.16;
     public static final double STAGE_THREE_HEALER_CHANCE = 0.12;
+
+    public static final double STAGE_FOUR_TANK_CHANCE = 0.18;
+    public static final double STAGE_FOUR_ASSASSIN_CHANCE = 0.18;
+    public static final double STAGE_FOUR_ARCHER_CHANCE = 0.18;
+    public static final double STAGE_FOUR_HEALER_CHANCE = 0.15;
+
+    public static final double STAGE_FIVE_TANK_CHANCE = 0.20;
+    public static final double STAGE_FIVE_ASSASSIN_CHANCE = 0.20;
+    public static final double STAGE_FIVE_ARCHER_CHANCE = 0.20;
+    public static final double STAGE_FIVE_HEALER_CHANCE = 0.18;
 
     private GameConfig() {
     }
