@@ -151,13 +151,14 @@ public class MenuScreen {
         engine.changeColor(Color.WHITE);
         engine.drawBoldText(cx() - 60, 220, "HOW TO PLAY", "Arial", 22);
         engine.changeColor(SUBTITLE);
-        int x = cx() - 170, y = 250, step = 20;
-        engine.drawText(x, y, "1-7 : Select building type", "Arial", 14); y += step;
+        int x = cx() - 170, y = 250, step = 18;
+        engine.drawText(x, y, "1-7          : Select building type", "Arial", 14); y += step;
         engine.drawText(x, y, "Click map : Place selected building", "Arial", 14); y += step;
-        engine.drawText(x, y, "Click btn  : Select building from panel", "Arial", 14); y += step;
-        engine.drawText(x, y, "Space      : Pause / Resume game", "Arial", 14); y += step;
-        engine.drawText(x, y, "Esc         : Return to main menu", "Arial", 14); y += step;
-        engine.drawText(x, y, "M            : Toggle sound mute", "Arial", 14); y += step;
+        engine.drawText(x, y, "Right-click : Sell tower (60% refund)", "Arial", 14); y += step;
+        engine.drawText(x, y, "Click btn   : Select building from panel", "Arial", 14); y += step;
+        engine.drawText(x, y, "Space       : Pause / Resume game", "Arial", 14); y += step;
+        engine.drawText(x, y, "Esc          : Return to main menu", "Arial", 14); y += step;
+        engine.drawText(x, y, "M             : Toggle sound mute", "Arial", 14); y += step;
         y += 10;
         engine.changeColor(new Color(200, 180, 120));
         engine.drawBoldText(x, y, "PAUSE MENU", "Arial", 15); y += step;
@@ -173,7 +174,10 @@ public class MenuScreen {
         engine.changeColor(SUBTITLE);
         engine.drawText(x, y, "Hover building buttons to see stats", "Arial", 14); y += step;
         engine.drawText(x, y, "Resize window - map auto-adjusts", "Arial", 14); y += step;
-        backButton.setPosition(cx() - 100, GameConfig.WINDOW_HEIGHT - 80);
+        engine.drawText(x, y, "Intro cutscene - press Space to skip", "Arial", 14); y += step;
+        engine.drawText(x, y, "Wall limit: Easy=unlimited, N=16, H=8", "Arial", 14); y += step;
+        engine.drawText(x, y, "Save deletes on win or game over", "Arial", 14); y += step;
+        backButton.setPosition(cx() - 100, GameConfig.WINDOW_HEIGHT - 100);
         backButton.draw(engine, false, mouseX, mouseY);
     }
 
