@@ -151,10 +151,15 @@ public class HUD {
         y += 22;
         if ((System.currentTimeMillis() / 600) % 2 == 0) {
             engine.changeColor(new Color(50, 55, 60));
-            engine.drawSolidRectangle(x, y, 208, 20);
+            engine.drawSolidRectangle(x, y, 208, 18);
             engine.changeColor(new Color(255, 220, 80));
-            engine.drawBoldText(x + 4, y + 14, "SPACE to pause", "Arial", 12);
+            engine.drawBoldText(x + 4, y + 13, "SPACE to pause", "Arial", 11);
         }
+        y += 18;
+        engine.changeColor(new Color(45, 50, 55));
+        engine.drawSolidRectangle(x, y, 208, 16);
+        engine.changeColor(new Color(120, 180, 230));
+        engine.drawBoldText(x + 4, y + 12, "F - 2x speed", "Arial", 11);
     }
 
     private void drawButtons(GameEngine engine, BuildingType selected) {
