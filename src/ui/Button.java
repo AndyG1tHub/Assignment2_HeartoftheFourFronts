@@ -9,8 +9,8 @@ import game.GameEngine;
 public class Button {
     private int x;
     private int y;
-    private final int width;
-    private final int height;
+    private int width;
+    private int height;
     private String text;
     private final BuildingType buildingType;
     private final Color color;
@@ -85,6 +85,11 @@ public class Button {
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void setSize(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     public BuildingType getBuildingType() {
