@@ -25,7 +25,7 @@ public class Decoy {
 
     public void update(double dt) {
         moveTimer += dt;
-        if (moveTimer >= 0.5) {
+        if (moveTimer >= 1.2) {
             moveOneTile();
             moveTimer = 0.0;
         }
