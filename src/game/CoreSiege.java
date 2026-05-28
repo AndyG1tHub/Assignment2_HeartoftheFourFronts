@@ -326,7 +326,7 @@ public class CoreSiege extends GameEngine {
             return;
         }
         Building existing = gridMap.getBuildingAt(position);
-        if (existing != null && existing.canUpgrade()) {
+        if (existing != null && existing.canUpgrade() && selectedBuilding != BuildingType.DECOY) {
             int cost = existing.getUpgradeCost();
             if (economyManager.spendMoney(cost)) {
                 existing.upgrade();
@@ -341,15 +341,24 @@ public class CoreSiege extends GameEngine {
 
     private void handleGridClick(GridPosition position) {
         if (selectedBuilding == BuildingType.DECOY) {
-            placeDecoy();
+            placeDecoy(position);
         } else {
             placeBuilding(position);
         }
     }
 
-    private void placeDecoy() {
+    private void placeDecoy(GridPosition clickPos) {
         if (economyManager.spendMoney(GameConfig.DECOY_COST)) {
-            decoyManager.createDecoy(base.getPosition(), Direction.NORTH);
+            GridPosition basePos = base.getPosition();
+            int rowDiff = clickPos.row - basePos.row;
+            int colDiff = clickPos.col - basePos.col;
+            Direction dir;
+            if (Math.abs(rowDiff) > Math.abs(colDiff)) {
+                dir = rowDiff < 0 ? Direction.NORTH : Direction.SOUTH;
+            } else {
+                dir = colDiff < 0 ? Direction.WEST : Direction.EAST;
+            }
+            decoyManager.createDecoy(basePos, dir);
             soundManager.playDecoyDeploy();
         } else {
             soundManager.playInsufficientMoney();
