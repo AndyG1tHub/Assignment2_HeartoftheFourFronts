@@ -8,8 +8,8 @@ public class WaveManager {
     private int stage = 1;
     private double lastEliteTime = 0;
     private double prepTimer = 5.0;
-    private boolean finalBossSpawned;
-    private boolean finalBossDefeated;
+    private boolean bossSpawned;
+    private boolean bossDefeated;
 
     public void update(double dt, ScoreManager score) {
         int oldStage = stage;
@@ -46,7 +46,7 @@ public class WaveManager {
     }
 
     public boolean isEliteWave() {
-        return !isPrepTime() && !finalBossSpawned && elapsedTime - lastEliteTime >= GameConfig.BOSS_INTERVAL;
+        return !isPrepTime() && !bossSpawned && elapsedTime - lastEliteTime >= GameConfig.BOSS_INTERVAL;
     }
 
     public void markEliteSpawned() {
@@ -57,24 +57,20 @@ public class WaveManager {
         return Math.min(stage, 4);
     }
 
-    public boolean isFinalBossTime() {
-        return !finalBossSpawned && elapsedTime >= GameConfig.WAVE_LENGTH_SECONDS * GameConfig.TOTAL_STAGES - 20.0;
+    public boolean isBossActive() {
+        return bossSpawned && !bossDefeated;
     }
 
-    public boolean isFinalBossActive() {
-        return finalBossSpawned && !finalBossDefeated;
+    public void markBossDefeated() {
+        bossDefeated = true;
     }
 
-    public void markFinalBossDefeated() {
-        finalBossDefeated = true;
+    public void markBossSpawned() {
+        bossSpawned = true;
     }
 
-    public void markFinalBossSpawned() {
-        finalBossSpawned = true;
-    }
-
-    public boolean hasFinalBossSpawned() {
-        return finalBossSpawned;
+    public boolean hasBossSpawned() {
+        return bossSpawned;
     }
 
     public double getSpawnIntervalMultiplier() {
@@ -82,7 +78,7 @@ public class WaveManager {
     }
 
     public boolean hasWon() {
-        return finalBossDefeated;
+        return bossDefeated;
     }
 
     public int getStage() {
