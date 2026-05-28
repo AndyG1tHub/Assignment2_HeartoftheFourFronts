@@ -34,6 +34,7 @@ public class ImageManger {
     private static Image laserEffect;
     private static Image healRangeEffect;
     private static Image explosionFireball;
+    private static Image backgroundImage;
 
     private static Image[] mapTiles;
     private static Image[] obstacleSprites;
@@ -202,6 +203,7 @@ public class ImageManger {
         laserEffect = engine.subImage(homeItems, 170, 650, 300, 265);
         healRangeEffect = engine.subImage(homeItems, 555, 650, 340, 265);
         explosionFireball = engine.subImage(homeItems, 995, 630, 350, 285);
+        backgroundImage = engine.loadImage("Images/background.png");
 
         uiSheet = engine.loadImage("Images/Ui.png");
         btnPlayHover = engine.subImage(uiSheet, 0, 128, 64, 32);
@@ -361,6 +363,10 @@ public class ImageManger {
 
     public static Image getExplosionFireball() {
         return explosionFireball;
+    }
+
+    public static Image getBackground() {
+        return backgroundImage;
     }
 
     public static Image getMapTile(int index) {

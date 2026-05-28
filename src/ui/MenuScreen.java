@@ -8,12 +8,13 @@ import game.GameConfig;
 import game.Difficulty;
 import manager.ImageManger;
 
-/** Main menu screen with Play, Difficulty, Help, Exit options. */
+/** Main menu screen — premium minimal UI that showcases the background art. */
 public class MenuScreen {
     private static final Color BG = new Color(20, 24, 28);
-    private static final Color ACCENT = new Color(200, 180, 120);
-    private static final Color SUBTITLE = new Color(160, 165, 170);
-    private static final Color LOCKED = new Color(80, 50, 50);
+    private static final Color GOLD = new Color(235, 200, 110);
+    private static final Color GOLD_DIM = new Color(170, 140, 60);
+    private static final Color MUTED = new Color(185, 190, 195);
+    private static final Color LOCKED = new Color(90, 55, 55);
 
     public static final int END_NONE = 0;
     public static final int END_RESTART = 1;
@@ -27,306 +28,428 @@ public class MenuScreen {
     private int maxUnlockedLevel = 1;
     private int pendingLevel;
 
-    private final Button continueButton = new Button(320, 270, 200, 34, "CONTINUE", null, new Color(80, 200, 160));
-    private final Button playButton = new Button(320, 312, 200, 34, "PLAY", null, new Color(80, 180, 120));
-    private final Button diffButton = new Button(320, 354, 200, 34, "", null, new Color(200, 180, 80));
-    private final Button helpButton = new Button(320, 396, 200, 34, "HELP", null, new Color(130, 150, 180));
-    private final Button exitButton = new Button(320, 438, 200, 34, "EXIT", null, new Color(180, 100, 100));
-    private final Button backButton = new Button(320, 420, 200, 34, "BACK", null, SUBTITLE);
-    private final Button restartButton = new Button(330, 320, 240, 34, "RESTART", null, new Color(200, 180, 80));
-    private final Button menuButton = new Button(330, 365, 240, 34, "MAIN MENU", null, SUBTITLE);
-    private final Button[] levelButtons = new Button[5];
+    // Buttons constructed with actual rendered size — setSize/setPosition used each frame
+    private final Button continueButton = new Button(0, 0, 240, 42, "CONTINUE", null, new Color(100, 215, 165));
+    private final Button playButton      = new Button(0, 0, 240, 42, "PLAY",     null, new Color(100, 205, 135));
+    private final Button diffButton      = new Button(0, 0, 240, 42, "",         null, new Color(235, 200, 110));
+    private final Button helpButton      = new Button(0, 0, 240, 42, "HELP",     null, new Color(145, 165, 195));
+    private final Button exitButton      = new Button(0, 0, 240, 42, "EXIT",     null, new Color(205, 120, 120));
+    private final Button backButton      = new Button(0, 0, 200, 42, "BACK",     null, new Color(185, 190, 195));
+    private final Button restartButton   = new Button(0, 0, 260, 44, "RESTART",  null, new Color(235, 200, 110));
+    private final Button menuButton      = new Button(0, 0, 260, 44, "MAIN MENU",null, new Color(185, 190, 195));
+    private final Button[] levelButtons  = new Button[5];
 
     public MenuScreen() {
         menuState = 0;
         updateDiffLabel();
         for (int i = 0; i < 5; i++) {
-            levelButtons[i] = new Button(0, 0, 160, 50, "Level " + (i + 1), null, new Color(80, 180, 120));
+            levelButtons[i] = new Button(0, 0, 200, 56, "Level " + (i + 1), null, new Color(100, 205, 135));
         }
     }
 
-    public void setMaxUnlockedLevel(int level) {
-        maxUnlockedLevel = Math.max(1, Math.min(level, GameConfig.TOTAL_LEVELS));
-    }
+    public void setMaxUnlockedLevel(int level) { maxUnlockedLevel = Math.max(1, Math.min(level, GameConfig.TOTAL_LEVELS)); }
+    public int getSelectedLevel() { return pendingLevel; }
+    public void setHasContinue(boolean exists) { hasContinue = exists; }
+    private void updateDiffLabel() { diffButton.setText("" + currentDifficulty); }
+    //                                                      ^ just the name, short
 
-    public int getSelectedLevel() {
-        return pendingLevel;
-    }
-
-    public void setHasContinue(boolean exists) {
-        hasContinue = exists;
-    }
-
-    private void updateDiffLabel() {
-        diffButton.setText("DIFFICULTY: " + currentDifficulty);
-    }
+    // ================================================================
+    //  TOP-LEVEL DRAW
+    // ================================================================
 
     public void draw(GameEngine engine, int mouseX, int mouseY) {
-        engine.changeColor(BG);
-        engine.drawSolidRectangle(0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
+        // 1. Background image — full screen, no global overlay
+        Image bg = ImageManger.getBackground();
+        if (bg != null) {
+            engine.drawImage(bg, 0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
+        } else {
+            engine.changeColor(BG);
+            engine.drawSolidRectangle(0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
+        }
 
-        drawBorder(engine);
-        drawCastle(engine);
-        drawTitle(engine);
-        drawSubtitle(engine);
+        // 2. Subtle bottom gradient — only darkens the lower portion so buttons are readable
+        drawBottomVignette(engine);
 
+        // 3. Route to correct screen
         if (menuState == 1) {
             drawHelpContent(engine, mouseX, mouseY);
         } else if (menuState == 2) {
             drawLevelSelect(engine, mouseX, mouseY);
         } else {
-            drawMainButtons(engine, mouseX, mouseY);
+            drawMainMenu(engine, mouseX, mouseY);
         }
-        drawFooter(engine);
     }
 
-    private int cx() {
-        return GameConfig.WINDOW_WIDTH / 2;
-    }
-
-    private void drawCastle(GameEngine engine) {
-        int cx = cx() + 210, cy = 70;
-        engine.changeColor(new Color(55, 60, 70));
-        engine.drawSolidRectangle(cx - 40, cy, 80, 50);
-        engine.drawSolidRectangle(cx - 15, cy - 20, 30, 20);
-        engine.changeColor(new Color(200, 180, 120));
-        engine.drawRectangle(cx - 40, cy, 80, 50);
-        engine.drawRectangle(cx - 15, cy - 20, 30, 20);
-        for (int i = 0; i < 4; i++) {
-            engine.drawSolidRectangle(cx - 35 + i * 20, cy - 6, 10, 6);
+    /** Draw 8 gradient bands at bottom — transparency increases toward bottom. */
+    private void drawBottomVignette(GameEngine engine) {
+        int h = GameConfig.WINDOW_HEIGHT;
+        int w = GameConfig.WINDOW_WIDTH;
+        int bands = 8;
+        int bandH = 28;
+        for (int i = 0; i < bands; i++) {
+            int alpha = 12 + i * 16;               // 12 → 124
+            engine.changeColor(new Color(4, 6, 10, alpha));
+            engine.drawSolidRectangle(0, h - (bands - i) * bandH, w, bandH);
         }
-        engine.changeColor(new Color(40, 35, 25));
-        engine.drawSolidRectangle(cx - 8, cy + 25, 16, 25);
-        engine.changeColor(new Color(200, 180, 120));
-        engine.drawRectangle(cx - 8, cy + 25, 16, 25);
-        engine.drawCircle(cx, cy + 38, 3);
-        engine.drawLine(cx, cy + 30, cx, cy + 45);
-        engine.drawLine(cx - 8, cy + 38, cx + 8, cy + 38);
     }
 
-    private void drawBorder(GameEngine engine) {
-        engine.changeColor(ACCENT);
-        engine.drawRectangle(40, 40, GameConfig.WINDOW_WIDTH - 80, GameConfig.WINDOW_HEIGHT - 80, 2);
-        engine.drawRectangle(44, 44, GameConfig.WINDOW_WIDTH - 88, GameConfig.WINDOW_HEIGHT - 88, 1);
-    }
+    // ================================================================
+    //  MAIN MENU  —  right-side vertical button column, background shines through
+    // ================================================================
 
-    private void drawTitle(GameEngine engine) {
-        engine.changeColor(ACCENT);
-        engine.drawBoldText(cx() - 270, 140, "HEART OF THE", "Arial", 26);
-        engine.drawBoldText(cx() - 210, 175, "FOUR FRONTS", "Arial", 36);
-        engine.drawLine(cx() - 210, 195, cx() + 130, 195);
-    }
+    private void drawMainMenu(GameEngine engine, int mouseX, int mouseY) {
+        int w = GameConfig.WINDOW_WIDTH;
+        int h = GameConfig.WINDOW_HEIGHT;
 
-    private void drawSubtitle(GameEngine engine) {
-        engine.changeColor(SUBTITLE);
-        engine.drawText(cx() - 130, 235, "The Last Defence", "Arial", 18);
-    }
+        int btnW = 380;
+        int btnH = 62;
+        int gap = 14;
+        int count = hasContinue ? 5 : 4;
+        int totalH = count * btnH + (count - 1) * gap;
+        int startY = (h - totalH) / 2 + 150;
+        int colX = (w - btnW) / 2;
 
-    private void drawMainButtons(GameEngine engine, int mouseX, int mouseY) {
-        int bx = cx() - 100;
-        int by = 280;
+        int idx = 0;
         if (hasContinue) {
-            continueButton.setPosition(bx, by); by += 38;
-            drawPlainButton(engine, continueButton, mouseX, mouseY);
+            drawMenuBtn(engine, colX, startY + idx * (btnH + gap), btnW, btnH,
+                    "CONTINUE", new Color(100, 215, 165), mouseX, mouseY, continueButton);
+            idx++;
         }
-        playButton.setPosition(bx, by); by += 38;
-        drawPlayButton(engine, playButton, mouseX, mouseY);
-        diffButton.setPosition(bx, by); by += 38;
-        drawPlainButton(engine, diffButton, mouseX, mouseY);
-        helpButton.setPosition(bx, by); by += 38;
-        drawPlainButton(engine, helpButton, mouseX, mouseY);
-        exitButton.setPosition(bx, by); by += 38;
-        drawExitButton(engine, exitButton, mouseX, mouseY);
+        drawMenuBtn(engine, colX, startY + idx * (btnH + gap), btnW, btnH,
+                "PLAY", new Color(100, 205, 135), mouseX, mouseY, playButton);
+        idx++;
+        drawMenuBtn(engine, colX, startY + idx * (btnH + gap), btnW, btnH,
+                diffButton.getText(), new Color(235, 200, 110), mouseX, mouseY, diffButton);
+        idx++;
+        drawMenuBtn(engine, colX, startY + idx * (btnH + gap), btnW, btnH,
+                "HELP", new Color(145, 165, 195), mouseX, mouseY, helpButton);
+        idx++;
+        drawMenuBtn(engine, colX, startY + idx * (btnH + gap), btnW, btnH,
+                "EXIT", new Color(205, 120, 120), mouseX, mouseY, exitButton);
+
+        engine.changeColor(new Color(140, 145, 150, 90));
+        engine.drawText(w / 2 - 100, h - 32, "Space to skip  |  Esc to return", "Arial", 11);
     }
 
-    private void drawPlayButton(GameEngine engine, Button btn, int mouseX, int mouseY) {
-        boolean hovered = btn.contains(mouseX, mouseY);
-        engine.drawImage(hovered ? ImageManger.getBtnPlayHover() : ImageManger.getBtnPlayNormal(),
-                btn.getX() + 20, btn.getY() - 20, 160, 74);
-    }
-
-    private void drawExitButton(GameEngine engine, Button btn, int mouseX, int mouseY) {
-        boolean hovered = btn.contains(mouseX, mouseY);
-        engine.drawImage(hovered ? ImageManger.getBtnExitHover() : ImageManger.getBtnExitNormal(),
-                btn.getX() + 20, btn.getY() - 20, 160, 74);
-    }
-
-    private void drawPlainButton(GameEngine engine, Button btn, int mouseX, int mouseY) {
-        boolean hovered = btn.contains(mouseX, mouseY);
-        Image img = hovered ? ImageManger.getBtnPlainHover() : ImageManger.getBtnPlainNormal();
-        int iw = 170, ih = 60;
-        int ix = btn.getX() + (btn.getWidth() - iw) / 2;
-        int iy = btn.getY() + (btn.getHeight() - ih) / 2;
-        engine.drawImage(img, ix, iy, iw, ih);
-        engine.changeColor(ACCENT);
-        String t = btn.getText();
-        int size = t.length() > 14 ? 13 : 15;
-        int tw = (int)(t.length() * size * 0.6);
-        engine.drawBoldText(ix + (iw - tw) / 2, iy + 39, t, "Arial", size);
-    }
+    // ================================================================
+    //  HELP SCREEN  —  centred panel, moderate overlay
+    // ================================================================
 
     private void drawHelpContent(GameEngine engine, int mouseX, int mouseY) {
-        engine.changeColor(Color.WHITE);
-        engine.drawBoldText(cx() - 60, 220, "HOW TO PLAY", "Arial", 22);
-        engine.changeColor(SUBTITLE);
-        int x = cx() - 170, y = 250, step = 18;
-        engine.drawText(x, y, "1-7          : Select building type", "Arial", 14); y += step;
-        engine.drawText(x, y, "Click map : Place selected building", "Arial", 14); y += step;
-        engine.drawText(x, y, "Right-click : Sell tower (60% refund)", "Arial", 14); y += step;
-        engine.drawText(x, y, "Click btn   : Select building from panel", "Arial", 14); y += step;
-        engine.drawText(x, y, "Space       : Pause / Resume game", "Arial", 14); y += step;
-        engine.drawText(x, y, "Esc          : Return to main menu", "Arial", 14); y += step;
-        engine.drawText(x, y, "F              : Toggle 2x speed", "Arial", 14); y += step;
-        engine.drawText(x, y, "M             : Toggle sound mute", "Arial", 14); y += step;
-        y += 10;
-        engine.changeColor(new Color(200, 180, 120));
-        engine.drawBoldText(x, y, "PAUSE MENU", "Arial", 15); y += step;
-        engine.changeColor(SUBTITLE);
-        engine.drawText(x, y, "Resume      : Continue playing", "Arial", 14); y += step;
-        engine.drawText(x, y, "Save          : Save current progress", "Arial", 14); y += step;
-        engine.drawText(x, y, "Delete Save : Remove saved data", "Arial", 14); y += step;
-        engine.drawText(x, y, "Restart      : Restart the game", "Arial", 14); y += step;
-        engine.drawText(x, y, "Main Menu : Go back to title screen", "Arial", 14); y += step;
-        y += 10;
-        engine.changeColor(new Color(200, 180, 120));
-        engine.drawBoldText(x, y, "TIPS", "Arial", 15); y += step;
-        engine.changeColor(SUBTITLE);
-        engine.drawText(x, y, "Hover building buttons to see stats", "Arial", 14); y += step;
-        engine.drawText(x, y, "Resize window - map auto-adjusts", "Arial", 14); y += step;
-        engine.drawText(x, y, "Intro cutscene - press Space to skip", "Arial", 14); y += step;
-        engine.drawText(x, y, "Wall limit: Easy=unlimited, N=16, H=8", "Arial", 14); y += step;
-        engine.drawText(x, y, "5s prep time before each wave", "Arial", 14); y += step;
-        engine.drawText(x, y, "Win: survive 5 waves (200s)", "Arial", 14); y += step;
-        engine.drawText(x, y, "Save deletes on win or game over", "Arial", 14); y += step;
-        backButton.setPosition(cx() - 100, GameConfig.WINDOW_HEIGHT - 100);
-        backButton.draw(engine, false, mouseX, mouseY);
+        drawScreenOverlay(engine, 185);
+
+        int panelW = 860;
+        int panelH = 650;
+        int px = (GameConfig.WINDOW_WIDTH - panelW) / 2;
+        int py = (GameConfig.WINDOW_HEIGHT - panelH) / 2;
+
+        drawGlassPanel(engine, px, py, panelW, panelH);
+        drawPanelHeading(engine, px + 50, py + 38, "HOW  TO  PLAY");
+
+        int x = px + 60;
+        int y = py + 80;
+        int s = 24;
+        int col2 = x + 370;
+
+        drawHelpBlock2Col(engine, x, col2, y, s, "CONTROLS", new String[]{
+            "1 – 7              Select building type",
+            "Left Click          Place selected building",
+            "Right Click        Sell tower  (60% refund)",
+            "Click Button       Select from side panel",
+            "Space                Pause / Resume",
+            "Esc                    Return to main menu",
+            "F                       Toggle 2x speed",
+            "M                      Toggle sound",
+        });
+        y += 4 * s + 14;
+
+        engine.changeColor(new Color(GOLD_DIM.getRed(), GOLD_DIM.getGreen(), GOLD_DIM.getBlue(), 55));
+        engine.drawLine(x, y, x + 740, y);
+        y += 16;
+
+        drawHelpBlock2Col(engine, x, col2, y, s, "PAUSE  MENU", new String[]{
+            "Resume             Continue playing",
+            "Save                  Save current progress",
+            "Delete Save        Remove saved data",
+            "Restart              Restart from beginning",
+            "Main Menu         Return to title screen",
+        });
+        y += 3 * s + 14;
+
+        engine.changeColor(new Color(GOLD_DIM.getRed(), GOLD_DIM.getGreen(), GOLD_DIM.getBlue(), 55));
+        engine.drawLine(x, y, x + 740, y);
+        y += 16;
+
+        drawHelpBlock2Col(engine, x, col2, y, s, "TIPS", new String[]{
+            "Hover building buttons to preview their stats",
+            "Resize the window — the map will scale to fit",
+            "Wall limit : Easy = unlimited, Normal = 16, Hard = 8",
+            "Each wave starts with a 5 s preparation phase",
+            "Win by surviving 5 waves and defeating the boss",
+            "Save file is deleted on win or game over",
+        });
+
+        backButton.setSize(300, 56);
+        backButton.setPosition(px + (panelW - 300) / 2, py + panelH - 76);
+        drawBackBtn(engine, backButton, mouseX, mouseY);
     }
 
+    private void drawHelpBlock2Col(GameEngine engine, int x, int col2, int y, int s, String hdr, String[] lines) {
+        engine.changeColor(GOLD);
+        engine.drawBoldText(x, y, hdr, "Arial", 19);
+        y += s;
+        engine.changeColor(MUTED);
+        int half = (lines.length + 1) / 2;
+        for (int i = 0; i < half; i++) {
+            engine.drawText(x, y, lines[i], "Arial", 18);
+            if (i + half < lines.length) {
+                engine.drawText(col2, y, lines[i + half], "Arial", 18);
+            }
+            y += s;
+        }
+    }
+
+    // ================================================================
+    //  LEVEL SELECT
+    // ================================================================
+
     private void drawLevelSelect(GameEngine engine, int mouseX, int mouseY) {
-        engine.changeColor(ACCENT);
-        engine.drawBoldText(cx() - 80, 180, "SELECT LEVEL", "Arial", 24);
-        engine.changeColor(SUBTITLE);
-        engine.drawText(cx() - 100, 210, "Complete a level to unlock the next", "Arial", 13);
-        int startX = cx() - 85;
-        int startY = 240;
+        drawScreenOverlay(engine, 175);
+
+        int panelW = 720;
+        int panelH = 500;
+        int px = (GameConfig.WINDOW_WIDTH - panelW) / 2;
+        int py = (GameConfig.WINDOW_HEIGHT - panelH) / 2;
+
+        drawGlassPanel(engine, px, py, panelW, panelH);
+        drawPanelHeading(engine, px + 50, py + 36, "SELECT  LEVEL");
+
+        engine.changeColor(MUTED);
+        engine.drawText(px + 210, py + 70, "Complete a level to unlock the next", "Arial", 16);
+
+        int sx = px + 70;
+        int sy = py + 100;
         for (int i = 0; i < 5; i++) {
             int lvl = i + 1;
             boolean unlocked = lvl <= maxUnlockedLevel;
             Button btn = levelButtons[i];
-            int col = i % 2;
-            int row = i / 2;
-            int bx = startX + col * 180;
-            int by = startY + row * 70;
+            int bx = sx + (i % 2) * 300;
+            int by = sy + (i / 2) * 100;
+            btn.setSize(280, 74);
             btn.setPosition(bx, by);
-            boolean hovered = btn.contains(mouseX, mouseY);
+            boolean hov = btn.contains(mouseX, mouseY);
+
             if (unlocked) {
-                if (hovered) {
-                    engine.changeColor(new Color(55, 80, 55));
-                    engine.drawSolidRectangle(bx, by, 160, 50);
-                }
-                btn.draw(engine, false);
+                drawLevelBtn(engine, bx, by, 280, 74, "Level " + lvl,
+                        new Color(100, 205, 135), hov);
             } else {
-                engine.changeColor(new Color(35, 25, 25));
-                engine.drawSolidRectangle(bx, by, 160, 50);
-                engine.changeColor(new Color(60, 40, 40));
-                engine.drawRectangle(bx, by, 160, 50);
+                engine.changeColor(new Color(28, 20, 20, 210));
+                engine.drawSolidRectangle(bx, by, 280, 74);
+                engine.changeColor(new Color(50, 30, 30));
+                engine.drawRectangle(bx, by, 280, 74);
                 engine.changeColor(LOCKED);
-                engine.drawBoldText(bx + 40, by + 32, "Level " + lvl + " ?", "Arial", 14);
+                engine.drawBoldText(bx + 80, by + 46, "Level " + lvl + "  ?", "Arial", 18);
             }
         }
-        backButton.setPosition(cx() - 100, GameConfig.WINDOW_HEIGHT - 100);
-        backButton.draw(engine, false, mouseX, mouseY);
+
+        backButton.setSize(280, 52);
+        backButton.setPosition(px + (panelW - 280) / 2, py + panelH - 70);
+        drawBackBtn(engine, backButton, mouseX, mouseY);
     }
 
-    private void drawFooter(GameEngine engine) {
-        engine.changeColor(new Color(100, 105, 110));
-        engine.drawText(cx() - 130, GameConfig.WINDOW_HEIGHT - 30, "Defend the heart from four fronts.", "Arial", 13);
+    // ================================================================
+    //  END SCREEN
+    // ================================================================
+
+    public void drawEndScreen(GameEngine engine, boolean won, int mouseX, int mouseY) {
+        int w = GameConfig.WINDOW_WIDTH;
+        int h = GameConfig.WINDOW_HEIGHT;
+
+        Image bg = ImageManger.getBackground();
+        if (bg != null) {
+            engine.drawImage(bg, 0, 0, w, h);
+        } else {
+            engine.changeColor(BG);
+            engine.drawSolidRectangle(0, 0, w, h);
+        }
+        drawScreenOverlay(engine, 170);
+
+        int panelW = 420;
+        int panelH = 230;
+        int px = (w - panelW) / 2;
+        int py = (h - panelH) / 2;
+
+        drawGlassPanel(engine, px, py, panelW, panelH);
+
+        String title = won ? "VICTORY" : "DEFEAT";
+        Color tc = won ? new Color(100, 230, 145) : new Color(240, 90, 80);
+
+        // text shadow
+        engine.changeColor(new Color(0, 0, 0, 110));
+        engine.drawBoldText(px + (panelW - 210) / 2 + 3, py + 48 + 3, title, "Georgia", 42);
+        // text
+        engine.changeColor(tc);
+        engine.drawBoldText(px + (panelW - 210) / 2, py + 48, title, "Georgia", 42);
+
+        engine.changeColor(MUTED);
+        engine.drawText(px + 145, py + 82, "Choose your next action", "Arial", 14);
+
+        restartButton.setSize(260, 44);
+        menuButton.setSize(260, 44);
+        restartButton.setPosition(px + 80, py + 110);
+        menuButton.setPosition(px + 80, py + 158);
+        drawEndBtn(engine, restartButton, mouseX, mouseY);
+        drawEndBtn(engine, menuButton, mouseX, mouseY);
     }
+
+    // ================================================================
+    //  DRAWING HELPERS
+    // ================================================================
+
+    private void drawScreenOverlay(GameEngine engine, int alpha) {
+        engine.changeColor(new Color(6, 8, 12, alpha));
+        engine.drawSolidRectangle(0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
+    }
+
+    /** Glassmorphism panel — dark semi-transparent with thin border + corner accents. */
+    private void drawGlassPanel(GameEngine engine, int x, int y, int w, int h) {
+        engine.changeColor(new Color(10, 13, 19, 215));
+        engine.drawSolidRectangle(x, y, w, h);
+        engine.changeColor(new Color(55, 60, 66, 130));
+        engine.drawRectangle(x, y, w, h);
+
+        // Corner accents
+        int c = 22;
+        engine.changeColor(new Color(GOLD_DIM.getRed(), GOLD_DIM.getGreen(), GOLD_DIM.getBlue(), 110));
+        engine.drawLine(x, y, x + c, y);   engine.drawLine(x, y, x, y + c);
+        engine.drawLine(x + w, y, x + w - c, y);   engine.drawLine(x + w, y, x + w, y + c);
+        engine.drawLine(x, y + h, x + c, y + h);   engine.drawLine(x, y + h, x, y + h - c);
+        engine.drawLine(x + w, y + h, x + w - c, y + h);   engine.drawLine(x + w, y + h, x + w, y + h - c);
+    }
+
+    private void drawPanelHeading(GameEngine engine, int x, int y, String title) {
+        engine.changeColor(new Color(0, 0, 0, 110));
+        engine.drawBoldText(x + 3, y + 3, title, "Georgia", 28);
+        engine.changeColor(GOLD);
+        engine.drawBoldText(x, y, title, "Georgia", 28);
+        engine.changeColor(new Color(GOLD_DIM.getRed(), GOLD_DIM.getGreen(), GOLD_DIM.getBlue(), 60));
+        engine.drawLine(x, y + 14, x + 340, y + 14);
+    }
+
+    // ================================================================
+    //  BUTTON STYLES
+    // ================================================================
+
+    /** Main-menu right-column button — low-alpha glass feel. */
+    private void drawMenuBtn(GameEngine engine, int x, int y, int w, int h,
+            String text, Color accent, int mouseX, int mouseY, Button btn) {
+        btn.setSize(w, h);
+        btn.setPosition(x, y);
+        boolean on = btn.contains(mouseX, mouseY);
+
+        // fill
+        engine.changeColor(on
+                ? new Color(30, 36, 46, 190)
+                : new Color(14, 18, 24, 120));
+        engine.drawSolidRectangle(x, y, w, h);
+
+        // left accent bar
+        engine.changeColor(on ? accent : new Color(accent.getRed()/3, accent.getGreen()/3, accent.getBlue()/3, 160));
+        engine.drawSolidRectangle(x, y, 4, h);
+
+        // border
+        engine.changeColor(on ? accent : new Color(60, 65, 72, 110));
+        engine.drawRectangle(x, y, w, h);
+
+        // text
+        engine.changeColor(on ? Color.WHITE : new Color(210, 215, 220));
+        int fs = text.length() > 10 ? 20 : 24;
+        int tw = text.length() * fs * 6 / 10;
+        engine.drawBoldText(x + (w - tw) / 2, y + 42, text, "Arial", fs);
+    }
+
+    private void drawBackBtn(GameEngine engine, Button btn, int mouseX, int mouseY) {
+        boolean on = btn.contains(mouseX, mouseY);
+        int x = btn.getX(), y = btn.getY(), w = btn.getWidth(), h = btn.getHeight();
+
+        engine.changeColor(on ? new Color(32, 38, 48, 210) : new Color(16, 20, 27, 160));
+        engine.drawSolidRectangle(x, y, w, h);
+        engine.changeColor(on ? GOLD : new Color(60, 65, 72, 130));
+        engine.drawRectangle(x, y, w, h);
+        engine.changeColor(on ? Color.WHITE : MUTED);
+        engine.drawBoldText(x + (w - 56) / 2, y + 34, "BACK", "Arial", 17);
+    }
+
+    private void drawEndBtn(GameEngine engine, Button btn, int mouseX, int mouseY) {
+        boolean on = btn.contains(mouseX, mouseY);
+        int x = btn.getX(), y = btn.getY(), w = btn.getWidth(), h = btn.getHeight();
+
+        engine.changeColor(on ? new Color(38, 44, 56, 210) : new Color(18, 22, 30, 160));
+        engine.drawSolidRectangle(x, y, w, h);
+        engine.changeColor(on ? GOLD : new Color(60, 65, 72, 130));
+        engine.drawRectangle(x, y, w, h);
+        engine.changeColor(on ? Color.WHITE : MUTED);
+        String t = btn.getText();
+        int tw = t.length() * 9;
+        engine.drawBoldText(x + (w - tw) / 2, y + 30, t, "Arial", 14);
+    }
+
+    private void drawLevelBtn(GameEngine engine, int x, int y, int w, int h,
+            String text, Color accent, boolean on) {
+        engine.changeColor(on ? new Color(34, 60, 42, 210) : new Color(14, 22, 18, 160));
+        engine.drawSolidRectangle(x, y, w, h);
+        engine.changeColor(on ? accent : new Color(accent.getRed()/3, accent.getGreen()/3, accent.getBlue()/3, 160));
+        engine.drawSolidRectangle(x, y, 5, h);
+        engine.changeColor(on ? accent : new Color(50, 60, 55, 130));
+        engine.drawRectangle(x, y, w, h);
+        engine.changeColor(on ? Color.WHITE : MUTED);
+        int tw = text.length() * 13;
+        engine.drawBoldText(x + (w - tw) / 2, y + 47, text, "Arial", 20);
+    }
+
+    // ================================================================
+    //  CLICK HANDLING
+    // ================================================================
 
     public int handleClick(int mouseX, int mouseY) {
         if (menuState == 1) {
-            if (backButton.contains(mouseX, mouseY)) {
-                menuState = 0;
-                return MenuAction.SOUND;
-            }
+            if (backButton.contains(mouseX, mouseY)) { menuState = 0; return MenuAction.SOUND; }
             return MenuAction.NONE;
         }
         if (menuState == 2) {
-            if (backButton.contains(mouseX, mouseY)) {
-                menuState = 0;
-                return MenuAction.SOUND;
-            }
+            if (backButton.contains(mouseX, mouseY)) { menuState = 0; return MenuAction.SOUND; }
             for (int i = 0; i < 5; i++) {
-                int lvl = i + 1;
-                if (lvl <= maxUnlockedLevel && levelButtons[i].contains(mouseX, mouseY)) {
-                    pendingLevel = lvl;
+                if (i + 1 <= maxUnlockedLevel && levelButtons[i].contains(mouseX, mouseY)) {
+                    pendingLevel = i + 1;
                     menuState = 0;
                     return LEVEL_PLAY;
                 }
             }
             return MenuAction.NONE;
         }
-        if (hasContinue && continueButton.contains(mouseX, mouseY)) {
-            return CONTINUE;
-        }
-        if (playButton.contains(mouseX, mouseY)) {
-            menuState = 2;
-            return MenuAction.SOUND;
-        }
-        if (diffButton.contains(mouseX, mouseY)) {
-            cycleDifficulty();
-            return MenuAction.SOUND;
-        }
-        if (helpButton.contains(mouseX, mouseY)) {
-            menuState = 1;
-            return MenuAction.SOUND;
-        }
-        if (exitButton.contains(mouseX, mouseY)) {
-            System.exit(0);
-        }
+        if (hasContinue && continueButton.contains(mouseX, mouseY)) return CONTINUE;
+        if (playButton.contains(mouseX, mouseY))      { menuState = 2; return MenuAction.SOUND; }
+        if (diffButton.contains(mouseX, mouseY))      { cycleDifficulty(); return MenuAction.SOUND; }
+        if (helpButton.contains(mouseX, mouseY))      { menuState = 1; return MenuAction.SOUND; }
+        if (exitButton.contains(mouseX, mouseY))      { System.exit(0); }
         return MenuAction.NONE;
     }
 
     private void cycleDifficulty() {
-        if (currentDifficulty == Difficulty.EASY) {
-            currentDifficulty = Difficulty.NORMAL;
-        } else if (currentDifficulty == Difficulty.NORMAL) {
-            currentDifficulty = Difficulty.HARD;
-        } else {
-            currentDifficulty = Difficulty.EASY;
-        }
+        if (currentDifficulty == Difficulty.EASY) currentDifficulty = Difficulty.NORMAL;
+        else if (currentDifficulty == Difficulty.NORMAL) currentDifficulty = Difficulty.HARD;
+        else currentDifficulty = Difficulty.EASY;
         updateDiffLabel();
     }
 
-    public Difficulty getSelectedDifficulty() {
-        return currentDifficulty;
-    }
-
-    public void drawEndScreen(GameEngine engine, boolean won, int mouseX, int mouseY) {
-        engine.changeColor(BG);
-        engine.drawSolidRectangle(0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
-        drawBorder(engine);
-        engine.changeColor(won ? new Color(80, 200, 120) : new Color(200, 60, 60));
-        engine.drawBoldText(cx() - 90, 210, won ? "YOU WIN!" : "GAME OVER", "Arial", 42);
-        engine.changeColor(SUBTITLE);
-        engine.drawText(cx() - 80, 260, "Choose what to do next.", "Arial", 16);
-        restartButton.setPosition(cx() - 120, 320);
-        menuButton.setPosition(cx() - 120, 365);
-        restartButton.draw(engine, true, mouseX, mouseY);
-        menuButton.draw(engine, false, mouseX, mouseY);
-    }
+    public Difficulty getSelectedDifficulty() { return currentDifficulty; }
 
     public int handleEndClick(int mouseX, int mouseY) {
-        if (restartButton.contains(mouseX, mouseY)) {
-            return END_RESTART;
-        }
-        if (menuButton.contains(mouseX, mouseY)) {
-            return END_MENU;
-        }
+        if (restartButton.contains(mouseX, mouseY)) return END_RESTART;
+        if (menuButton.contains(mouseX, mouseY))    return END_MENU;
         return END_NONE;
     }
 
-    /** Return codes for menu clicks. */
     public static class MenuAction {
         public static final int NONE = 0;
         public static final int PLAY = 1;
