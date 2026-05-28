@@ -9,7 +9,6 @@ import core.GridPosition;
 import core.GridMap;
 import enemy.Enemy;
 import building.Building;
-import combat.FireZone;
 import combat.MeteorStrike;
 import game.GameEngine;
 import manager.WaveManager;
@@ -23,22 +22,32 @@ public class DisasterManager {
     public void update(double dt, WaveManager waves, GridMap map,
             List<Enemy> enemies, List<Building> buildings) {
         timer += dt;
-        maybeStartDisaster(waves, map);
+        maybeStartDisaster(waves, map, buildings);
         updateActiveDisasters(dt, enemies, buildings);
     }
 
-    private void maybeStartDisaster(WaveManager waves, GridMap map) {
+    private void maybeStartDisaster(WaveManager waves, GridMap map, List<Building> buildings) {
         if (waves.getStage() < 2 || timer < 10.0) {
             return;
         }
-        disasters.add(createRandomDisaster(map));
+        disasters.add(createRandomDisaster(map, buildings));
         timer = 0.0;
     }
 
-    private Disaster createRandomDisaster(GridMap map) {
-        List<GridPosition> empty = map.getAllEmptyPositions();
-        GridPosition position = empty.isEmpty() ? map.getBasePosition() : empty.get(random.nextInt(empty.size()));
-        return random.nextBoolean() ? new FireZone(position) : new MeteorStrike(position);
+    private Disaster createRandomDisaster(GridMap map, List<Building> buildings) {
+        GridPosition position;
+
+        // 50% chance to target a building
+        if (random.nextDouble() < 0.5 && !buildings.isEmpty()) {
+            Building targetBuilding = buildings.get(random.nextInt(buildings.size()));
+            position = targetBuilding.getPosition();
+        } else {
+            // Random empty position
+            List<GridPosition> empty = map.getAllEmptyPositions();
+            position = empty.isEmpty() ? map.getBasePosition() : empty.get(random.nextInt(empty.size()));
+        }
+
+        return new MeteorStrike(position);
     }
 
     private void updateActiveDisasters(double dt, List<Enemy> enemies, List<Building> buildings) {
