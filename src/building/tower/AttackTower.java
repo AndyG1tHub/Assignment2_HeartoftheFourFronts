@@ -54,8 +54,14 @@ public abstract class AttackTower extends Building {
         if (target == null) {
             return;
         }
-        target.takeDamage(getDamage());
-        projectiles.addProjectile(position, target.getGridPosition(), Color.YELLOW);
+
+        // Create projectile with damage callback
+        projectiles.addProjectile(position, target.getGridPosition(), Color.YELLOW, () -> {
+            if (!target.isDead()) {
+                target.takeDamage(getDamage());
+            }
+        });
+
         resetCooldown();
         playShootSound();
     }

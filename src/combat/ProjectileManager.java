@@ -17,6 +17,10 @@ public class ProjectileManager {
         projectiles.add(new Projectile(start, target, color));
     }
 
+    public void addProjectile(GridPosition start, GridPosition target, Color color, Runnable onHitCallback) {
+        projectiles.add(new Projectile(start, target, color, onHitCallback));
+    }
+
     public void update(double dt) {
         Iterator<Projectile> iterator = projectiles.iterator();
         while (iterator.hasNext()) {

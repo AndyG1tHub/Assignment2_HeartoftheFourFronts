@@ -17,7 +17,7 @@ import manager.ImageManger;
 public class CannonTower extends AttackTower {
     public CannonTower(GridPosition position) {
         super(position, 150, GameConfig.CANNON_TOWER_COST, 4,
-                BuildingType.CANNON_TOWER, 45, 2.4);
+                BuildingType.CANNON_TOWER, 45, 3.0);
     }
 
     @Override
@@ -26,12 +26,20 @@ public class CannonTower extends AttackTower {
         if (target == null) {
             return;
         }
-        for (Enemy enemy : enemies) {
-            if (!enemy.isDead() && target.getGridPosition().equals(enemy.getGridPosition())) {
-                enemy.takeDamage(getDamage());
+
+        GridPosition targetPos = target.getGridPosition();
+        int damage = getDamage();
+
+        // Create projectile with damage callback
+        projectiles.addProjectile(position, targetPos, Color.ORANGE, () -> {
+            // Deal damage to all enemies in the same tile when projectile hits
+            for (Enemy enemy : enemies) {
+                if (!enemy.isDead() && enemy.getGridPosition().equals(targetPos)) {
+                    enemy.takeDamage(damage);
+                }
             }
-        }
-        projectiles.addProjectile(position, target.getGridPosition(), Color.ORANGE);
+        });
+
         resetCooldown();
         playShootSound();
     }
