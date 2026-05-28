@@ -65,10 +65,10 @@ public class ImageManger {
     private static Image[] archerEnemyRunLeft;
     private static Image[] archerEnemyAttack;
     private static Image[] archerEnemyAttackLeft;
-    private static Image[] healerEnemyRun;
-    private static Image[] healerEnemyRunLeft;
-    private static Image[] healerEnemyAttack;
-    private static Image[] healerEnemyAttackLeft;
+    private static Image[] bossEnemyRun;
+    private static Image[] bossEnemyRunLeft;
+    private static Image[] bossEnemyAttack;
+    private static Image[] bossEnemyAttackLeft;
 
     public void loadImages(GameEngine engine) {
         this.engine = engine;
@@ -109,7 +109,10 @@ public class ImageManger {
     }
 
     private static Image[] getEnemyRunFrames(EnemyType type) {
-        if (type == EnemyType.BOSS || type == EnemyType.ELITE || type == EnemyType.FINAL_BOSS) {
+        if (type == EnemyType.BOSS) {
+            return bossEnemyRun;
+        }
+        if (type == EnemyType.ELITE) {
             return tankEnemyRun;
         }
         if (type == EnemyType.TANK) {
@@ -121,14 +124,14 @@ public class ImageManger {
         if (type == EnemyType.ARCHER) {
             return archerEnemyRun;
         }
-        if (type == EnemyType.HEALER) {
-            return healerEnemyRun;
-        }
         return meleeEnemyRun;
     }
 
     private static Image[] getEnemyRunLeftFrames(EnemyType type) {
-        if (type == EnemyType.BOSS || type == EnemyType.ELITE || type == EnemyType.FINAL_BOSS) {
+        if (type == EnemyType.BOSS) {
+            return bossEnemyRunLeft;
+        }
+        if (type == EnemyType.ELITE) {
             return tankEnemyRunLeft;
         }
         if (type == EnemyType.TANK) {
@@ -140,14 +143,14 @@ public class ImageManger {
         if (type == EnemyType.ARCHER) {
             return archerEnemyRunLeft;
         }
-        if (type == EnemyType.HEALER) {
-            return healerEnemyRunLeft;
-        }
         return meleeEnemyRunLeft;
     }
 
     private static Image[] getEnemyAttackFrames(EnemyType type) {
-        if (type == EnemyType.BOSS || type == EnemyType.ELITE || type == EnemyType.FINAL_BOSS) {
+        if (type == EnemyType.BOSS) {
+            return bossEnemyAttack;
+        }
+        if (type == EnemyType.ELITE) {
             return tankEnemyAttack;
         }
         if (type == EnemyType.TANK) {
@@ -159,14 +162,14 @@ public class ImageManger {
         if (type == EnemyType.ARCHER) {
             return archerEnemyAttack;
         }
-        if (type == EnemyType.HEALER) {
-            return healerEnemyAttack;
-        }
         return meleeEnemyAttack;
     }
 
     private static Image[] getEnemyAttackLeftFrames(EnemyType type) {
-        if (type == EnemyType.BOSS || type == EnemyType.ELITE || type == EnemyType.FINAL_BOSS) {
+        if (type == EnemyType.BOSS) {
+            return bossEnemyAttackLeft;
+        }
+        if (type == EnemyType.ELITE) {
             return tankEnemyAttackLeft;
         }
         if (type == EnemyType.TANK) {
@@ -177,9 +180,6 @@ public class ImageManger {
         }
         if (type == EnemyType.ARCHER) {
             return archerEnemyAttackLeft;
-        }
-        if (type == EnemyType.HEALER) {
-            return healerEnemyAttackLeft;
         }
         return meleeEnemyAttackLeft;
     }
@@ -250,11 +250,11 @@ public class ImageManger {
         archerEnemyAttack = loadEnemyAttackSprite(engine, archerSheet);
         archerEnemyAttackLeft = flipFrames(archerEnemyAttack);
 
-        Image healerSheet = engine.loadImage("Images/healerEnemy.png");
-        healerEnemyRun = loadEnemyRunSprite(engine, healerSheet);
-        healerEnemyRunLeft = flipFrames(healerEnemyRun);
-        healerEnemyAttack = loadEnemyAttackSprite(engine, healerSheet);
-        healerEnemyAttackLeft = flipFrames(healerEnemyAttack);
+        Image bossSheet = engine.loadImage("Images/bossEnemy.png");
+        bossEnemyRun = loadEnemyRunSprite(engine, bossSheet);
+        bossEnemyRunLeft = flipFrames(bossEnemyRun);
+        bossEnemyAttack = loadEnemyAttackSprite(engine, bossSheet);
+        bossEnemyAttackLeft = flipFrames(bossEnemyAttack);
     }
 
     private Image[] loadEnemyRunSprite(GameEngine engine, Image sheet) {

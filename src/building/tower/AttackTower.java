@@ -18,6 +18,7 @@ public abstract class AttackTower extends Building {
     protected final double baseAttackInterval;
     protected final int baseRange;
     protected double cooldown;
+    protected double disabledTimer;
 
     protected AttackTower(GridPosition position, int maxHp, int cost, int range,
             BuildingType type, int damage, double attackInterval) {
@@ -44,6 +45,10 @@ public abstract class AttackTower extends Building {
     public void update(double dt, List<Enemy> enemies, ProjectileManager projectiles,
             GridMap map, List<Building> buildings) {
         cooldown = Math.max(0.0, cooldown - dt);
+        disabledTimer = Math.max(0.0, disabledTimer - dt);
+        if (disabledTimer > 0.0) {
+            return;
+        }
         if (canAttack()) {
             attack(enemies, projectiles, map);
         }
@@ -97,6 +102,10 @@ public abstract class AttackTower extends Building {
 
     protected boolean canAttack() {
         return cooldown <= 0.0;
+    }
+
+    public void disable(double duration) {
+        disabledTimer = Math.max(disabledTimer, duration);
     }
 
     protected void resetCooldown() {
