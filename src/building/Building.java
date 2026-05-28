@@ -117,7 +117,7 @@ public abstract class Building {
         int startX = cx - totalW / 2;
         for (int i = 0; i < chevCount; i++) {
             int x = startX + i * 8;
-            engine.changeColor(new Color(255, 200, 50));
+            engine.changeColor(new Color(220, 230, 240));
             engine.drawLine(x, cy + 4, x + 3, cy, 1);
             engine.drawLine(x + 3, cy, x + 6, cy + 4, 1);
         }
