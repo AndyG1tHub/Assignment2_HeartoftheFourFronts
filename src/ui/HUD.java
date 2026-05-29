@@ -462,7 +462,9 @@ public class HUD {
     }
 
     private void drawMessage(GameEngine engine, String text, Color color) {
-        int cx = GameConfig.WINDOW_WIDTH / 2;
+        // Center in the game area (excluding HUD panel on the right)
+        int gameAreaWidth = GameConfig.WINDOW_WIDTH - GameConfig.HUD_WIDTH;
+        int cx = gameAreaWidth / 2;
         int cy = GameConfig.WINDOW_HEIGHT / 2;
 
         // Animation phases
