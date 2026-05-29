@@ -13,7 +13,7 @@ import game.GameEngine;
 import game.GameConfig;
 import manager.ImageManager;
 
-/** Low-damage tower that slows its target. */
+/** Low-damage tower that freezes its target in place. */
 public class IceTower extends AttackTower {
     public IceTower(GridPosition position) {
         super(position, 120, GameConfig.ICE_TOWER_COST, 4,
@@ -29,11 +29,13 @@ public class IceTower extends AttackTower {
 
         int damage = getDamage();
 
-        // Create projectile with damage and slow callback
+        double freezeDuration = getAttackInterval();
+
+        // Create projectile with damage and freeze callback
         projectiles.addProjectile(position, target.getGridPosition(), Color.CYAN, () -> {
             if (!target.isDead()) {
                 target.takeDamage(damage);
-                target.applySlow(2.0);
+                target.applyFreeze(freezeDuration);
             }
         });
 
