@@ -479,7 +479,7 @@ public class HUD {
         double pulse = Math.sin(endMessageTimer * 4) * 0.3 + 0.7;
 
         // Calculate font size with scale
-        int baseFontSize = 72;
+        int baseFontSize = 48;
         int fontSize = (int)(baseFontSize * scale);
 
         int approxW = text.length() * fontSize * 3 / 5;
