@@ -71,12 +71,12 @@ public class CoreSiege extends GameEngine {
     public void init() {
         setWindowSize(GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
         menuScreen = new MenuScreen();
-        introScreen = new IntroScreen();
         hud = new HUD();
         SoundManager.init(this);
         soundManager = SoundManager.getInstance();
         soundManager.loadSounds();
         ImageManager.loadImages(this);
+        introScreen = new IntroScreen();
         hasSave = saveFileExists();
         menuScreen.setHasContinue(hasSave);
         loadProgress();
