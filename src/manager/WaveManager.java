@@ -46,7 +46,8 @@ public class WaveManager {
     }
 
     public boolean isEliteWave() {
-        return !isPrepTime() && !bossSpawned && elapsedTime - lastEliteTime >= GameConfig.BOSS_INTERVAL;
+        // Increase elite spawn interval from 40s to 60s
+        return !isPrepTime() && !bossSpawned && elapsedTime - lastEliteTime >= 60.0;
     }
 
     public void markEliteSpawned() {
@@ -54,7 +55,8 @@ public class WaveManager {
     }
 
     public int getEliteCount() {
-        return Math.min(stage, 4);
+        // Reduce elite count: max 2 instead of 4
+        return Math.min(stage, 2);
     }
 
     public boolean isBossActive() {
@@ -74,17 +76,26 @@ public class WaveManager {
     }
 
     public double getSpawnIntervalMultiplier() {
+        // Boss phase: spawn enemies much faster!
+        if (bossSpawned && !bossDefeated) {
+            return 0.25;  // 75% faster spawn during boss fight
+        }
         return Math.max(0.35, 1.0 - (stage - 1) * 0.12);
     }
 
     public boolean hasWon() {
-        // Win condition: Boss defeated AND all enemies cleared
+        // Win condition: Boss/Final wave defeated (marked by bossDefeated)
         return bossDefeated;
     }
 
     public boolean canCheckWin() {
-        // Only check win after boss has spawned
+        // Only check win after boss/final wave has spawned
         return bossSpawned;
+    }
+
+    public void markFinalWaveDefeated() {
+        // For Level 1-2, mark final elite wave as defeated
+        bossDefeated = true;
     }
 
     public int getStage() {

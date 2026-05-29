@@ -142,6 +142,7 @@ public class CoreSiege extends GameEngine {
 
         waveManager.update(dt, scoreManager);
 
+        enemySpawner.setCurrentLevel(currentLevel);
         enemySpawner.update(dt, waveManager);
 
         eventManager.update(dt, gridMap, waveManager,
@@ -464,8 +465,8 @@ public class CoreSiege extends GameEngine {
     }
 
     private void selectBuildingByKey(int keyCode) {
-        BuildingType[] all = {BuildingType.ARROW_TOWER, BuildingType.CANNON_TOWER, BuildingType.ICE_TOWER,
-                              BuildingType.LIGHTNING_TOWER, BuildingType.HEAL_TOWER, BuildingType.DECOY};
+        BuildingType[] all = {BuildingType.ARROW_TOWER, BuildingType.ICE_TOWER, BuildingType.CANNON_TOWER,
+                              BuildingType.HEAL_TOWER, BuildingType.LIGHTNING_TOWER, BuildingType.DECOY};
         int[] keys = {KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4, KeyEvent.VK_5, KeyEvent.VK_6};
         java.util.List<BuildingType> unlocked = GameConfig.getUnlockedTowers(currentLevel);
         for (int i = 0; i < 6; i++) {

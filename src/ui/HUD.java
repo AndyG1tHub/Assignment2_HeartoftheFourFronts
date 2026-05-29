@@ -58,13 +58,13 @@ public class HUD {
     private void createButtons(int level) {
         buttons.clear();
         java.util.List<BuildingType> unlocked = GameConfig.getUnlockedTowers(level);
-        int[] costs = {GameConfig.ARROW_TOWER_COST, GameConfig.CANNON_TOWER_COST, GameConfig.ICE_TOWER_COST,
-                       GameConfig.LIGHTNING_TOWER_COST, GameConfig.HEAL_TOWER_COST, GameConfig.DECOY_COST};
-        String[] labels = {"Arrow", "Cannon", "Ice", "Lightning", "Heal", "Decoy"};
-        Color[] colors = {new Color(70, 170, 95), new Color(180, 110, 55), new Color(65, 170, 200),
-                          new Color(175, 100, 200), new Color(75, 180, 145), new Color(200, 155, 80)};
-        BuildingType[] allTypes = {BuildingType.ARROW_TOWER, BuildingType.CANNON_TOWER, BuildingType.ICE_TOWER,
-                                   BuildingType.LIGHTNING_TOWER, BuildingType.HEAL_TOWER, BuildingType.DECOY};
+        int[] costs = {GameConfig.ARROW_TOWER_COST, GameConfig.ICE_TOWER_COST, GameConfig.CANNON_TOWER_COST,
+                       GameConfig.HEAL_TOWER_COST, GameConfig.LIGHTNING_TOWER_COST, GameConfig.DECOY_COST};
+        String[] labels = {"Arrow", "Ice", "Cannon", "Heal", "Lightning", "Decoy"};
+        Color[] colors = {new Color(70, 170, 95), new Color(65, 170, 200), new Color(180, 110, 55),
+                          new Color(75, 180, 145), new Color(175, 100, 200), new Color(200, 155, 80)};
+        BuildingType[] allTypes = {BuildingType.ARROW_TOWER, BuildingType.ICE_TOWER, BuildingType.CANNON_TOWER,
+                                   BuildingType.HEAL_TOWER, BuildingType.LIGHTNING_TOWER, BuildingType.DECOY};
         for (int i = 0; i < 6; i++) {
             if (unlocked.contains(allTypes[i])) {
                 buttons.add(new Button(0, 0, 200, 24,
