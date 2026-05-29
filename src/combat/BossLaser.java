@@ -11,7 +11,7 @@ import game.GameConfig;
 import game.GameEngine;
 
 /** Epic boss laser inspired by PvZ Zomboss — charges with energy buildup,
- *  then fires a devastating beam from the staff that obliterates towers! */
+ *  then fires a devastating beam that obliterates entire row OR column! */
 public class BossLaser {
     public static final double FIRE_INTERVAL = 5.0;
     private static final double CHARGE_TIME = 0.8;   // dramatic charge-up
@@ -44,6 +44,7 @@ public class BossLaser {
         screenShake = 0;
         beamWidth = 0;
 
+        // Target ALL buildings in the same row OR column
         targets = new ArrayList<Building>();
         for (Building b : buildings) {
             if (b.isDestroyed()) continue;
@@ -230,51 +231,51 @@ public class BossLaser {
 
                 // Outer explosive glow
                 engine.changeColor(new Color(160, 60, 255, (int)(60 * widthMul)));
-                engine.drawLine(staffX, y, mapX + gridW, y, (float)(35 * widthMul));
+                engine.drawLine(mapX, y, mapX + gridW, y, (float)(35 * widthMul));
 
                 // Mid purple glow
                 engine.changeColor(new Color(180, 80, 255, (int)(100 * widthMul)));
-                engine.drawLine(staffX, y, mapX + gridW, y, (float)(22 * widthMul));
+                engine.drawLine(mapX, y, mapX + gridW, y, (float)(22 * widthMul));
 
                 // Bright purple core
                 engine.changeColor(new Color(200, 120, 255, (int)(180 * widthMul)));
-                engine.drawLine(staffX, y, mapX + gridW, y, (float)(12 * widthMul));
+                engine.drawLine(mapX, y, mapX + gridW, y, (float)(12 * widthMul));
 
                 // Inner bright beam
                 engine.changeColor(new Color(230, 180, 255, (int)(220 * widthMul)));
-                engine.drawLine(staffX, y, mapX + gridW, y, (float)(6 * widthMul));
+                engine.drawLine(mapX, y, mapX + gridW, y, (float)(6 * widthMul));
 
                 // White hot center
                 engine.changeColor(new Color(255, 245, 255, (int)(200 * widthMul)));
-                engine.drawLine(staffX, y, mapX + gridW, y, (float)(2 * widthMul));
+                engine.drawLine(mapX, y, mapX + gridW, y, (float)(2 * widthMul));
 
                 // Electric arcs along beam
-                drawElectricArcs(engine, staffX, y, mapX + gridW, y, beamElapsed, widthMul);
+                drawElectricArcs(engine, mapX, y, mapX + gridW, y, beamElapsed, widthMul);
             } else {
                 int x = mapX + fixedRowOrCol * tileSize + tileSize / 2;
 
                 // Outer explosive glow
                 engine.changeColor(new Color(160, 60, 255, (int)(60 * widthMul)));
-                engine.drawLine(x, staffY, x, mapY + gridH, (float)(35 * widthMul));
+                engine.drawLine(x, mapY, x, mapY + gridH, (float)(35 * widthMul));
 
                 // Mid purple glow
                 engine.changeColor(new Color(180, 80, 255, (int)(100 * widthMul)));
-                engine.drawLine(x, staffY, x, mapY + gridH, (float)(22 * widthMul));
+                engine.drawLine(x, mapY, x, mapY + gridH, (float)(22 * widthMul));
 
                 // Bright purple core
                 engine.changeColor(new Color(200, 120, 255, (int)(180 * widthMul)));
-                engine.drawLine(x, staffY, x, mapY + gridH, (float)(12 * widthMul));
+                engine.drawLine(x, mapY, x, mapY + gridH, (float)(12 * widthMul));
 
                 // Inner bright beam
                 engine.changeColor(new Color(230, 180, 255, (int)(220 * widthMul)));
-                engine.drawLine(x, staffY, x, mapY + gridH, (float)(6 * widthMul));
+                engine.drawLine(x, mapY, x, mapY + gridH, (float)(6 * widthMul));
 
                 // White hot center
                 engine.changeColor(new Color(255, 245, 255, (int)(200 * widthMul)));
-                engine.drawLine(x, staffY, x, mapY + gridH, (float)(2 * widthMul));
+                engine.drawLine(x, mapY, x, mapY + gridH, (float)(2 * widthMul));
 
                 // Electric arcs along beam
-                drawElectricArcs(engine, x, staffY, x, mapY + gridH, beamElapsed, widthMul);
+                drawElectricArcs(engine, x, mapY, x, mapY + gridH, beamElapsed, widthMul);
             }
 
             // Explosive impact effects at towers

@@ -78,7 +78,13 @@ public class WaveManager {
     }
 
     public boolean hasWon() {
+        // Win condition: Boss defeated AND all enemies cleared
         return bossDefeated;
+    }
+
+    public boolean canCheckWin() {
+        // Only check win after boss has spawned
+        return bossSpawned;
     }
 
     public int getStage() {

@@ -52,7 +52,8 @@ public class EnemySpawner {
             waveManager.markBossSpawned();
         }
 
-        if (shouldSpawn(waveManager)) {
+        // Stop spawning regular enemies after boss appears
+        if (!waveManager.hasBossSpawned() && shouldSpawn(waveManager)) {
             spawnEnemy(waveManager);
             spawnTimer = 0.0;
         }

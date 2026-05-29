@@ -12,8 +12,8 @@ import enemy.EnemyType;
 import game.GameConfig;
 import game.GameEngine;
 
-/** Boss enemy that fires purple horizontal or vertical lasers every 5 seconds,
- *  destroying towers in their path over 2 seconds. */
+/** Boss enemy that fires purple cross-shaped lasers every 5 seconds,
+ *  destroying entire row AND column of towers. */
 public class BossEnemy extends Enemy {
     public static final int BASE_HP = GameConfig.BOSS_BASE_HP;
 
@@ -68,7 +68,7 @@ public class BossEnemy extends Enemy {
 
     @Override
     protected void onAttackLands() {
-        // Laser replaces the old disable-aura skill
+        // Laser is fired on timer, not on attack
     }
 
     @Override

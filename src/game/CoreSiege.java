@@ -199,7 +199,8 @@ public class CoreSiege extends GameEngine {
                 soundManager.playGameOver();
                 hasTriggeredEndSound = true;
             }
-        } else if (waveManager.hasWon()) {
+        } else if (waveManager.canCheckWin() && waveManager.hasWon() && enemySpawner.getEnemies().isEmpty()) {
+            // Win only when boss is defeated AND all enemies are cleared
             gameState = GameState.WIN_EFFECT;
             endEffectTimer = 0.0;
             hud.resetEndMessageTimer();
