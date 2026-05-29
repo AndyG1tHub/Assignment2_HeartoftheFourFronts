@@ -33,7 +33,7 @@ src/enemy/enemies/MeleeEnemy.java
 src/enemy/enemies/EliteEnemy.java
 src/enemy/enemies/BossEnemy.java
 src/manager/WaveManager.java
-src/manager/ImageManger.java
+src/manager/ImageManager.java
 src/manager/ScoreManager.java
 src/manager/DecoyManager.java
 src/manager/RewardPointManager.java

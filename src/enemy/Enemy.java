@@ -11,7 +11,7 @@ import building.Building;
 import building.Decoy;
 import game.GameEngine;
 import game.GameConfig;
-import manager.ImageManger;
+import manager.ImageManager;
 
 /** Base enemy that owns stats and grid movement; EnemyAI owns decisions. */
 public class Enemy {
@@ -201,7 +201,7 @@ public class Enemy {
         moveTarget = null;
         attackTarget = building;
         attackCooldown -= dt;
-        state = EnemyState.ATTACKING_BASE;
+        state = EnemyState.ATTACKING_BUILDING;
         if (attackCooldown <= 0.0) {
             building.takeDamage(getEffectiveDamage());
             damageAnimation = false;
@@ -260,8 +260,8 @@ public class Enemy {
             y = map.tileCenterY(gridPosition);
         }
         Image sprite = isPlayingAttackAnimation()
-                ? ImageManger.getEnemyAttackSprite(type, animationTime, facingLeft)
-                : ImageManger.getEnemySprite(type, animationTime, facingLeft);
+                ? ImageManager.getEnemyAttackSprite(type, animationTime, facingLeft)
+                : ImageManager.getEnemySprite(type, animationTime, facingLeft);
         double drawMul = getDrawSizeMultiplier();
         if (sprite != null) {
             double size = GameConfig.TILE_SIZE * 1.25 * drawMul;
@@ -306,7 +306,7 @@ public class Enemy {
     }
 
     private boolean isPlayingAttackAnimation() {
-        return state == EnemyState.ATTACKING_BASE || attackAnimationTimer > 0.0;
+        return state == EnemyState.ATTACKING_BASE || state == EnemyState.ATTACKING_BUILDING || attackAnimationTimer > 0.0;
     }
 
     private boolean shouldSnapToTileForAnimation() {

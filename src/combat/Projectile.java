@@ -7,7 +7,7 @@ import core.GridPosition;
 import core.GridMap;
 import game.GameConfig;
 import game.GameEngine;
-import manager.ImageManger;
+import manager.ImageManager;
 
 /** Lightweight visual projectile. Damage is applied when projectile reaches target. */
 public class Projectile {
@@ -85,16 +85,16 @@ public class Projectile {
 
     private Image getProjectileImage() {
         if (color == Color.YELLOW) {
-            return ImageManger.getArrowProjectile();
+            return ImageManager.getArrowProjectile();
         }
         if (color == Color.ORANGE) {
-            return ImageManger.getCannonProjectile();
+            return ImageManager.getCannonProjectile();
         }
         if (color == Color.CYAN) {
-            return ImageManger.getIceProjectile();
+            return ImageManager.getIceProjectile();
         }
         if (color == Color.MAGENTA) {
-            return ImageManger.getLaserEffect();
+            return ImageManager.getLaserEffect();
         }
         return null;
     }

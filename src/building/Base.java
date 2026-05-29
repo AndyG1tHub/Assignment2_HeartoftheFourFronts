@@ -7,7 +7,7 @@ import core.GridPosition;
 import core.GridMap;
 import game.GameEngine;
 import game.GameConfig;
-import manager.ImageManger;
+import manager.ImageManager;
 import manager.SoundManager;
 
 /** The central objective enemies try to destroy. */
@@ -51,7 +51,7 @@ public class Base {
     public void draw(GameEngine engine, GridMap map) {
         int x = map.toScreenX(position.col);
         int y = map.toScreenY(position.row);
-        Image image = ImageManger.getBaseImage();
+        Image image = ImageManager.getBaseImage();
         if (image != null) {
             int size = GameConfig.TILE_SIZE * 2;
             int centerX = map.tileCenterX(position);

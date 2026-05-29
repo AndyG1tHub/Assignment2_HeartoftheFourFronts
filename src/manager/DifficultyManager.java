@@ -30,8 +30,11 @@ public class DifficultyManager {
         return 1.0;
     }
 
-    public double getDisasterFrequencyModifier() {
-        return difficulty == Difficulty.HARD ? 0.8 : 1.0;
+    public double getDisasterInterval() {
+        double base = 10.0;
+        if (difficulty == Difficulty.EASY) return base * 1.5;
+        if (difficulty == Difficulty.HARD) return base * 0.7;
+        return base;
     }
 
     public Difficulty getDifficulty() {

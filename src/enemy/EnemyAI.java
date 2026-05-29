@@ -75,9 +75,10 @@ public class EnemyAI {
         GridPosition enemyPos = enemy.getGridPosition();
         double attackRange = enemy.getBaseAttackRange();
 
-        // Search in a 3x3 area around the enemy
-        for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
-            for (int colOffset = -1; colOffset <= 1; colOffset++) {
+        // Search in attack range around the enemy
+        int range = (int)attackRange;
+        for (int rowOffset = -range; rowOffset <= range; rowOffset++) {
+            for (int colOffset = -range; colOffset <= range; colOffset++) {
                 if (rowOffset == 0 && colOffset == 0) continue;
 
                 int checkRow = enemyPos.row + rowOffset;

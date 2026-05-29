@@ -12,7 +12,7 @@ import game.GameConfig;
 import game.GameState;
 import game.Difficulty;
 import manager.EconomyManager;
-import manager.ImageManger;
+import manager.ImageManager;
 import manager.ScoreManager;
 import manager.WaveManager;
 
@@ -226,7 +226,7 @@ public class HUD {
         int cw = 135;
         int ch = 42;
         int gap = 8;
-        Image coinIcon = ImageManger.getCoin();
+        Image coinIcon = ImageManager.getCoin();
 
         drawStatCard(engine, x, y, cw, ch, "MONEY", String.valueOf(economy.getMoney()), coinIcon);
         drawStatCard(engine, x + cw + gap, y, cw, ch, "KILLS", String.valueOf(score.getEnemiesKilled()), null);
@@ -306,13 +306,13 @@ public class HUD {
 
     private Image getTowerIcon(BuildingType type) {
         switch (type) {
-            case ARROW_TOWER:    return ImageManger.getArrowTower();
-            case CANNON_TOWER:   return ImageManger.getAttackTower();
-            case ICE_TOWER:      return ImageManger.getIceTower();
-            case LIGHTNING_TOWER:return ImageManger.getLightningTower();
-            case WALL:           return ImageManger.getWall();
-            case HEAL_TOWER:     return ImageManger.getHealTower();
-            case DECOY:          return ImageManger.getBait();
+            case ARROW_TOWER:    return ImageManager.getArrowTower();
+            case CANNON_TOWER:   return ImageManager.getAttackTower();
+            case ICE_TOWER:      return ImageManager.getIceTower();
+            case LIGHTNING_TOWER:return ImageManager.getLightningTower();
+            case WALL:           return ImageManager.getWall();
+            case HEAL_TOWER:     return ImageManager.getHealTower();
+            case DECOY:          return ImageManager.getBait();
             default:             return null;
         }
     }

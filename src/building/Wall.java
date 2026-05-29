@@ -7,7 +7,7 @@ import core.GridPosition;
 import core.GridMap;
 import game.GameEngine;
 import game.GameConfig;
-import manager.ImageManger;
+import manager.ImageManager;
 
 /** High-health blocking defence. */
 public class Wall extends Building {
@@ -19,7 +19,7 @@ public class Wall extends Building {
     public void draw(GameEngine engine, GridMap map) {
         int x = map.toScreenX(position.col);
         int y = map.toScreenY(position.row);
-        Image wallImage = ImageManger.getWall();
+        Image wallImage = ImageManager.getWall();
         if (wallImage != null) {
             engine.drawImage(wallImage, x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
         } else {

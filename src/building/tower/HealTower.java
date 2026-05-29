@@ -15,7 +15,7 @@ import enemy.Enemy;
 import combat.ProjectileManager;
 import game.GameEngine;
 import game.GameConfig;
-import manager.ImageManger;
+import manager.ImageManager;
 import manager.SoundManager;
 
 /** Support building that heals nearby damaged towers with green laser beams. */
@@ -113,7 +113,7 @@ public class HealTower extends Building {
     }
 
     public void drawRangeEffect(GameEngine engine, GridMap map) {
-        Image rangeImage = ImageManger.getHealRangeEffect();
+        Image rangeImage = ImageManager.getHealRangeEffect();
         if (rangeImage != null) {
             int size = (range * 2 + 1) * GameConfig.TILE_SIZE;
             engine.setAlpha(0.5f);
@@ -127,7 +127,7 @@ public class HealTower extends Building {
     public void draw(GameEngine engine, GridMap map) {
         int x = map.toScreenX(position.col);
         int y = map.toScreenY(position.row);
-        Image image = ImageManger.getHealTower();
+        Image image = ImageManager.getHealTower();
         if (image != null) {
             int size = (int) (GameConfig.TILE_SIZE * 1.4);
             int offset = (size - GameConfig.TILE_SIZE) / 2;

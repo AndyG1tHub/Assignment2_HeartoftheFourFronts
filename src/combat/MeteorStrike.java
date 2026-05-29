@@ -11,7 +11,7 @@ import event.Disaster;
 import event.EventType;
 import game.GameConfig;
 import game.GameEngine;
-import manager.ImageManger;
+import manager.ImageManager;
 import manager.SoundManager;
 
 /** Warning marker followed by one burst of damage. */
@@ -54,11 +54,11 @@ public class MeteorStrike extends Disaster {
 
     @Override
     public void draw(GameEngine engine, GridMap map) {
-        if (struck && ImageManger.getExplosionFireball() != null) {
+        if (struck && ImageManager.getExplosionFireball() != null) {
             int size = (radius * 2 + 1) * GameConfig.TILE_SIZE;
             int x = map.tileCenterX(position) - size / 2;
             int y = map.tileCenterY(position) - size / 2;
-            engine.drawImage(ImageManger.getExplosionFireball(), x, y, size, size);
+            engine.drawImage(ImageManager.getExplosionFireball(), x, y, size, size);
             return;
         }
         Color color = struck ? new Color(255, 130, 45) : new Color(255, 230, 90);

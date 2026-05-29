@@ -10,7 +10,7 @@ import event.EventType;
 import game.GameEngine;
 import game.GameConfig;
 import manager.EconomyManager;
-import manager.ImageManger;
+import manager.ImageManager;
 import manager.ScoreManager;
 import manager.SoundManager;
 
@@ -44,7 +44,7 @@ public class RewardPoint extends GameEvent {
 
     @Override
     public void draw(GameEngine engine, GridMap map) {
-        Image coinImage = ImageManger.getCoinTurnFrame(animationTime);
+        Image coinImage = ImageManager.getCoinTurnFrame(animationTime);
         int centerX = map.tileCenterX(position);
         int centerY = map.tileCenterY(position);
         int size = 26;

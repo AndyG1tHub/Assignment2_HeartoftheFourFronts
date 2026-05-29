@@ -9,7 +9,7 @@ import java.util.Random;
 import game.GameConfig;
 import game.GameEngine;
 import building.Building;
-import manager.ImageManger;
+import manager.ImageManager;
 
 /** Stores and draws the 20x20 grid and validates placement/movement rules. */
 public class GridMap {
@@ -27,7 +27,7 @@ public class GridMap {
     }
 
     private void createEmptyTiles() {
-        int mapTileCount = ImageManger.getMapTileCount();
+        int mapTileCount = ImageManager.getMapTileCount();
         for (int row = 0; row < GameConfig.GRID_ROWS; row++) {
             for (int col = 0; col < GameConfig.GRID_COLS; col++) {
                 tiles[row][col] = new Tile(row, col, TileType.EMPTY);
@@ -240,7 +240,7 @@ public class GridMap {
         int x = toScreenX(position.col);
         int y = toScreenY(position.row);
 
-        Image mapTile = ImageManger.getMapTile(tile.getMapTileVariant());
+        Image mapTile = ImageManager.getMapTile(tile.getMapTileVariant());
         if (mapTile != null) {
             engine.drawImage(mapTile, x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
         } else {
@@ -258,7 +258,7 @@ public class GridMap {
 
     private void drawObstacle(GameEngine engine, Tile tile, int x, int y) {
         if (tile.isFireObstacle()) {
-            Image fireFrame = ImageManger.getFireAnimationFrame(animationTime);
+            Image fireFrame = ImageManager.getFireAnimationFrame(animationTime);
             if (fireFrame != null) {
                 int fireWidth = 40;
                 int fireHeight = (int) (fireWidth * 48.0 / 44.0);
@@ -270,7 +270,7 @@ public class GridMap {
                 engine.drawSolidRectangle(x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
             }
         } else {
-            Image obstacleSprite = ImageManger.getObstacleSprite(tile.getObstacleVariant());
+            Image obstacleSprite = ImageManager.getObstacleSprite(tile.getObstacleVariant());
             if (obstacleSprite != null) {
                 int treeSize = 45;
                 int offsetX = x + (GameConfig.TILE_SIZE - treeSize) / 2;

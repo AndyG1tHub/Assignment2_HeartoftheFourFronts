@@ -8,7 +8,7 @@ import core.GridMap;
 import util.Direction;
 import game.GameConfig;
 import game.GameEngine;
-import manager.ImageManger;
+import manager.ImageManager;
 
 /** Moving lure that travels outward and attracts nearby enemies. */
 public class Decoy {
@@ -79,7 +79,7 @@ public class Decoy {
         engine.changeColor(new Color(240, 220, 95, 120));
         engine.drawCircle(cx, cy, rangePixels, 1);
 
-        Image image = ImageManger.getBait();
+        Image image = ImageManager.getBait();
         if (image != null) {
             int x = map.toScreenX(gridPosition.col);
             int y = map.toScreenY(gridPosition.row);

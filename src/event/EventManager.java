@@ -15,9 +15,10 @@ public class EventManager {
     private final RewardPointManager rewardPointManager;
     private final DisasterManager disasterManager;
 
-    public EventManager() {
+    public EventManager(double disasterInterval) {
         rewardPointManager = new RewardPointManager();
         disasterManager = new DisasterManager();
+        disasterManager.setDisasterInterval(disasterInterval);
     }
 
     public void update(double dt, GridMap map, WaveManager waves,

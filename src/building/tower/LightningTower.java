@@ -13,7 +13,7 @@ import enemy.Enemy;
 import combat.ProjectileManager;
 import game.GameEngine;
 import game.GameConfig;
-import manager.ImageManger;
+import manager.ImageManager;
 import manager.SoundManager;
 
 /** Laser tower with 3x3 range and continuous beam damage. */
@@ -111,7 +111,7 @@ public class LightningTower extends AttackTower {
     public void draw(GameEngine engine, GridMap map) {
         int x = map.toScreenX(position.col);
         int y = map.toScreenY(position.row);
-        Image image = ImageManger.getLightningTower();
+        Image image = ImageManager.getLightningTower();
 
         if (image != null) {
             int size = (int) (GameConfig.TILE_SIZE * 1.4);

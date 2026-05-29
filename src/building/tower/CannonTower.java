@@ -11,7 +11,7 @@ import enemy.Enemy;
 import combat.ProjectileManager;
 import game.GameEngine;
 import game.GameConfig;
-import manager.ImageManger;
+import manager.ImageManager;
 
 /** Slow tower with simple area damage. */
 public class CannonTower extends AttackTower {
@@ -48,7 +48,7 @@ public class CannonTower extends AttackTower {
     public void draw(GameEngine engine, GridMap map) {
         int x = map.toScreenX(position.col);
         int y = map.toScreenY(position.row);
-        Image image = ImageManger.getAttackTower();
+        Image image = ImageManager.getAttackTower();
         if (image != null) {
             int size = (int) (GameConfig.TILE_SIZE * 1.4);
             int offset = (size - GameConfig.TILE_SIZE) / 2;

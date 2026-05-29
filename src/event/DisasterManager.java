@@ -18,6 +18,11 @@ public class DisasterManager {
     private final List<Disaster> disasters = new ArrayList<Disaster>();
     private final Random random = new Random();
     private double timer;
+    private double disasterInterval;
+
+    public void setDisasterInterval(double interval) {
+        this.disasterInterval = interval;
+    }
 
     public void update(double dt, WaveManager waves, GridMap map,
             List<Enemy> enemies, List<Building> buildings) {
@@ -27,7 +32,7 @@ public class DisasterManager {
     }
 
     private void maybeStartDisaster(WaveManager waves, GridMap map, List<Building> buildings) {
-        if (waves.getStage() < 2 || timer < 10.0) {
+        if (waves.getStage() < 2 || timer < disasterInterval) {
             return;
         }
         disasters.add(createRandomDisaster(map, buildings));

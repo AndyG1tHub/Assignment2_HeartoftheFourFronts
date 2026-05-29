@@ -6,7 +6,7 @@ import java.awt.Image;
 import game.GameEngine;
 import game.GameConfig;
 import game.Difficulty;
-import manager.ImageManger;
+import manager.ImageManager;
 
 /** Main menu screen — premium minimal UI that showcases the background art. */
 public class MenuScreen {
@@ -59,7 +59,7 @@ public class MenuScreen {
 
     public void draw(GameEngine engine, int mouseX, int mouseY) {
         // 1. Background image — full screen, no global overlay
-        Image bg = ImageManger.getBackground();
+        Image bg = ImageManager.getBackground();
         if (bg != null) {
             engine.drawImage(bg, 0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
         } else {
@@ -257,7 +257,7 @@ public class MenuScreen {
         int w = GameConfig.WINDOW_WIDTH;
         int h = GameConfig.WINDOW_HEIGHT;
 
-        Image bg = ImageManger.getBackground();
+        Image bg = ImageManager.getBackground();
         if (bg != null) {
             engine.drawImage(bg, 0, 0, w, h);
         } else {

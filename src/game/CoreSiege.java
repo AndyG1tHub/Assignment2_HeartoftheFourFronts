@@ -43,7 +43,6 @@ public class CoreSiege extends GameEngine {
     private MenuScreen menuScreen;
     private IntroScreen introScreen;
 
-    private ImageManger imageManger;
     private SoundManager soundManager;
     private ParticleSystem particleSystem;
 
@@ -66,11 +65,10 @@ public class CoreSiege extends GameEngine {
         menuScreen = new MenuScreen();
         introScreen = new IntroScreen();
         hud = new HUD();
-        imageManger = new ImageManger();
         SoundManager.init(this);
         soundManager = SoundManager.getInstance();
         soundManager.loadSounds();
-        imageManger.loadImages(this);
+        ImageManager.loadImages(this);
         hasSave = saveFileExists();
         menuScreen.setHasContinue(hasSave);
         loadProgress();
@@ -103,7 +101,7 @@ public class CoreSiege extends GameEngine {
         decoyManager = new DecoyManager(gridMap);
         enemyAI.setDecoyManager(decoyManager);
         projectileManager = new ProjectileManager();
-        eventManager = new EventManager();
+        eventManager = new EventManager(difficultyManager.getDisasterInterval());
         economyManager = new EconomyManager();
         scoreManager = new ScoreManager();
         waveManager = new WaveManager();
@@ -564,7 +562,7 @@ public class CoreSiege extends GameEngine {
                 Building b = buildingFactory.createBuilding(type, pos);
                 if (b != null && gridMap.placeBuilding(b)) {
                     b.setUpgradeLevel(lvl);
-                    while (b.getHp() > hp) b.takeDamage(1);
+                    if (b.getHp() > hp) b.takeDamage(b.getHp() - hp);
                     buildings.add(b);
                 }
             }

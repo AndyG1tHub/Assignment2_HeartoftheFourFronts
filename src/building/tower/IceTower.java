@@ -11,7 +11,7 @@ import enemy.Enemy;
 import combat.ProjectileManager;
 import game.GameEngine;
 import game.GameConfig;
-import manager.ImageManger;
+import manager.ImageManager;
 
 /** Low-damage tower that slows its target. */
 public class IceTower extends AttackTower {
@@ -45,7 +45,7 @@ public class IceTower extends AttackTower {
     public void draw(GameEngine engine, GridMap map) {
         int x = map.toScreenX(position.col);
         int y = map.toScreenY(position.row);
-        Image image = ImageManger.getIceTower();
+        Image image = ImageManager.getIceTower();
         if (image != null) {
             int size = (int) (GameConfig.TILE_SIZE * 1.3);
             int offset = (size - GameConfig.TILE_SIZE) / 2;

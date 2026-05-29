@@ -7,14 +7,13 @@ import enemy.EnemyType;
 import game.GameEngine;
 
 /** Loads image assets and serves animation frames. */
-public class ImageManger {
+public class ImageManager {
     private static final int ENEMY_FRAME_SIZE = 256;
     private static final int ENEMY_FRAME_INSET = 14;
     private static final int ENEMY_SHEET_COLUMNS = 8;
     private static final int ENEMY_RUN_FRAME_COUNT = 16;
     private static final int ENEMY_ATTACK_FRAME_COUNT = 8;
 
-    GameEngine engine;
     private static Image arrowTower;
     private static Image attackTower;
     private static Image healTower;
@@ -24,9 +23,9 @@ public class ImageManger {
     private static Image bait;
     private static Image coin;
     private static Image[] coinTurnFrames;
-    Image homeItems;
-    Image enemies;
-    Image naturalDisaster;
+    private static Image homeItems;
+    private static Image enemies;
+    private static Image naturalDisaster;
     private static Image baseImage;
     private static Image arrowProjectile;
     private static Image cannonProjectile;
@@ -71,8 +70,7 @@ public class ImageManger {
     private static Image[] bossEnemyAttack;
     private static Image[] bossEnemyAttackLeft;
 
-    public void loadImages(GameEngine engine) {
-        this.engine = engine;
+    public static void loadImages(GameEngine engine) {
         loadStaticImages(engine);
         loadEnemySprites(engine);
     }
@@ -185,7 +183,7 @@ public class ImageManger {
         return meleeEnemyAttackLeft;
     }
 
-    private void loadStaticImages(GameEngine engine) {
+    private static void loadStaticImages(GameEngine engine) {
         arrowTower = engine.loadImage("Images/arrowTower.png");
         attackTower = engine.loadImage("Images/attackTower.png");
         healTower = engine.loadImage("Images/healTower.png");
@@ -227,7 +225,7 @@ public class ImageManger {
         loadCoinTurnFrames(engine);
     }
 
-    private void loadEnemySprites(GameEngine engine) {
+    private static void loadEnemySprites(GameEngine engine) {
         Image meleeSheet = engine.loadImage("Images/meleeEnemy.png");
         meleeEnemyRun = loadEnemyRunSprite(engine, meleeSheet);
         meleeEnemyRunLeft = flipFrames(meleeEnemyRun);
@@ -259,7 +257,7 @@ public class ImageManger {
         bossEnemyAttackLeft = flipFrames(bossEnemyAttack);
     }
 
-    private Image[] loadEnemyRunSprite(GameEngine engine, Image sheet) {
+    private static Image[] loadEnemyRunSprite(GameEngine engine, Image sheet) {
         Image[] frames = new Image[ENEMY_RUN_FRAME_COUNT];
         for (int i = 0; i < frames.length; i++) {
             int row = i / ENEMY_SHEET_COLUMNS;
@@ -269,7 +267,7 @@ public class ImageManger {
         return frames;
     }
 
-    private Image[] loadEnemyAttackSprite(GameEngine engine, Image sheet) {
+    private static Image[] loadEnemyAttackSprite(GameEngine engine, Image sheet) {
         Image[] frames = new Image[ENEMY_ATTACK_FRAME_COUNT];
         for (int i = 0; i < frames.length; i++) {
             frames[i] = getEnemyFrame(engine, sheet, 2, i);
@@ -277,14 +275,14 @@ public class ImageManger {
         return frames;
     }
 
-    private Image getEnemyFrame(GameEngine engine, Image sheet, int row, int col) {
+    private static Image getEnemyFrame(GameEngine engine, Image sheet, int row, int col) {
         int x = col * ENEMY_FRAME_SIZE + ENEMY_FRAME_INSET;
         int y = row * ENEMY_FRAME_SIZE + ENEMY_FRAME_INSET;
         int size = ENEMY_FRAME_SIZE - ENEMY_FRAME_INSET * 2;
         return engine.subImage(sheet, x, y, size, size);
     }
 
-    private Image[] flipFrames(Image[] frames) {
+    private static Image[] flipFrames(Image[] frames) {
         Image[] flipped = new Image[frames.length];
         for (int i = 0; i < frames.length; i++) {
             flipped[i] = flipImage(frames[i]);
@@ -292,7 +290,7 @@ public class ImageManger {
         return flipped;
     }
 
-    private Image flipImage(Image image) {
+    private static Image flipImage(Image image) {
         int width = image.getWidth(null);
         int height = image.getHeight(null);
         BufferedImage flipped = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -410,21 +408,21 @@ public class ImageManger {
     public static Image getPauseBL() { return pauseBL; }
     public static Image getPauseBR() { return pauseBR; }
 
-    private void loadMapTiles(GameEngine engine) {
+    private static void loadMapTiles(GameEngine engine) {
         mapTiles = new Image[3];
         mapTiles[0] = engine.loadImage("Images/mapGround.png");
         mapTiles[1] = engine.loadImage("Images/mapGross.png");
         mapTiles[2] = engine.loadImage("Images/mapFlower.png");
     }
 
-    private void loadObstacleSprites(GameEngine engine) {
+    private static void loadObstacleSprites(GameEngine engine) {
         obstacleSprites = new Image[4];
         for (int i = 0; i < 4; i++) {
             obstacleSprites[i] = engine.loadImage("Images/tree_" + (i + 1) + ".png");
         }
     }
 
-    private void loadFireAnimationFrames(GameEngine engine) {
+    private static void loadFireAnimationFrames(GameEngine engine) {
         Image fireSheet = engine.loadImage("Images/fireAnimation.png");
         int frameWidth = 44;
         int frameHeight = 48;
@@ -436,7 +434,7 @@ public class ImageManger {
         }
     }
 
-    private void loadCoinTurnFrames(GameEngine engine) {
+    private static void loadCoinTurnFrames(GameEngine engine) {
         Image coinSheet = engine.loadImage("Images/coinTurn.png");
         int columns = 8;
         int rows = 1;

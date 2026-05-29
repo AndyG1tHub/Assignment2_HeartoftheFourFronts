@@ -8,7 +8,7 @@ import core.GridPosition;
 import core.GridMap;
 import game.GameEngine;
 import game.GameConfig;
-import manager.ImageManger;
+import manager.ImageManager;
 
 /** Fast single-target starter tower. */
 public class ArrowTower extends AttackTower {
@@ -21,7 +21,7 @@ public class ArrowTower extends AttackTower {
     public void draw(GameEngine engine, GridMap map) {
         int x = map.toScreenX(position.col);
         int y = map.toScreenY(position.row);
-        Image image = ImageManger.getArrowTower();
+        Image image = ImageManager.getArrowTower();
         if (image != null) {
             int size = (int) (GameConfig.TILE_SIZE * 1.4);
             int offset = (size - GameConfig.TILE_SIZE) / 2;
