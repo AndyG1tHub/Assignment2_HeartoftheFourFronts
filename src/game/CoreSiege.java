@@ -129,6 +129,7 @@ public class CoreSiege extends GameEngine {
         // END EFFECT - show dramatic text then transition to end screen
         if (gameState == GameState.GAME_OVER_EFFECT || gameState == GameState.WIN_EFFECT) {
             endEffectTimer += dt;
+            hud.update(dt);
             if (endEffectTimer >= END_EFFECT_DURATION) {
                 gameState = (gameState == GameState.GAME_OVER_EFFECT) ? GameState.GAME_OVER : GameState.WIN;
             }
