@@ -26,9 +26,9 @@ public abstract class Disaster extends GameEvent {
     public abstract void applyEffect(List<Enemy> enemies, List<Building> buildings);
 
     protected boolean affects(GridPosition other) {
-        int rowDiff = position.row - other.row;
-        int colDiff = position.col - other.col;
-        return Math.sqrt(rowDiff * rowDiff + colDiff * colDiff) <= radius;
+        int rowDiff = Math.abs(position.row - other.row);
+        int colDiff = Math.abs(position.col - other.col);
+        return rowDiff <= radius && colDiff <= radius;
     }
 
     protected void drawArea(GameEngine engine, GridMap map, Color color) {

@@ -567,6 +567,16 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 		mGraphics.drawImage(image, (int)x, (int)y, (int)w, (int)h, null);
 	}
 
+	// Sets the alpha (transparency) for subsequent drawing operations
+	public void setAlpha(float alpha) {
+		// Clamp alpha to [0.0, 1.0]
+		if (alpha < 0.0f) alpha = 0.0f;
+		if (alpha > 1.0f) alpha = 1.0f;
+
+		// Set composite with alpha
+		mGraphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+	}
+
 	//-------------------------------------------------------
 	// Transform Functions
 	//-------------------------------------------------------
