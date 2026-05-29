@@ -16,8 +16,8 @@ import manager.ImageManager;
 /** Slow tower with simple area damage. */
 public class CannonTower extends AttackTower {
     public CannonTower(GridPosition position) {
-        super(position, 150, GameConfig.CANNON_TOWER_COST, 4,
-                BuildingType.CANNON_TOWER, 45, 3.0);
+        super(position, 150, GameConfig.CANNON_TOWER_COST, 3,
+                BuildingType.CANNON_TOWER, 50, 3.0);
     }
 
     @Override

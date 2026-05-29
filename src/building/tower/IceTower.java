@@ -17,7 +17,7 @@ import manager.ImageManager;
 public class IceTower extends AttackTower {
     public IceTower(GridPosition position) {
         super(position, 120, GameConfig.ICE_TOWER_COST, 4,
-                BuildingType.ICE_TOWER, 18, 2.0);
+                BuildingType.ICE_TOWER, 12, 2.0);
     }
 
     @Override

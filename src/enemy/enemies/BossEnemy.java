@@ -24,7 +24,7 @@ public class BossEnemy extends Enemy {
 
     public BossEnemy(GridPosition position, int hp) {
         super(position, EnemyType.BOSS, hp, GameConfig.BOSS_DAMAGE,
-                GameConfig.BOSS_SPEED, 60, 300);
+                GameConfig.BOSS_SPEED, 150, 500);
     }
 
     public void setBuildings(List<Building> buildings) {

@@ -22,7 +22,7 @@ import manager.SoundManager;
 public class HealTower extends Building {
     private static final double HEAL_INTERVAL = 0.5;
     private static final int MAX_HEAL_TARGETS = 3;
-    private static final double HEAL_PER_SECOND = 10.0;
+    private static final double HEAL_PER_SECOND = 15.0;
 
     private double cooldown;
     private double beamAnimationTime = 0.0;
@@ -30,7 +30,7 @@ public class HealTower extends Building {
     private double accumulatedHeal = 0.0;
 
     public HealTower(GridPosition position) {
-        super(position, 120, GameConfig.HEAL_TOWER_COST, 1, BuildingType.HEAL_TOWER);
+        super(position, 120, GameConfig.HEAL_TOWER_COST, 2, BuildingType.HEAL_TOWER);
     }
 
     private int getHealAmount() {

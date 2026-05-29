@@ -29,8 +29,8 @@ public class LightningTower extends AttackTower {
     private double soundCooldown = 0.0;
 
     public LightningTower(GridPosition position) {
-        super(position, 110, GameConfig.LIGHTNING_TOWER_COST, 1,
-                BuildingType.LIGHTNING_TOWER, 25, 1.0);
+        super(position, 110, GameConfig.LIGHTNING_TOWER_COST, 2,
+                BuildingType.LIGHTNING_TOWER, 30, 1.0);
     }
 
     @Override

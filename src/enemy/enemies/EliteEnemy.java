@@ -12,7 +12,7 @@ public class EliteEnemy extends Enemy {
 
     public EliteEnemy(GridPosition position, int hp) {
         super(position, EnemyType.ELITE, hp, GameConfig.ELITE_DAMAGE,
-                GameConfig.ELITE_SPEED, 100, 300);
+                GameConfig.ELITE_SPEED, 150, 400);
     }
 
     @Override
