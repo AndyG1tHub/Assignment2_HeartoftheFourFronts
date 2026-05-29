@@ -20,6 +20,14 @@ import effect.*;
 
 /** Main game class. It coordinates managers and keeps gameplay logic delegated. */
 public class CoreSiege extends GameEngine {
+    private static final String SAVE_DIR = System.getProperty("user.home") + "/.heartofthefourfronts";
+
+    private static java.io.File saveFile(String name) {
+        java.io.File dir = new java.io.File(SAVE_DIR);
+        if (!dir.exists()) dir.mkdirs();
+        return new java.io.File(dir, name);
+    }
+
     private GameState gameState = GameState.MENU;
     private Difficulty selectedDifficulty = Difficulty.NORMAL;
 
@@ -498,7 +506,7 @@ public class CoreSiege extends GameEngine {
 
     public void saveGame() {
         try {
-            java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter("save.dat"));
+            java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter(saveFile("save.dat")));
             out.println("difficulty=" + selectedDifficulty.ordinal());
             out.println("money=" + economyManager.getMoney());
             out.println("score=" + scoreManager.getScore());
@@ -523,7 +531,7 @@ public class CoreSiege extends GameEngine {
 
     public void loadGame() {
         try {
-            java.io.BufferedReader in = new java.io.BufferedReader(new java.io.FileReader("save.dat"));
+            java.io.BufferedReader in = new java.io.BufferedReader(new java.io.FileReader(saveFile("save.dat")));
             String line;
             int diffOrd = 0, money = 0, score = 0, kills = 0, rewards = 0, buildingsBuilt = 0, level = 1;
             int baseHp = GameConfig.BASE_MAX_HP;
@@ -577,7 +585,7 @@ public class CoreSiege extends GameEngine {
 
     public void deleteSave() {
         try {
-            new java.io.File("save.dat").delete();
+            saveFile("save.dat").delete();
             hasSave = false;
             menuScreen.setHasContinue(false);
             soundManager.playButtonClick();
@@ -588,7 +596,7 @@ public class CoreSiege extends GameEngine {
 
     private void saveProgress() {
         try {
-            java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter("progress.dat"));
+            java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter(saveFile("progress.dat")));
             out.println("unlockedLevel=" + maxUnlockedLevel);
             out.close();
         } catch (Exception e) {
@@ -598,7 +606,7 @@ public class CoreSiege extends GameEngine {
 
     private void loadProgress() {
         try {
-            java.io.BufferedReader in = new java.io.BufferedReader(new java.io.FileReader("progress.dat"));
+            java.io.BufferedReader in = new java.io.BufferedReader(new java.io.FileReader(saveFile("progress.dat")));
             String line;
             while ((line = in.readLine()) != null) {
                 if (line.startsWith("unlockedLevel=")) {
@@ -614,7 +622,7 @@ public class CoreSiege extends GameEngine {
 
     private boolean saveFileExists() {
         try {
-            return new java.io.File("save.dat").exists();
+            return saveFile("save.dat").exists();
         } catch (Exception e) {
             return false;
         }
