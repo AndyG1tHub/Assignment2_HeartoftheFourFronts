@@ -145,7 +145,7 @@ public class SoundManager {
     public void playWallBreak() { playClip(wallClip, SFX_VOLUME); }
     public void playHealTower() { playClip(healClip, SFX_VOLUME); }
     public void playDecoyDeploy() { playClip(decoyClip, SFX_VOLUME); }
-    public void playRewardCollect() { playClip(rewardClip, SFX_VOLUME); }
+    public void playRewardCollect() { playClip(rewardClip, 2.0f); }
     public void playWaveStart() { playClip(waveClip, -6.0f); }
     public void playEnemySpawn() { playClip(spawnClip, -6.0f); }
     public void playFireDisaster() { playClip(fireClip, SFX_VOLUME); }

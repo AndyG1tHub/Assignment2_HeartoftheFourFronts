@@ -144,7 +144,7 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 	}
 
 	private void recalcTileSize(int windowWidth, int windowHeight) {
-		int hudWidth = 260;
+		int hudWidth = GameConfig.HUD_WIDTH;
 		int playW = windowWidth - hudWidth - 10;
 		int playH = windowHeight;
 		int tsW = playW / GameConfig.GRID_COLS;
@@ -499,6 +499,19 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 		mGraphics.drawString(s, (int)x, (int)y);
 	}
 
+	// Returns the pixel width of a string using the current font
+	public int textWidth(String s) {
+		FontMetrics fm = mGraphics.getFontMetrics();
+		return fm.stringWidth(s);
+	}
+
+	// Returns the pixel width of a string for a given font and size
+	public int textWidth(String s, String font, int size) {
+		Font f = new Font(font, Font.PLAIN, size);
+		FontMetrics fm = mGraphics.getFontMetrics(f);
+		return fm.stringWidth(s);
+	}
+
 	//-------------------------------------------------------
 	// Image Functions
 	//-------------------------------------------------------
@@ -693,6 +706,21 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 
 			// Open Audio Input Stream
 			AudioInputStream audio = AudioSystem.getAudioInputStream(file);
+
+			// Convert non-PCM formats (e.g. IEEE float) to PCM so Clip can play them
+			AudioFormat format = audio.getFormat();
+			AudioFormat.Encoding enc = format.getEncoding();
+			if (enc != AudioFormat.Encoding.PCM_SIGNED && enc != AudioFormat.Encoding.PCM_UNSIGNED) {
+				AudioFormat pcmFormat = new AudioFormat(
+					AudioFormat.Encoding.PCM_SIGNED,
+					format.getSampleRate(),
+					16,
+					format.getChannels(),
+					format.getChannels() * 2,
+					format.getSampleRate(),
+					false);
+				audio = AudioSystem.getAudioInputStream(pcmFormat, audio);
+			}
 
 			// Create Audio Clip
 			AudioClip clip = new AudioClip(audio);

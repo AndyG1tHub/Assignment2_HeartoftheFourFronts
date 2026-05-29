@@ -50,16 +50,16 @@ public class IntroScreen {
         if (currentLine < story.length) {
             int shadowOff = 4;
             int fontSize = currentLine >= 5 ? 46 : 36;
+            String line = story[currentLine];
+
+            int x = (w - game.textWidth(line, "Georgia", fontSize)) / 2;
             int y = h / 2 + 120;
 
-            int textWidth = story[currentLine].length() * fontSize / 2;
-            int x = (w - textWidth) / 2;
-
             game.changeColor(new Color(20, 20, 20));
-            game.drawText(x + shadowOff, y + shadowOff, story[currentLine], "Georgia", fontSize);
+            game.drawText(x + shadowOff, y + shadowOff, line, "Georgia", fontSize);
 
             game.changeColor(currentLine >= 5 ? new Color(255, 230, 180) : Color.WHITE);
-            game.drawText(x, y, story[currentLine], "Georgia", fontSize);
+            game.drawText(x, y, line, "Georgia", fontSize);
         }
         if ((System.currentTimeMillis() / 600) % 2 == 0) {
             game.changeColor(new Color(255, 220, 80));

@@ -6,6 +6,7 @@ public final class GameConfig {
 
     public static int WINDOW_WIDTH = 900;
     public static int WINDOW_HEIGHT = 700;
+    public static final int HUD_WIDTH = 320;
     public static final int TARGET_FPS = 60;
 
     public static final int GRID_ROWS = 20;

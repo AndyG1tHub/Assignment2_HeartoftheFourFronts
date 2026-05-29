@@ -272,34 +272,39 @@ public class MenuScreen {
             engine.changeColor(BG);
             engine.drawSolidRectangle(0, 0, w, h);
         }
-        drawScreenOverlay(engine, 170);
-
-        int panelW = 420;
-        int panelH = 230;
-        int px = (w - panelW) / 2;
-        int py = (h - panelH) / 2;
-
-        drawGlassPanel(engine, px, py, panelW, panelH);
+        drawScreenOverlay(engine, 140);
+        drawBottomVignette(engine);
 
         String title = won ? "VICTORY" : "DEFEAT";
         Color tc = won ? new Color(100, 230, 145) : new Color(240, 90, 80);
 
-        // text shadow
+        int tw = engine.textWidth(title, "Georgia", 52);
+        int tx = (w - tw) / 2;
+        int ty = h / 2 + 50;
         engine.changeColor(new Color(0, 0, 0, 110));
-        engine.drawBoldText(px + (panelW - 210) / 2 + 3, py + 48 + 3, title, "Georgia", 42);
-        // text
+        engine.drawBoldText(tx + 3, ty + 3, title, "Georgia", 52);
         engine.changeColor(tc);
-        engine.drawBoldText(px + (panelW - 210) / 2, py + 48, title, "Georgia", 42);
+        engine.drawBoldText(tx, ty, title, "Georgia", 52);
 
         engine.changeColor(MUTED);
-        engine.drawText(px + 145, py + 82, "Choose your next action", "Arial", 14);
+        int stw = engine.textWidth("Choose your next action", "Arial", 16);
+        engine.drawText((w - stw) / 2, ty + 36, "Choose your next action", "Arial", 16);
 
-        restartButton.setSize(260, 44);
-        menuButton.setSize(260, 44);
-        restartButton.setPosition(px + 80, py + 110);
-        menuButton.setPosition(px + 80, py + 158);
-        drawEndBtn(engine, restartButton, mouseX, mouseY);
-        drawEndBtn(engine, menuButton, mouseX, mouseY);
+        int btnW = 380;
+        int btnH = 62;
+        int gap = 14;
+        int colX = (w - btnW) / 2;
+        int startY = ty + 80;
+
+        restartButton.setSize(btnW, btnH);
+        restartButton.setPosition(colX, startY);
+        drawMenuBtn(engine, colX, startY, btnW, btnH,
+                "RESTART", new Color(235, 200, 110), mouseX, mouseY, restartButton);
+
+        menuButton.setSize(btnW, btnH);
+        menuButton.setPosition(colX, startY + btnH + gap);
+        drawMenuBtn(engine, colX, startY + btnH + gap, btnW, btnH,
+                "MAIN MENU", new Color(185, 190, 195), mouseX, mouseY, menuButton);
     }
 
     // ================================================================
