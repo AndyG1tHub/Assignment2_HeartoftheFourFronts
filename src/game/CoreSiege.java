@@ -168,6 +168,13 @@ public class CoreSiege extends GameEngine {
 
         projectileManager.update(dt);
 
+        // Detect boss death from projectile hits that happened this frame
+        for (Enemy enemy : enemySpawner.getEnemies()) {
+            if (enemy.isDead() && enemy.getType() == EnemyType.BOSS) {
+                waveManager.markBossDefeated();
+            }
+        }
+
         decoyManager.update(dt);
 
         checkGameEnd();

@@ -1,30 +1,30 @@
 package enemy.enemies;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import building.Building;
-import building.tower.AttackTower;
+import combat.BossLaser;
+import core.GridMap;
 import core.GridPosition;
 import enemy.Enemy;
 import enemy.EnemyType;
 import game.GameConfig;
+import game.GameEngine;
 
-/** Heavy enemy that damages and disables nearby attack towers when it attacks. */
+/** Boss enemy that fires purple horizontal or vertical lasers every 5 seconds,
+ *  destroying towers in their path over 2 seconds. */
 public class BossEnemy extends Enemy {
     public static final int BASE_HP = GameConfig.BOSS_BASE_HP;
-    private static final double TOWER_EFFECT_RANGE = 3.0;
-    private static final double TOWER_DISABLE_DURATION = 2.0;
-    private static final int TOWER_DAMAGE = 12;
 
     private List<Building> buildings;
+    private double laserTimer;
+    private BossLaser activeLaser;
 
     public BossEnemy(GridPosition position, int hp) {
         super(position, EnemyType.BOSS, hp, GameConfig.BOSS_DAMAGE,
                 GameConfig.BOSS_SPEED, 60, 300);
+        laserTimer = BossLaser.FIRE_INTERVAL * 0.5; // first laser fires after 2.5s
     }
 
     public void setBuildings(List<Building> buildings) {
@@ -37,44 +37,38 @@ public class BossEnemy extends Enemy {
     }
 
     @Override
+    public void update(double dt, enemy.EnemyAI ai) {
+        super.update(dt, ai);
+        updateLaser(dt);
+    }
+
+    private void updateLaser(double dt) {
+        if (activeLaser != null && activeLaser.isActive()) {
+            activeLaser.update(dt);
+            if (!activeLaser.isActive()) {
+                activeLaser = null;
+            }
+            return;
+        }
+        laserTimer -= dt;
+        if (laserTimer <= 0 && buildings != null && !buildings.isEmpty()) {
+            activeLaser = new BossLaser(getGridPosition(), buildings);
+            setAttackAnimationTimer(BossLaser.TOTAL_DURATION);
+            laserTimer = BossLaser.FIRE_INTERVAL;
+        }
+    }
+
+    @Override
+    public void draw(GameEngine engine, GridMap map) {
+        super.draw(engine, map);
+        if (activeLaser != null && activeLaser.isActive()) {
+            activeLaser.draw(engine);
+        }
+    }
+
+    @Override
     protected void onAttackLands() {
-        affectNearbyTowers();
-    }
-
-    private void affectNearbyTowers() {
-        List<AttackTower> towers = findNearbyAttackTowers();
-        int maxTargets = (int) Math.ceil(towers.size() / 3.0);
-        for (int i = 0; i < maxTargets; i++) {
-            AttackTower tower = towers.get(i);
-            tower.disable(TOWER_DISABLE_DURATION);
-            tower.takeDamage(TOWER_DAMAGE);
-        }
-    }
-
-    private List<AttackTower> findNearbyAttackTowers() {
-        List<AttackTower> towers = new ArrayList<AttackTower>();
-        if (buildings == null) {
-            return towers;
-        }
-        for (Building building : buildings) {
-            if (building instanceof AttackTower
-                    && !building.isDestroyed()
-                    && distanceTo(building.getPosition()) <= TOWER_EFFECT_RANGE) {
-                towers.add((AttackTower) building);
-            }
-        }
-        Collections.sort(towers, new Comparator<AttackTower>() {
-            public int compare(AttackTower first, AttackTower second) {
-                return Double.compare(distanceTo(first.getPosition()), distanceTo(second.getPosition()));
-            }
-        });
-        return towers;
-    }
-
-    private double distanceTo(GridPosition position) {
-        int rowDiff = getGridPosition().row - position.row;
-        int colDiff = getGridPosition().col - position.col;
-        return Math.sqrt(rowDiff * rowDiff + colDiff * colDiff);
+        // Laser replaces the old disable-aura skill
     }
 
     @Override

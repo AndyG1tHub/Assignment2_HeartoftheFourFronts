@@ -215,6 +215,10 @@ public class Enemy {
     protected void onAttackLands() {
     }
 
+    protected void setAttackAnimationTimer(double time) {
+        attackAnimationTimer = time;
+    }
+
     private void clearDeadAttackTarget() {
         if (attackTarget != null && attackTarget.isDestroyed()) {
             attackTarget = null;

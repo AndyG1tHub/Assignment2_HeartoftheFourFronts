@@ -9,6 +9,7 @@ src/core/PathFinder.java
 src/core/TileType.java
 src/combat/Projectile.java
 src/combat/ProjectileManager.java
+src/combat/BossLaser.java
 src/combat/MeteorStrike.java
 src/util/Direction.java
 src/effect/ParticleSystem.java
@@ -55,6 +56,5 @@ src/building/tower/IceTower.java
 src/building/tower/CannonTower.java
 src/building/Base.java
 src/building/BuildingFactory.java
-src/building/Wall.java
 src/building/Building.java
 src/building/BuildingType.java
