@@ -269,22 +269,22 @@ public class MenuScreen {
 
         String title = won ? "VICTORY" : "DEFEAT";
         Color tc = won ? new Color(100, 230, 145) : new Color(240, 90, 80);
-
-        int tx = (w - title.length() * 38) / 2;
-        int ty = h / 2 + 50;
+        int titleSize = 40;
+        int tx = (w - title.length() * 28) / 2;
+        int ty = h / 2;
         engine.changeColor(new Color(0, 0, 0, 110));
-        engine.drawBoldText(tx + 3, ty + 3, title, "Georgia", 52);
+        engine.drawBoldText(tx + 3, ty + 3, title, "Georgia", titleSize);
         engine.changeColor(tc);
-        engine.drawBoldText(tx, ty, title, "Georgia", 52);
+        engine.drawBoldText(tx, ty, title, "Georgia", titleSize);
 
         engine.changeColor(MUTED);
-        engine.drawText((w - 180) / 2, ty + 36, "Choose your next action", "Arial", 16);
+        engine.drawText((w - 180) / 2, ty + 30, "Choose your next action", "Arial", 16);
 
         int btnW = 380;
         int btnH = 62;
         int gap = 14;
         int colX = (w - btnW) / 2;
-        int startY = ty + 80;
+        int startY = ty + 70;
 
         restartButton.setSize(btnW, btnH);
         restartButton.setPosition(colX, startY);
