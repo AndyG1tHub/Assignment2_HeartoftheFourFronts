@@ -270,7 +270,7 @@ public class MenuScreen {
         String title = won ? "VICTORY" : "DEFEAT";
         Color tc = won ? new Color(100, 230, 145) : new Color(240, 90, 80);
 
-        int tx = (w - title.length() * 30) / 2;
+        int tx = (w - title.length() * 38) / 2;
         int ty = h / 2 + 50;
         engine.changeColor(new Color(0, 0, 0, 110));
         engine.drawBoldText(tx + 3, ty + 3, title, "Georgia", 52);

@@ -456,7 +456,7 @@ public class HUD {
         // Update animation timer
         endMessageTimer += 0.016; // Approximate frame time
 
-        int cx = (GameConfig.WINDOW_WIDTH - GameConfig.HUD_WIDTH) / 2;
+        int cx = GameConfig.WINDOW_WIDTH / 2;
         int cy = GameConfig.WINDOW_HEIGHT / 2;
 
         // Animation phases
@@ -482,7 +482,7 @@ public class HUD {
         int baseFontSize = 72;
         int fontSize = (int)(baseFontSize * scale);
 
-        int approxW = text.length() * fontSize / 2;
+        int approxW = text.length() * fontSize * 3 / 5;
         // Draw multiple layers for glow effect
         if (phase3 > 0) {
             // Outer glow layers
