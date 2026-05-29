@@ -20,6 +20,7 @@ public class ImageManager {
     private static Image attackTower;
     private static Image healTower;
     private static Image iceTower;
+    private static Image iceFreezeEffect;
     private static Image lightningTower;
     private static Image bait;
     private static Image coin;
@@ -169,6 +170,7 @@ public class ImageManager {
         attackTower = engine.loadImage("Images/attackTower.png");
         healTower = engine.loadImage("Images/healTower.png");
         iceTower = engine.loadImage("Images/iceTower.png");
+        iceFreezeEffect = engine.loadImage("Images/ice.png");
         lightningTower = engine.loadImage("Images/lightningTower.png");
         bait = engine.loadImage("Images/bait.png");
         coin = engine.loadImage("Images/coin.png");
@@ -294,6 +296,10 @@ public class ImageManager {
 
     public static Image getIceTower() {
         return iceTower;
+    }
+
+    public static Image getIceFreezeEffect() {
+        return iceFreezeEffect;
     }
 
     public static Image getLightningTower() {

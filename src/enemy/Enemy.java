@@ -29,8 +29,7 @@ public class Enemy {
     private double attackCooldown;
     private GridPosition moveTarget;
     private Building attackTarget;
-    private boolean slowed;
-    private double slowTimer;
+    private double freezeTimer;
     private double speedBoostTimer;
     private double damageBoostTimer;
     private double animationTime;
@@ -62,9 +61,12 @@ public class Enemy {
     }
 
     public void update(double dt, EnemyAI ai) {
-        animationTime += dt;
-        attackAnimationTimer = Math.max(0.0, attackAnimationTimer - dt);
         updateStatusEffects(dt);
+        attackAnimationTimer = Math.max(0.0, attackAnimationTimer - dt);
+        if (isFrozen()) {
+            return;
+        }
+        animationTime += dt;
         clearDeadAttackTarget();
         ai.updateEnemyBehaviour(this, dt);
     }
@@ -80,11 +82,8 @@ public class Enemy {
     }
 
     private void updateStatusEffects(double dt) {
-        if (slowed) {
-            slowTimer -= dt;
-            if (slowTimer <= 0.0) {
-                slowed = false;
-            }
+        if (freezeTimer > 0) {
+            freezeTimer = Math.max(0.0, freezeTimer - dt);
         }
         if (speedBoostTimer > 0) {
             speedBoostTimer -= dt;
@@ -249,9 +248,8 @@ public class Enemy {
         hp = Math.min(maxHp, hp + amount);
     }
 
-    public void applySlow(double duration) {
-        slowed = true;
-        slowTimer = Math.max(slowTimer, duration);
+    public void applyFreeze(double duration) {
+        freezeTimer = Math.max(freezeTimer, duration);
     }
 
     public boolean isDead() {
@@ -270,6 +268,7 @@ public class Enemy {
         if (sprite != null) {
             double size = GameConfig.TILE_SIZE * 1.25 * drawMul;
             engine.drawImage(sprite, x - size / 2, y - size / 2, size, size);
+            drawFreezeEffect(engine, size);
             drawHealthBar(engine);
             return;
         }
@@ -277,7 +276,25 @@ public class Enemy {
         engine.drawSolidCircle(x, y, GameConfig.TILE_SIZE * 0.35 * drawMul);
         engine.changeColor(Color.WHITE);
         engine.drawText(x - 5, y + 5, getDrawLabel(), "Arial", 12);
+        drawFreezeEffect(engine, GameConfig.TILE_SIZE * drawMul);
         drawHealthBar(engine);
+    }
+
+    private void drawFreezeEffect(GameEngine engine, double enemySize) {
+        if (!isFrozen()) {
+            return;
+        }
+        Image image = ImageManager.getIceFreezeEffect();
+        if (image == null) {
+            return;
+        }
+        double effectW = enemySize * 0.95;
+        double effectH = enemySize * 0.95;
+        double effectX = x - effectW / 2;
+        double effectY = y - effectH * 0.08;
+        engine.setAlpha(0.58f);
+        engine.drawImage(image, effectX, effectY, effectW, effectH);
+        engine.setAlpha(1.0f);
     }
 
     protected double getDrawSizeMultiplier() {
@@ -304,9 +321,12 @@ public class Enemy {
 
     private double getCurrentSpeed() {
         double mul = 1.0;
-        if (slowed) mul *= 0.5;
         if (speedBoostTimer > 0) mul *= 1.6;
         return speed * mul;
+    }
+
+    public boolean isFrozen() {
+        return freezeTimer > 0.0;
     }
 
     private boolean isPlayingAttackAnimation() {

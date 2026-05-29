@@ -39,6 +39,9 @@ public class BossEnemy extends Enemy {
     @Override
     public void update(double dt, enemy.EnemyAI ai) {
         super.update(dt, ai);
+        if (isFrozen()) {
+            return;
+        }
         updateLaser(dt);
     }
 
