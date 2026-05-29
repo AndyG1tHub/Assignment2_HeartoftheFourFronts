@@ -38,7 +38,14 @@ public class HUD {
     private final Button restartBtn = new Button(200, 362, 240, 32, "RESTART", null, new Color(200, 180, 80));
     private final Button menuBtn = new Button(200, 400, 240, 32, "MAIN MENU", null, new Color(180, 100, 100));
 
+    private double endMessageTimer = 0.0;
+    private static final double END_MESSAGE_DURATION = 3.0;
+
     public HUD() {
+    }
+
+    public void resetEndMessageTimer() {
+        endMessageTimer = 0.0;
     }
 
     private void createButtons(int level) {
@@ -358,10 +365,10 @@ public class HUD {
     private void drawStateOverlay(GameEngine engine, GameState state, int mouseX, int mouseY) {
         if (state == GameState.PAUSED) {
             drawPauseMenu(engine, mouseX, mouseY);
-        } else if (state == GameState.GAME_OVER) {
-            drawMessage(engine, "GAME OVER", new Color(200, 60, 60));
-        } else if (state == GameState.WIN) {
-            drawMessage(engine, "YOU WIN!", new Color(80, 200, 120));
+        } else if (state == GameState.GAME_OVER_EFFECT) {
+            drawMessage(engine, "THE FORTRESS FALLS", new Color(220, 50, 50));
+        } else if (state == GameState.WIN_EFFECT) {
+            drawMessage(engine, "VICTORY!", new Color(255, 215, 0));
         }
     }
 
@@ -446,21 +453,70 @@ public class HUD {
     }
 
     private void drawMessage(GameEngine engine, String text, Color color) {
-        int mw = 260, mh = 60;
-        int mx = (GameConfig.WINDOW_WIDTH - GameConfig.HUD_WIDTH - mw) / 2;
-        int my = (GameConfig.WINDOW_HEIGHT - mh) / 2;
+        // Update animation timer
+        endMessageTimer += 0.016; // Approximate frame time
 
-        // Glass panel
-        engine.changeColor(new Color(12, 16, 24, 220));
-        engine.drawSolidRectangle(mx, my, mw, mh);
-        engine.changeColor(new Color(color.getRed() / 3, color.getGreen() / 3, color.getBlue() / 3, 100));
-        engine.drawRectangle(mx, my, mw, mh, 2);
+        int cx = (GameConfig.WINDOW_WIDTH - GameConfig.HUD_WIDTH) / 2;
+        int cy = GameConfig.WINDOW_HEIGHT / 2;
 
-        int tw = engine.textWidth(text, "Georgia", 32);
-        engine.changeColor(new Color(0, 0, 0, 100));
-        engine.drawBoldText(mx + (mw - tw) / 2 + 2, my + 42, text, "Georgia", 32);
-        engine.changeColor(color);
-        engine.drawBoldText(mx + (mw - tw) / 2, my + 40, text, "Georgia", 32);
+        // Animation phases
+        double phase1 = Math.min(1.0, endMessageTimer / 0.5); // Zoom in (0-0.5s)
+        double phase2 = Math.min(1.0, Math.max(0.0, (endMessageTimer - 0.5) / 0.3)); // Shake (0.5-0.8s)
+        double phase3 = Math.min(1.0, Math.max(0.0, (endMessageTimer - 0.8) / 0.5)); // Glow pulse (0.8s+)
+
+        // Zoom effect
+        double scale = 0.3 + phase1 * 0.7;
+
+        // Shake effect
+        double shakeX = 0;
+        double shakeY = 0;
+        if (phase2 > 0 && phase2 < 1.0) {
+            shakeX = Math.sin(endMessageTimer * 50) * 8 * (1.0 - phase2);
+            shakeY = Math.cos(endMessageTimer * 47) * 6 * (1.0 - phase2);
+        }
+
+        // Pulsing glow
+        double pulse = Math.sin(endMessageTimer * 4) * 0.3 + 0.7;
+
+        // Calculate font size with scale
+        int baseFontSize = 72;
+        int fontSize = (int)(baseFontSize * scale);
+
+        // Draw multiple layers for glow effect
+        if (phase3 > 0) {
+            // Outer glow layers
+            for (int i = 5; i > 0; i--) {
+                int alpha = (int)(30 * pulse * phase3 / i);
+                engine.changeColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha));
+                int tw = engine.textWidth(text, "Georgia", fontSize);
+                int offset = i * 3;
+                engine.drawBoldText(cx - tw / 2 + shakeX - offset, cy + fontSize / 3 + shakeY - offset, text, "Georgia", fontSize);
+                engine.drawBoldText(cx - tw / 2 + shakeX + offset, cy + fontSize / 3 + shakeY - offset, text, "Georgia", fontSize);
+                engine.drawBoldText(cx - tw / 2 + shakeX - offset, cy + fontSize / 3 + shakeY + offset, text, "Georgia", fontSize);
+                engine.drawBoldText(cx - tw / 2 + shakeX + offset, cy + fontSize / 3 + shakeY + offset, text, "Georgia", fontSize);
+            }
+        }
+
+        // Main shadow
+        int tw = engine.textWidth(text, "Georgia", fontSize);
+        engine.changeColor(new Color(0, 0, 0, (int)(200 * phase1)));
+        engine.drawBoldText(cx - tw / 2 + shakeX + 4, cy + fontSize / 3 + shakeY + 4, text, "Georgia", fontSize);
+
+        // Main text with color
+        Color mainColor = new Color(
+            Math.min(255, (int)(color.getRed() * (0.8 + pulse * 0.2))),
+            Math.min(255, (int)(color.getGreen() * (0.8 + pulse * 0.2))),
+            Math.min(255, (int)(color.getBlue() * (0.8 + pulse * 0.2))),
+            (int)(255 * phase1)
+        );
+        engine.changeColor(mainColor);
+        engine.drawBoldText(cx - tw / 2 + shakeX, cy + fontSize / 3 + shakeY, text, "Georgia", fontSize);
+
+        // Bright highlight on top
+        if (phase3 > 0) {
+            engine.changeColor(new Color(255, 255, 255, (int)(150 * pulse * phase3)));
+            engine.drawBoldText(cx - tw / 2 + shakeX, cy + fontSize / 3 + shakeY - 2, text, "Georgia", fontSize);
+        }
     }
 
     // ================================================================

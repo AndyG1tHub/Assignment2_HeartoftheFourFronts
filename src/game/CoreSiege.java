@@ -53,6 +53,8 @@ public class CoreSiege extends GameEngine {
     private double speedMultiplier = 1.0;
     private int currentLevel = 1;
     private int maxUnlockedLevel = 1;
+    private double endEffectTimer = 0.0;
+    private static final double END_EFFECT_DURATION = 3.0;
 
     public static void main(String[] args) {
         createGame(new CoreSiege(), GameConfig.TARGET_FPS);
@@ -120,6 +122,15 @@ public class CoreSiege extends GameEngine {
             return;
         }
 
+        // END EFFECT - show dramatic text then transition to end screen
+        if (gameState == GameState.GAME_OVER_EFFECT || gameState == GameState.WIN_EFFECT) {
+            endEffectTimer += dt;
+            if (endEffectTimer >= END_EFFECT_DURATION) {
+                gameState = (gameState == GameState.GAME_OVER_EFFECT) ? GameState.GAME_OVER : GameState.WIN;
+            }
+            return;
+        }
+
         // MENU
         if (gameState != GameState.PLAYING) {
             return;
@@ -177,7 +188,9 @@ public class CoreSiege extends GameEngine {
 
     private void checkGameEnd() {
         if (base.isDestroyed()) {
-            gameState = GameState.GAME_OVER;
+            gameState = GameState.GAME_OVER_EFFECT;
+            endEffectTimer = 0.0;
+            hud.resetEndMessageTimer();
             deleteSave();
             if (!hasTriggeredEndSound) {
                 soundManager.stopBgm();
@@ -185,7 +198,9 @@ public class CoreSiege extends GameEngine {
                 hasTriggeredEndSound = true;
             }
         } else if (waveManager.hasWon()) {
-            gameState = GameState.WIN;
+            gameState = GameState.WIN_EFFECT;
+            endEffectTimer = 0.0;
+            hud.resetEndMessageTimer();
             deleteSave();
             if (!hasTriggeredEndSound) {
                 soundManager.stopBgm();
@@ -220,20 +235,43 @@ public class CoreSiege extends GameEngine {
             menuScreen.draw(this, mouseX, mouseY);
             return;
         }
+
+        // Show end screen after effect
         if (gameState == GameState.GAME_OVER || gameState == GameState.WIN) {
             menuScreen.drawEndScreen(this, gameState == GameState.WIN, mouseX, mouseY);
             return;
         }
+
+        // Draw game scene for PLAYING, PAUSED, and EFFECT states
         gridMap.draw(this);
         for (Building building : buildings) {
             if (building instanceof HealTower) {
                 ((HealTower) building).drawRangeEffect(this, gridMap);
             }
         }
+
+        // Draw buildings and base with depth sorting
+        // Buildings above the base (smaller row) are drawn first (behind)
+        // Buildings below/beside the base (larger or equal row) are drawn last (in front)
+        int baseRow = base.getPosition().row;
+
+        // Draw buildings above the base (behind)
         for (Building building : buildings) {
-            building.draw(this, gridMap);
+            if (building.getPosition().row < baseRow) {
+                building.draw(this, gridMap);
+            }
         }
+
+        // Draw the base
         base.draw(this, gridMap);
+
+        // Draw buildings at or below the base (in front)
+        for (Building building : buildings) {
+            if (building.getPosition().row >= baseRow) {
+                building.draw(this, gridMap);
+            }
+        }
+
         enemySpawner.draw(this, gridMap);
         projectileManager.draw(this, gridMap);
         decoyManager.draw(this);
