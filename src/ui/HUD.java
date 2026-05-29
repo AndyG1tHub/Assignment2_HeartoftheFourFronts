@@ -482,25 +482,24 @@ public class HUD {
         int baseFontSize = 72;
         int fontSize = (int)(baseFontSize * scale);
 
+        int approxW = text.length() * fontSize / 2;
         // Draw multiple layers for glow effect
         if (phase3 > 0) {
             // Outer glow layers
             for (int i = 5; i > 0; i--) {
                 int alpha = (int)(30 * pulse * phase3 / i);
                 engine.changeColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha));
-                int tw = engine.textWidth(text, "Georgia", fontSize);
                 int offset = i * 3;
-                engine.drawBoldText(cx - tw / 2 + shakeX - offset, cy + fontSize / 3 + shakeY - offset, text, "Georgia", fontSize);
-                engine.drawBoldText(cx - tw / 2 + shakeX + offset, cy + fontSize / 3 + shakeY - offset, text, "Georgia", fontSize);
-                engine.drawBoldText(cx - tw / 2 + shakeX - offset, cy + fontSize / 3 + shakeY + offset, text, "Georgia", fontSize);
-                engine.drawBoldText(cx - tw / 2 + shakeX + offset, cy + fontSize / 3 + shakeY + offset, text, "Georgia", fontSize);
+                engine.drawBoldText(cx - approxW / 2 + shakeX - offset, cy + fontSize / 3 + shakeY - offset, text, "Georgia", fontSize);
+                engine.drawBoldText(cx - approxW / 2 + shakeX + offset, cy + fontSize / 3 + shakeY - offset, text, "Georgia", fontSize);
+                engine.drawBoldText(cx - approxW / 2 + shakeX - offset, cy + fontSize / 3 + shakeY + offset, text, "Georgia", fontSize);
+                engine.drawBoldText(cx - approxW / 2 + shakeX + offset, cy + fontSize / 3 + shakeY + offset, text, "Georgia", fontSize);
             }
         }
 
         // Main shadow
-        int tw = engine.textWidth(text, "Georgia", fontSize);
         engine.changeColor(new Color(0, 0, 0, (int)(200 * phase1)));
-        engine.drawBoldText(cx - tw / 2 + shakeX + 4, cy + fontSize / 3 + shakeY + 4, text, "Georgia", fontSize);
+        engine.drawBoldText(cx - approxW / 2 + shakeX + 4, cy + fontSize / 3 + shakeY + 4, text, "Georgia", fontSize);
 
         // Main text with color
         Color mainColor = new Color(
@@ -510,12 +509,12 @@ public class HUD {
             (int)(255 * phase1)
         );
         engine.changeColor(mainColor);
-        engine.drawBoldText(cx - tw / 2 + shakeX, cy + fontSize / 3 + shakeY, text, "Georgia", fontSize);
+        engine.drawBoldText(cx - approxW / 2 + shakeX, cy + fontSize / 3 + shakeY, text, "Georgia", fontSize);
 
         // Bright highlight on top
         if (phase3 > 0) {
             engine.changeColor(new Color(255, 255, 255, (int)(150 * pulse * phase3)));
-            engine.drawBoldText(cx - tw / 2 + shakeX, cy + fontSize / 3 + shakeY - 2, text, "Georgia", fontSize);
+            engine.drawBoldText(cx - approxW / 2 + shakeX, cy + fontSize / 3 + shakeY - 2, text, "Georgia", fontSize);
         }
     }
 
