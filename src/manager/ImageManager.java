@@ -21,7 +21,6 @@ public class ImageManager {
     private static Image healTower;
     private static Image iceTower;
     private static Image lightningTower;
-    private static Image wall;
     private static Image bait;
     private static Image coin;
     private static Image[] coinTurnFrames;
@@ -171,14 +170,13 @@ public class ImageManager {
         healTower = engine.loadImage("Images/healTower.png");
         iceTower = engine.loadImage("Images/iceTower.png");
         lightningTower = engine.loadImage("Images/lightningTower.png");
-        wall = engine.loadImage("Images/wall.png");
         bait = engine.loadImage("Images/bait.png");
         coin = engine.loadImage("Images/coin.png");
         homeItems = engine.loadImage("Images/homeItems.png");
         naturalDisaster = engine.loadImage("Images/naturalDisaster.png");
         baseImage = engine.subImage(homeItems, 45, 80, 470, 500);
         arrowProjectile = engine.subImage(homeItems, 575, 310, 250, 175);
-        cannonProjectile = engine.subImage(homeItems, 895, 330, 245, 170);
+        cannonProjectile = engine.subImage(homeItems, 895, 330, 245, 245);
         iceProjectile = engine.subImage(homeItems, 1180, 315, 265, 180);
         laserEffect = engine.subImage(homeItems, 170, 650, 300, 265);
         healRangeEffect = engine.subImage(homeItems, 555, 650, 340, 265);
@@ -302,9 +300,6 @@ public class ImageManager {
         return lightningTower;
     }
 
-    public static Image getWall() {
-        return wall;
-    }
 
     public static Image getBait() {
         return bait;
