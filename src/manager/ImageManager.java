@@ -2,6 +2,8 @@ package manager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 import enemy.EnemyType;
 import game.GameEngine;
@@ -70,9 +72,45 @@ public class ImageManager {
     private static Image[] bossEnemyAttack;
     private static Image[] bossEnemyAttackLeft;
 
+    private static final Map<EnemyType, Image[]> enemyRunFrames = new HashMap<>();
+    private static final Map<EnemyType, Image[]> enemyRunLeftFrames = new HashMap<>();
+    private static final Map<EnemyType, Image[]> enemyAttackFrames = new HashMap<>();
+    private static final Map<EnemyType, Image[]> enemyAttackLeftFrames = new HashMap<>();
+
     public static void loadImages(GameEngine engine) {
         loadStaticImages(engine);
         loadEnemySprites(engine);
+        initEnemyFrameMaps();
+    }
+
+    private static void initEnemyFrameMaps() {
+        enemyRunFrames.put(EnemyType.MELEE, meleeEnemyRun);
+        enemyRunFrames.put(EnemyType.TANK, tankEnemyRun);
+        enemyRunFrames.put(EnemyType.ASSASSIN, assassinEnemyRun);
+        enemyRunFrames.put(EnemyType.ARCHER, archerEnemyRun);
+        enemyRunFrames.put(EnemyType.ELITE, tankEnemyRun);
+        enemyRunFrames.put(EnemyType.BOSS, bossEnemyRun);
+
+        enemyRunLeftFrames.put(EnemyType.MELEE, meleeEnemyRunLeft);
+        enemyRunLeftFrames.put(EnemyType.TANK, tankEnemyRunLeft);
+        enemyRunLeftFrames.put(EnemyType.ASSASSIN, assassinEnemyRunLeft);
+        enemyRunLeftFrames.put(EnemyType.ARCHER, archerEnemyRunLeft);
+        enemyRunLeftFrames.put(EnemyType.ELITE, tankEnemyRunLeft);
+        enemyRunLeftFrames.put(EnemyType.BOSS, bossEnemyRunLeft);
+
+        enemyAttackFrames.put(EnemyType.MELEE, meleeEnemyAttack);
+        enemyAttackFrames.put(EnemyType.TANK, tankEnemyAttack);
+        enemyAttackFrames.put(EnemyType.ASSASSIN, assassinEnemyAttack);
+        enemyAttackFrames.put(EnemyType.ARCHER, archerEnemyAttack);
+        enemyAttackFrames.put(EnemyType.ELITE, tankEnemyAttack);
+        enemyAttackFrames.put(EnemyType.BOSS, bossEnemyAttack);
+
+        enemyAttackLeftFrames.put(EnemyType.MELEE, meleeEnemyAttackLeft);
+        enemyAttackLeftFrames.put(EnemyType.TANK, tankEnemyAttackLeft);
+        enemyAttackLeftFrames.put(EnemyType.ASSASSIN, assassinEnemyAttackLeft);
+        enemyAttackLeftFrames.put(EnemyType.ARCHER, archerEnemyAttackLeft);
+        enemyAttackLeftFrames.put(EnemyType.ELITE, tankEnemyAttackLeft);
+        enemyAttackLeftFrames.put(EnemyType.BOSS, bossEnemyAttackLeft);
     }
 
     public static Image getEnemySprite(EnemyType type, double animationTime) {
@@ -108,79 +146,23 @@ public class ImageManager {
     }
 
     private static Image[] getEnemyRunFrames(EnemyType type) {
-        if (type == EnemyType.BOSS) {
-            return bossEnemyRun;
-        }
-        if (type == EnemyType.ELITE) {
-            return tankEnemyRun;
-        }
-        if (type == EnemyType.TANK) {
-            return tankEnemyRun;
-        }
-        if (type == EnemyType.ASSASSIN) {
-            return assassinEnemyRun;
-        }
-        if (type == EnemyType.ARCHER) {
-            return archerEnemyRun;
-        }
-        return meleeEnemyRun;
+        Image[] frames = enemyRunFrames.get(type);
+        return frames != null ? frames : meleeEnemyRun;
     }
 
     private static Image[] getEnemyRunLeftFrames(EnemyType type) {
-        if (type == EnemyType.BOSS) {
-            return bossEnemyRunLeft;
-        }
-        if (type == EnemyType.ELITE) {
-            return tankEnemyRunLeft;
-        }
-        if (type == EnemyType.TANK) {
-            return tankEnemyRunLeft;
-        }
-        if (type == EnemyType.ASSASSIN) {
-            return assassinEnemyRunLeft;
-        }
-        if (type == EnemyType.ARCHER) {
-            return archerEnemyRunLeft;
-        }
-        return meleeEnemyRunLeft;
+        Image[] frames = enemyRunLeftFrames.get(type);
+        return frames != null ? frames : meleeEnemyRunLeft;
     }
 
     private static Image[] getEnemyAttackFrames(EnemyType type) {
-        if (type == EnemyType.BOSS) {
-            return bossEnemyAttack;
-        }
-        if (type == EnemyType.ELITE) {
-            return tankEnemyAttack;
-        }
-        if (type == EnemyType.TANK) {
-            return tankEnemyAttack;
-        }
-        if (type == EnemyType.ASSASSIN) {
-            return assassinEnemyAttack;
-        }
-        if (type == EnemyType.ARCHER) {
-            return archerEnemyAttack;
-        }
-        return meleeEnemyAttack;
+        Image[] frames = enemyAttackFrames.get(type);
+        return frames != null ? frames : meleeEnemyAttack;
     }
 
     private static Image[] getEnemyAttackLeftFrames(EnemyType type) {
-        if (type == EnemyType.BOSS) {
-            return bossEnemyAttackLeft;
-        }
-        if (type == EnemyType.ELITE) {
-            return tankEnemyAttackLeft;
-        }
-        if (type == EnemyType.TANK) {
-            return tankEnemyAttackLeft;
-        }
-        if (type == EnemyType.ASSASSIN) {
-            return assassinEnemyAttackLeft;
-        }
-        if (type == EnemyType.ARCHER) {
-            return archerEnemyAttackLeft;
-        }
-        return meleeEnemyAttackLeft;
+        Image[] frames = enemyAttackLeftFrames.get(type);
+        return frames != null ? frames : meleeEnemyAttackLeft;
     }
 
     private static void loadStaticImages(GameEngine engine) {

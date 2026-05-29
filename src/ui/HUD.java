@@ -41,12 +41,14 @@ public class HUD {
     private double endMessageTimer = 0.0;
     private static final double END_MESSAGE_DURATION = 3.0;
     private double gameTime = 0.0;
+    private int lastButtonLevel = -1;
 
     public HUD() {
     }
 
     public void update(double dt) {
         gameTime += dt;
+        endMessageTimer += dt;
     }
 
     public void resetEndMessageTimer() {
@@ -78,7 +80,10 @@ public class HUD {
     public void draw(GameEngine engine, Base base, EconomyManager economy,
             ScoreManager score, WaveManager waves, Difficulty difficulty,
             BuildingType selected, GameState state, int mouseX, int mouseY, double speedMul, int level) {
-        createButtons(level);
+        if (level != lastButtonLevel) {
+            createButtons(level);
+            lastButtonLevel = level;
+        }
         drawPanel(engine);
         drawTitle(engine);
         drawLevelInfo(engine, level);
@@ -457,9 +462,6 @@ public class HUD {
     }
 
     private void drawMessage(GameEngine engine, String text, Color color) {
-        // Update animation timer
-        endMessageTimer += 0.016; // Approximate frame time
-
         int cx = GameConfig.WINDOW_WIDTH / 2;
         int cy = GameConfig.WINDOW_HEIGHT / 2;
 

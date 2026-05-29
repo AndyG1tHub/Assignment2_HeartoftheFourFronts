@@ -82,7 +82,6 @@ public class CoreSiege extends GameEngine {
         loadProgress();
         menuScreen.setMaxUnlockedLevel(maxUnlockedLevel);
         startNewGame(selectedDifficulty);
-        gameState = GameState.MENU;
         gameState = GameState.INTRO;
     }
 
