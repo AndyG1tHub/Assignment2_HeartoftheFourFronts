@@ -138,73 +138,65 @@ public class MenuScreen {
     private void drawHelpContent(GameEngine engine, int mouseX, int mouseY) {
         drawScreenOverlay(engine, 185);
 
-        int panelW = 860;
-        int panelH = 650;
+        int panelW = 800;
+        int panelH = 600;
         int px = (GameConfig.WINDOW_WIDTH - panelW) / 2;
         int py = (GameConfig.WINDOW_HEIGHT - panelH) / 2;
 
         drawGlassPanel(engine, px, py, panelW, panelH);
-        drawPanelHeading(engine, px + 50, py + 38, "HOW  TO  PLAY");
+        drawPanelHeading(engine, px + 50, py + 36, "HOW  TO  PLAY");
 
         int x = px + 60;
-        int y = py + 80;
-        int s = 24;
-        int col2 = x + 370;
+        int y = py + 74;
+        int s = 22;
 
-        drawHelpBlock2Col(engine, x, col2, y, s, "CONTROLS", new String[]{
-            "1 – 7              Select building type",
-            "Left Click          Place selected building",
-            "Right Click        Sell tower  (60% refund)",
-            "Click Button       Select from side panel",
-            "Space                Pause / Resume",
-            "Esc                    Return to main menu",
-            "F                       Toggle 2x speed",
-            "M                      Toggle sound",
+        drawHelpSection(engine, x, y, s, "CONTROLS", new String[]{
+            "1-7  Select building type        Space  Pause / Resume",
+            "Left Click  Place building       Esc    Return to menu",
+            "Right Click  Sell (60% refund)   F      Toggle 2x speed",
+            "Click button  Select from panel  M      Toggle sound",
         });
-        y += 4 * s + 14;
+        y += 4 * s + 12;
 
-        engine.changeColor(new Color(GOLD_DIM.getRed(), GOLD_DIM.getGreen(), GOLD_DIM.getBlue(), 55));
-        engine.drawLine(x, y, x + 740, y);
-        y += 16;
+        drawSectionDivider(engine, x, y, x + 680);
+        y += 14;
 
-        drawHelpBlock2Col(engine, x, col2, y, s, "PAUSE  MENU", new String[]{
-            "Resume             Continue playing",
-            "Save                  Save current progress",
-            "Delete Save        Remove saved data",
-            "Restart              Restart from beginning",
-            "Main Menu         Return to title screen",
+        drawHelpSection(engine, x, y, s, "PAUSE MENU", new String[]{
+            "Resume  Continue playing        Delete Save  Remove data",
+            "Save    Save progress            Restart  Restart level",
+            "Main Menu  Return to title screen",
         });
-        y += 3 * s + 14;
+        y += 3 * s + 12;
 
-        engine.changeColor(new Color(GOLD_DIM.getRed(), GOLD_DIM.getGreen(), GOLD_DIM.getBlue(), 55));
-        engine.drawLine(x, y, x + 740, y);
-        y += 16;
+        drawSectionDivider(engine, x, y, x + 680);
+        y += 14;
 
-        drawHelpBlock2Col(engine, x, col2, y, s, "TIPS", new String[]{
+        drawHelpSection(engine, x, y, s, "TIPS", new String[]{
             "Hover building buttons to preview their stats",
-            "Resize the window — the map will scale to fit",
-            "Wall limit : Easy = unlimited, Normal = 16, Hard = 8",
-            "Each wave starts with a 5 s preparation phase",
-            "Win by surviving 5 waves and defeating the boss",
-            "Save file is deleted on win or game over",
+            "Resize window - map scales to fit",
+            "Wall limit: Easy=unlimited, Normal=16, Hard=8",
+            "5s prep time before each wave",
+            "Win: defeat final boss",
+            "Save deletes on win or game over",
         });
 
-        backButton.setSize(300, 56);
-        backButton.setPosition(px + (panelW - 300) / 2, py + panelH - 76);
+        backButton.setSize(280, 50);
+        backButton.setPosition(px + (panelW - 280) / 2, py + panelH - 70);
         drawBackBtn(engine, backButton, mouseX, mouseY);
     }
 
-    private void drawHelpBlock2Col(GameEngine engine, int x, int col2, int y, int s, String hdr, String[] lines) {
+    private void drawSectionDivider(GameEngine engine, int x1, int y, int x2) {
+        engine.changeColor(new Color(GOLD_DIM.getRed(), GOLD_DIM.getGreen(), GOLD_DIM.getBlue(), 50));
+        engine.drawLine(x1, y, x2, y);
+    }
+
+    private void drawHelpSection(GameEngine engine, int x, int y, int s, String hdr, String[] lines) {
         engine.changeColor(GOLD);
-        engine.drawBoldText(x, y, hdr, "Arial", 19);
+        engine.drawBoldText(x, y, hdr, "Arial", 18);
         y += s;
         engine.changeColor(MUTED);
-        int half = (lines.length + 1) / 2;
-        for (int i = 0; i < half; i++) {
-            engine.drawText(x, y, lines[i], "Arial", 18);
-            if (i + half < lines.length) {
-                engine.drawText(col2, y, lines[i + half], "Arial", 18);
-            }
+        for (String line : lines) {
+            engine.drawText(x, y, line, "Arial", 16);
             y += s;
         }
     }

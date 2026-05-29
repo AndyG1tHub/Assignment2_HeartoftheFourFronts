@@ -35,6 +35,7 @@ public class Enemy {
     private double damageBoostTimer;
     private double animationTime;
     private double attackAnimationTimer;
+    private boolean damageAnimation;
     private boolean facingUp;
     private boolean facingDown;
     private boolean facingLeft;
@@ -70,9 +71,9 @@ public class Enemy {
 
     public double getBaseAttackRange() {
         if (type == EnemyType.ARCHER) {
-            return 3.0;
+            return 0.0;
         }
-        if (type == EnemyType.HEALER) {
+        if (type == EnemyType.BOSS) {
             return 2.0;
         }
         return 1.0;
@@ -185,6 +186,8 @@ public class Enemy {
         state = EnemyState.ATTACKING_BASE;
         if (attackCooldown <= 0.0) {
             base.takeDamage(getEffectiveDamage());
+            damageAnimation = false;
+            onAttackLands();
             attackAnimationTimer = 0.45;
             attackCooldown = 1.0;
         }
@@ -201,10 +204,15 @@ public class Enemy {
         state = EnemyState.ATTACKING_BASE;
         if (attackCooldown <= 0.0) {
             building.takeDamage(getEffectiveDamage());
+            damageAnimation = false;
+            onAttackLands();
             clearDeadAttackTarget();
             attackAnimationTimer = 0.45;
             attackCooldown = 1.0;
         }
+    }
+
+    protected void onAttackLands() {
     }
 
     private void clearDeadAttackTarget() {
@@ -223,6 +231,7 @@ public class Enemy {
 
     public void takeDamage(int amount) {
         hp = Math.max(0, hp - amount);
+        damageAnimation = true;
         attackAnimationTimer = 0.35;
         if (hp <= 0) {
             state = EnemyState.DEAD;
@@ -246,7 +255,7 @@ public class Enemy {
     }
 
     public void draw(GameEngine engine, GridMap map) {
-        if (isPlayingAttackAnimation()) {
+        if (shouldSnapToTileForAnimation()) {
             x = map.tileCenterX(gridPosition);
             y = map.tileCenterY(gridPosition);
         }
@@ -298,6 +307,14 @@ public class Enemy {
 
     private boolean isPlayingAttackAnimation() {
         return state == EnemyState.ATTACKING_BASE || attackAnimationTimer > 0.0;
+    }
+
+    private boolean shouldSnapToTileForAnimation() {
+        return isPlayingAttackAnimation() && (!damageAnimation || shouldSnapOnDamageAnimation());
+    }
+
+    protected boolean shouldSnapOnDamageAnimation() {
+        return true;
     }
 
     public void stopAtCurrentTile(GridMap map) {

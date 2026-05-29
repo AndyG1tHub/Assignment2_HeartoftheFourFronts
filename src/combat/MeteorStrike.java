@@ -34,16 +34,19 @@ public class MeteorStrike extends Disaster {
         if (struck || warningTimer < 1.2) {
             return;
         }
+
+        // Meteor instantly kills everything in 3x3 range
         for (Enemy enemy : enemies) {
             if (affects(enemy.getGridPosition())) {
-                enemy.takeDamage(damage);
+                enemy.takeDamage(enemy.getMaxHp()); // Instant kill
             }
         }
         for (Building building : buildings) {
             if (affects(building.getPosition())) {
-                building.takeDamage(damage);
+                building.takeDamage(building.getMaxHp()); // Instant destroy
             }
         }
+
         struck = true;
         SoundManager sm = SoundManager.getInstance();
         if (sm != null) sm.playMeteorDisaster();

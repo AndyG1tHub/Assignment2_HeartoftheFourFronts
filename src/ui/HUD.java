@@ -504,6 +504,7 @@ public class HUD {
             engine.drawBoldText(cx - tw / 2, by + 24, "!! ELITE WAVE !!", "Arial", 16);
         }
         if (waves.isFinalBossActive() && visible) {
+        if (waves.isBossActive() && visible) {
             int boxW = 260, boxH = 50;
             int bx = cx - boxW / 2, by = 80;
             engine.changeColor(new Color(180, 10, 10, 220));
@@ -513,6 +514,7 @@ public class HUD {
             engine.changeColor(new Color(255, 180, 180));
             int tw = engine.textWidth("!! FINAL BOSS !!", "Arial", 22);
             engine.drawBoldText(cx - tw / 2, by + 32, "!! FINAL BOSS !!", "Arial", 22);
+            engine.drawBoldText(cx - 52, by + 32, "!! BOSS !!", "Arial", 22);
         }
     }
 

@@ -26,9 +26,17 @@ public class IceTower extends AttackTower {
         if (target == null) {
             return;
         }
-        target.takeDamage(getDamage());
-        target.applySlow(2.0);
-        projectiles.addProjectile(position, target.getGridPosition(), Color.CYAN);
+
+        int damage = getDamage();
+
+        // Create projectile with damage and slow callback
+        projectiles.addProjectile(position, target.getGridPosition(), Color.CYAN, () -> {
+            if (!target.isDead()) {
+                target.takeDamage(damage);
+                target.applySlow(2.0);
+            }
+        });
+
         resetCooldown();
         playShootSound();
     }

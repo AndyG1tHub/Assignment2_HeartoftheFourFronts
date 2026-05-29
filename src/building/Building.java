@@ -111,13 +111,15 @@ public abstract class Building {
     protected void drawLevelIndicator(GameEngine engine, GridMap map) {
         if (upgradeLevel == 0) return;
         int cx = map.tileCenterX(position);
-        int cy = map.toScreenY(position.row) + 2;
-        int dotSize = 4;
-        int gap = 2;
-        int startX = cx - (upgradeLevel * (dotSize + gap)) / 2;
-        for (int i = 0; i < upgradeLevel; i++) {
-            engine.changeColor(new Color(255, 220, 80));
-            engine.drawSolidCircle(startX + i * (dotSize + gap), cy, dotSize);
+        int cy = map.toScreenY(position.row) + 4;
+        int chevCount = upgradeLevel;
+        int totalW = chevCount * 8 - 2;
+        int startX = cx - totalW / 2;
+        for (int i = 0; i < chevCount; i++) {
+            int x = startX + i * 8;
+            engine.changeColor(new Color(255, 180, 60));
+            engine.drawLine(x, cy + 4, x + 3, cy, 1);
+            engine.drawLine(x + 3, cy, x + 6, cy + 4, 1);
         }
     }
 }

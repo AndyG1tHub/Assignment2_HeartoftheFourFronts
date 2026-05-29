@@ -7,6 +7,7 @@ import core.GridMap;
 import core.PathFinder;
 import building.Base;
 import building.Building;
+import building.BuildingType;
 import building.Decoy;
 import manager.DecoyManager;
 
@@ -53,12 +54,58 @@ public class EnemyAI {
             enemy.attackBase(dt, base);
             return;
         }
+
+        // Check for nearby towers to attack before going to base
+        Building nearbyTower = findNearbyTowerToAttack(enemy);
+        if (nearbyTower != null) {
+            enemy.stopAtCurrentTile(map);
+            enemy.attackBuilding(dt, nearbyTower);
+            return;
+        }
+
         List<GridPosition> path = pathFinder.findPath(map, enemy.getGridPosition(), base.getPosition());
         if (!path.isEmpty()) {
             enemy.followPath(path, dt, map);
             return;
         }
         attackBlockingBuilding(enemy, dt);
+    }
+
+    private Building findNearbyTowerToAttack(Enemy enemy) {
+        GridPosition enemyPos = enemy.getGridPosition();
+        double attackRange = enemy.getBaseAttackRange();
+
+        // Search in a 3x3 area around the enemy
+        for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
+            for (int colOffset = -1; colOffset <= 1; colOffset++) {
+                if (rowOffset == 0 && colOffset == 0) continue;
+
+                int checkRow = enemyPos.row + rowOffset;
+                int checkCol = enemyPos.col + colOffset;
+
+                if (!map.isInside(checkRow, checkCol)) continue;
+
+                GridPosition checkPos = new GridPosition(checkRow, checkCol);
+                Building building = map.getBuildingAt(checkPos);
+
+                if (building != null && !building.isDestroyed() && isTower(building)) {
+                    // Check if in attack range
+                    if (isInAttackRange(enemy, checkPos, attackRange)) {
+                        return building;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean isTower(Building building) {
+        BuildingType type = building.getType();
+        return type == BuildingType.ARROW_TOWER ||
+               type == BuildingType.CANNON_TOWER ||
+               type == BuildingType.ICE_TOWER ||
+               type == BuildingType.LIGHTNING_TOWER ||
+               type == BuildingType.HEAL_TOWER;
     }
 
     private void attackBlockingBuilding(Enemy enemy, double dt) {

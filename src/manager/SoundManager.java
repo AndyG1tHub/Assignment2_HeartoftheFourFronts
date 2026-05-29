@@ -138,6 +138,12 @@ public class SoundManager {
     public void playCannonShoot() { playClip(cannonClip, -1.0f); }
     public void playIceShoot() { playClip(iceClip, SFX_VOLUME); }
     public void playLightningShoot() { playClip(lightningClip, SFX_VOLUME); }
+    public void startLightningLoop() {
+        if (!muted && lightningShoot != null) engine.startAudioLoop(lightningShoot, SFX_VOLUME);
+    }
+    public void stopLightningLoop() {
+        if (lightningShoot != null) engine.stopAudioLoop(lightningShoot);
+    }
     public void playEnemyDeath() { playClip(deathClip, SFX_VOLUME); }
     public void playBaseHit() { playClip(baseHitClip, SFX_VOLUME); }
     public void playButtonClick() { playClip(buttonClip, -5.0f); }

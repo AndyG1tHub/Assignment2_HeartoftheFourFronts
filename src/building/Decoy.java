@@ -25,7 +25,7 @@ public class Decoy {
 
     public void update(double dt) {
         moveTimer += dt;
-        if (moveTimer >= 0.5) {
+        if (moveTimer >= 1.2) {
             moveOneTile();
             moveTimer = 0.0;
         }
@@ -69,14 +69,47 @@ public class Decoy {
         if (isOutside(map)) {
             return;
         }
+        double cx = map.tileCenterX(gridPosition);
+        double cy = map.tileCenterY(gridPosition);
+        int ts = GameConfig.TILE_SIZE;
+
+        double rangePixels = 4.0 * ts;
+        engine.changeColor(new Color(240, 220, 95, 40));
+        engine.drawSolidCircle(cx, cy, rangePixels);
+        engine.changeColor(new Color(240, 220, 95, 120));
+        engine.drawCircle(cx, cy, rangePixels, 1);
+
         Image image = ImageManger.getBait();
         if (image != null) {
             int x = map.toScreenX(gridPosition.col);
             int y = map.toScreenY(gridPosition.row);
-            engine.drawImage(image, x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
-            return;
+            engine.drawImage(image, x, y, ts, ts);
+        } else {
+            engine.changeColor(new Color(240, 220, 95));
+            engine.drawSolidCircle(cx, cy, 9);
         }
-        engine.changeColor(new Color(240, 220, 95));
-        engine.drawSolidCircle(map.tileCenterX(gridPosition), map.tileCenterY(gridPosition), 9);
+
+        double arrowLen = ts * 0.6;
+        double ax = cx, ay = cy;
+        if (direction == Direction.NORTH) ay = cy - arrowLen;
+        else if (direction == Direction.SOUTH) ay = cy + arrowLen;
+        else if (direction == Direction.WEST) ax = cx - arrowLen;
+        else ax = cx + arrowLen;
+        engine.changeColor(new Color(255, 220, 80, 200));
+        engine.drawLine(cx, cy, ax, ay, 2);
+        double tip = 6;
+        if (direction == Direction.NORTH) {
+            engine.drawLine(ax, ay, ax - tip, ay + tip, 2);
+            engine.drawLine(ax, ay, ax + tip, ay + tip, 2);
+        } else if (direction == Direction.SOUTH) {
+            engine.drawLine(ax, ay, ax - tip, ay - tip, 2);
+            engine.drawLine(ax, ay, ax + tip, ay - tip, 2);
+        } else if (direction == Direction.WEST) {
+            engine.drawLine(ax, ay, ax + tip, ay - tip, 2);
+            engine.drawLine(ax, ay, ax + tip, ay + tip, 2);
+        } else {
+            engine.drawLine(ax, ay, ax - tip, ay - tip, 2);
+            engine.drawLine(ax, ay, ax - tip, ay + tip, 2);
+        }
     }
 }

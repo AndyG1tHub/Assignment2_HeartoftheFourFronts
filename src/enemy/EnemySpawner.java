@@ -7,8 +7,8 @@ import java.util.Random;
 
 import core.GridPosition;
 import core.GridMap;
-import enemy.enemies.FinalBossEnemy;
-import enemy.enemies.HealerEnemy;
+import building.Building;
+import enemy.enemies.BossEnemy;
 import game.GameEngine;
 import game.GameConfig;
 import manager.DifficultyManager;
@@ -45,17 +45,22 @@ public class EnemySpawner {
             waveManager.markEliteSpawned();
         }
 
-        if (waveManager.isFinalBossTime()) {
-            Enemy boss = enemyFactory.createEnemy(EnemyType.FINAL_BOSS, getSpawnPosition());
+        if (shouldSpawnBoss(waveManager)) {
+            Enemy boss = enemyFactory.createEnemy(EnemyType.BOSS, getSpawnPosition());
             boss.snapToMap(map);
             enemies.add(boss);
-            waveManager.markFinalBossSpawned();
+            waveManager.markBossSpawned();
         }
 
         if (shouldSpawn(waveManager)) {
             spawnEnemy(waveManager);
             spawnTimer = 0.0;
         }
+    }
+
+    private boolean shouldSpawnBoss(WaveManager waveManager) {
+        return !waveManager.hasBossSpawned()
+                && waveManager.getStage() >= GameConfig.TOTAL_STAGES;
     }
 
     private boolean shouldSpawn(WaveManager waveManager) {
@@ -80,44 +85,36 @@ public class EnemySpawner {
             double tankLimit = GameConfig.STAGE_FIVE_TANK_CHANCE;
             double assassinLimit = tankLimit + GameConfig.STAGE_FIVE_ASSASSIN_CHANCE;
             double archerLimit = assassinLimit + GameConfig.STAGE_FIVE_ARCHER_CHANCE;
-            double healerLimit = archerLimit + GameConfig.STAGE_FIVE_HEALER_CHANCE;
             if (roll < tankLimit) return EnemyType.TANK;
             if (roll < assassinLimit) return EnemyType.ASSASSIN;
             if (roll < archerLimit) return EnemyType.ARCHER;
-            if (roll < healerLimit) return EnemyType.HEALER;
             return EnemyType.MELEE;
         }
         if (stage >= 4) {
             double tankLimit = GameConfig.STAGE_FOUR_TANK_CHANCE;
             double assassinLimit = tankLimit + GameConfig.STAGE_FOUR_ASSASSIN_CHANCE;
             double archerLimit = assassinLimit + GameConfig.STAGE_FOUR_ARCHER_CHANCE;
-            double healerLimit = archerLimit + GameConfig.STAGE_FOUR_HEALER_CHANCE;
             if (roll < tankLimit) return EnemyType.TANK;
             if (roll < assassinLimit) return EnemyType.ASSASSIN;
             if (roll < archerLimit) return EnemyType.ARCHER;
-            if (roll < healerLimit) return EnemyType.HEALER;
             return EnemyType.MELEE;
         }
         if (stage >= 3) {
             double tankLimit = GameConfig.STAGE_THREE_TANK_CHANCE;
             double assassinLimit = tankLimit + GameConfig.STAGE_THREE_ASSASSIN_CHANCE;
             double archerLimit = assassinLimit + GameConfig.STAGE_THREE_ARCHER_CHANCE;
-            double healerLimit = archerLimit + GameConfig.STAGE_THREE_HEALER_CHANCE;
             if (roll < tankLimit) return EnemyType.TANK;
             if (roll < assassinLimit) return EnemyType.ASSASSIN;
             if (roll < archerLimit) return EnemyType.ARCHER;
-            if (roll < healerLimit) return EnemyType.HEALER;
             return EnemyType.MELEE;
         }
         if (stage >= 2) {
             double tankLimit = GameConfig.STAGE_TWO_TANK_CHANCE;
             double assassinLimit = tankLimit + GameConfig.STAGE_TWO_ASSASSIN_CHANCE;
             double archerLimit = assassinLimit + GameConfig.STAGE_TWO_ARCHER_CHANCE;
-            double healerLimit = archerLimit + GameConfig.STAGE_TWO_HEALER_CHANCE;
             if (roll < tankLimit) return EnemyType.TANK;
             if (roll < assassinLimit) return EnemyType.ASSASSIN;
             if (roll < archerLimit) return EnemyType.ARCHER;
-            if (roll < healerLimit) return EnemyType.HEALER;
             return EnemyType.MELEE;
         }
         double assassinLimit = GameConfig.STAGE_ONE_ASSASSIN_CHANCE;
@@ -148,13 +145,11 @@ public class EnemySpawner {
         return new GridPosition(0, 0);
     }
 
-    public void updateEnemies(double dt, EnemyAI enemyAI, EconomyManager economy, ScoreManager score, WaveManager waveManager) {
+    public void updateEnemies(double dt, EnemyAI enemyAI, EconomyManager economy, ScoreManager score,
+            WaveManager waveManager, List<Building> buildings) {
         for (Enemy enemy : new ArrayList<>(enemies)) {
-            if (enemy instanceof HealerEnemy) {
-                ((HealerEnemy) enemy).supportAllies(dt, enemies);
-            }
-            if (enemy instanceof FinalBossEnemy) {
-                ((FinalBossEnemy) enemy).applySkills(enemies);
+            if (enemy instanceof BossEnemy) {
+                ((BossEnemy) enemy).setBuildings(buildings);
             }
         }
         Iterator<Enemy> iterator = enemies.iterator();
@@ -162,8 +157,8 @@ public class EnemySpawner {
             Enemy enemy = iterator.next();
             enemy.update(dt, enemyAI);
             if (enemy.isDead()) {
-                if (enemy.getType() == EnemyType.FINAL_BOSS) {
-                    waveManager.markFinalBossDefeated();
+                if (enemy.getType() == EnemyType.BOSS) {
+                    waveManager.markBossDefeated();
                 }
                 economy.addMoney(enemy.getMoneyReward());
                 score.addKillScore(enemy.getScoreReward());
