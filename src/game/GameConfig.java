@@ -38,15 +38,12 @@ public final class GameConfig {
     public static final double[] ATTACK_INTERVAL_MULTIPLIER = {1.0, 0.85, 0.7};
     public static final int[] HEAL_AMOUNT_UPGRADE = {20, 30, 45};
     public static final double BOSS_INTERVAL = 40.0;
-    public static final int BOSS_BASE_HP = 600;
+    public static final int BOSS_BASE_HP = 1600;
     public static final int BOSS_DAMAGE = 60;
     public static final double BOSS_SPEED = 0.85;
     public static final int ELITE_BASE_HP = 400;
     public static final int ELITE_DAMAGE = 40;
     public static final double ELITE_SPEED = 0.9;
-    public static final int FINAL_BOSS_BASE_HP = 1200;
-    public static final int FINAL_BOSS_DAMAGE = 50;
-    public static final double FINAL_BOSS_SPEED = 0.7;
 
     public static final int REWARD_MONEY = 40;
     public static final int REWARD_SCORE = 100;
@@ -63,22 +60,18 @@ public final class GameConfig {
     public static final double STAGE_TWO_TANK_CHANCE = 0.20;
     public static final double STAGE_TWO_ASSASSIN_CHANCE = 0.15;
     public static final double STAGE_TWO_ARCHER_CHANCE = 0.15;
-    public static final double STAGE_TWO_HEALER_CHANCE = 0.08;
 
     public static final double STAGE_THREE_TANK_CHANCE = 0.18;
     public static final double STAGE_THREE_ASSASSIN_CHANCE = 0.16;
     public static final double STAGE_THREE_ARCHER_CHANCE = 0.16;
-    public static final double STAGE_THREE_HEALER_CHANCE = 0.12;
 
     public static final double STAGE_FOUR_TANK_CHANCE = 0.18;
     public static final double STAGE_FOUR_ASSASSIN_CHANCE = 0.18;
     public static final double STAGE_FOUR_ARCHER_CHANCE = 0.18;
-    public static final double STAGE_FOUR_HEALER_CHANCE = 0.15;
 
     public static final double STAGE_FIVE_TANK_CHANCE = 0.20;
     public static final double STAGE_FIVE_ASSASSIN_CHANCE = 0.20;
     public static final double STAGE_FIVE_ARCHER_CHANCE = 0.20;
-    public static final double STAGE_FIVE_HEALER_CHANCE = 0.18;
 
     public static java.util.List<building.BuildingType> getUnlockedTowers(int level) {
         java.util.List<building.BuildingType> list = new java.util.ArrayList<>();

@@ -156,11 +156,9 @@ Assignment2_HeartoftheFourFronts-main/
 - **STAGE_TWO_TANK_CHANCE**: 第 2 阶段刷出肉盾的概率。
 - **STAGE_TWO_ASSASSIN_CHANCE**: 第 2 阶段刷出刺客的概率。
 - **STAGE_TWO_ARCHER_CHANCE**: 第 2 阶段刷出射手的概率。
-- **STAGE_TWO_HEALER_CHANCE**: 第 2 阶段刷出治疗敌人的概率。
 - **STAGE_THREE_TANK_CHANCE**: 第 3 阶段刷出肉盾的概率。
 - **STAGE_THREE_ASSASSIN_CHANCE**: 第 3 阶段刷出刺客的概率。
 - **STAGE_THREE_ARCHER_CHANCE**: 第 3 阶段刷出射手的概率。
-- **STAGE_THREE_HEALER_CHANCE**: 第 3 阶段刷出治疗敌人的概率。
 - **BUILDING_SELL_RATIO**: 出售建筑返还比例（0.6，即60%）。
 - **MAX_WALLS_EASY / MAX_WALLS_NORMAL / MAX_WALLS_HARD**: 三档难度城墙数量上限（无限/16/8），通过 `getMaxWalls(Difficulty)` 获取。
 
@@ -299,10 +297,10 @@ java -cp out Main
 - **MeleeEnemy（近战）**: 标准敌人，攻击范围 1 格，伤害 14。
 - **TankEnemy（肉盾）**: 高血量、低速度，基础血量 280，用来吸收防御塔火力。
 - **AssassinEnemy（刺客）**: 血量较低但速度快，攻击范围 1 格，伤害 28。
-- **ArcherEnemy（射手）**: 远程敌人，攻击范围 4 格，能在基地外停下攻击。
-- **HealerEnemy（治疗）**: 支援型敌人，会周期性治疗附近受伤的其他敌人，攻击范围 2 格。
+- **ArcherEnemy（射手）**: 攻击范围较小，需要进入目标格后攻击。
+- **BossEnemy（Boss）**: 大型敌人，基础血量 1600，只会在最后一波刷出 1 个；Boss 存活时显示 warning，死亡后 warning 消失并判定胜利；攻击命中时会让周围最多三分之一的攻击塔短暂停止攻击并扣血。
 
-当前刷怪逻辑在 `EnemySpawner` 中按波次逐步解锁：第 1 阶段以近战为主，混入刺客和射手；第 2 阶段加入肉盾和治疗；第 3 阶段五种敌人都会出现。敌人会从地图四条边上的随机格子刷出，不再固定在每条边中点。
+当前刷怪逻辑在 `EnemySpawner` 中按波次逐步解锁：第 1 阶段以近战为主，混入刺客和射手；第 2 阶段加入肉盾；后续阶段提高特殊敌人比例。Boss 不参与随机刷怪，只会在最后一波固定刷出 1 个。敌人会从地图四条边上的随机格子刷出，不再固定在每条边中点。
 
 特殊敌人的刷新概率统一定义在 `GameConfig` 中，包括 `STAGE_ONE_*_CHANCE`、`STAGE_TWO_*_CHANCE` 和 `STAGE_THREE_*_CHANCE`，`EnemySpawner` 只读取这些配置值。
 
@@ -347,7 +345,7 @@ java -cp out Main
 - **bait.png**: 诱饵图片，用于替换 `Decoy` 原来的黄色圆点绘制。
 - **homeItems.png**: 物品合集图，按像素范围切出基地、弓箭、炮弹、ice、激光、治疗范围特效和爆炸火球。
 - **弓箭投射物**: 使用 `homeItems.png` 中切出的弓箭图片，并在 `Projectile` 中根据起点和目标位置旋转到目标方向。
-- **meleeEnemy.png / tankEnemy.png / assassinEnemy.png / archerEnemy.png / healerEnemy.png**: 敌人精灵图，按固定 256x256 分割，前两排为跑步动画，第三排为攻击动画。
+- **meleeEnemy.png / tankEnemy.png / assassinEnemy.png / archerEnemy.png / bossEnemy.png**: 敌人精灵图，按固定 256x256 分割，前两排为跑步动画，第三排为攻击动画。
 - **Ui.png**: UI按钮精灵图。
 - **background.png / coin.png / coinTurn.png**: 菜单背景、金币图标。
 - **mapTileset.png**: 地图瓦片（地面/草地/花朵变体）。

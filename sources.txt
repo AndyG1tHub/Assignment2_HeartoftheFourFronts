@@ -27,13 +27,12 @@ src/enemy/EnemySpawner.java
 src/enemy/EnemyType.java
 src/enemy/EnemyAI.java
 src/enemy/EnemyFactory.java
-src/enemy/enemies/HealerEnemy.java
 src/enemy/enemies/AssassinEnemy.java
 src/enemy/enemies/TankEnemy.java
-src/enemy/enemies/FinalBossEnemy.java
 src/enemy/enemies/ArcherEnemy.java
 src/enemy/enemies/MeleeEnemy.java
 src/enemy/enemies/EliteEnemy.java
+src/enemy/enemies/BossEnemy.java
 src/manager/WaveManager.java
 src/manager/ImageManger.java
 src/manager/ScoreManager.java
