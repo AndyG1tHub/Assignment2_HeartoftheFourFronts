@@ -39,11 +39,11 @@ public class ParticleSystem {
     }
 
     public void spawnScoreText(GridMap map, GridPosition position, int score) {
-        spawnText(map, position, "+" + score + " score", new Color(255, 220, 110));
+        spawnText(map, position, "+" + score + "SCORE", new Color(255, 220, 110));
     }
 
     public void spawnRewardText(GridMap map, GridPosition position, int money, int score) {
-        spawnText(map, position, "+$" + money + " +" + score, new Color(255, 230, 90));
+        spawnText(map, position, "+$" + money + " +" + score + "SCORE", new Color(255, 230, 90));
     }
 
     public void spawnText(GridMap map, GridPosition position, String text, Color color) {
