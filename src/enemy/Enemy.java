@@ -257,30 +257,36 @@ public class Enemy {
     }
 
     public void draw(GameEngine engine, GridMap map) {
+        draw(engine, map, 0.0, 0.0);
+    }
+
+    public void draw(GameEngine engine, GridMap map, double offsetX, double offsetY) {
         if (shouldSnapToTileForAnimation()) {
             x = map.tileCenterX(gridPosition);
             y = map.tileCenterY(gridPosition);
         }
+        double drawX = x + offsetX;
+        double drawY = y + offsetY;
         Image sprite = isPlayingAttackAnimation()
                 ? ImageManager.getEnemyAttackSprite(type, animationTime, facingLeft)
                 : ImageManager.getEnemySprite(type, animationTime, facingLeft);
         double drawMul = getDrawSizeMultiplier();
         if (sprite != null) {
             double size = GameConfig.TILE_SIZE * 1.25 * drawMul;
-            engine.drawImage(sprite, x - size / 2, y - size / 2, size, size);
-            drawFreezeEffect(engine, size);
-            drawHealthBar(engine);
+            engine.drawImage(sprite, drawX - size / 2, drawY - size / 2, size, size);
+            drawFreezeEffect(engine, size, drawX, drawY);
+            drawHealthBar(engine, drawX, drawY);
             return;
         }
         engine.changeColor(getColor());
-        engine.drawSolidCircle(x, y, GameConfig.TILE_SIZE * 0.35 * drawMul);
+        engine.drawSolidCircle(drawX, drawY, GameConfig.TILE_SIZE * 0.35 * drawMul);
         engine.changeColor(Color.WHITE);
-        engine.drawText(x - 5, y + 5, getDrawLabel(), "Arial", 12);
-        drawFreezeEffect(engine, GameConfig.TILE_SIZE * drawMul);
-        drawHealthBar(engine);
+        engine.drawText(drawX - 5, drawY + 5, getDrawLabel(), "Arial", 12);
+        drawFreezeEffect(engine, GameConfig.TILE_SIZE * drawMul, drawX, drawY);
+        drawHealthBar(engine, drawX, drawY);
     }
 
-    private void drawFreezeEffect(GameEngine engine, double enemySize) {
+    private void drawFreezeEffect(GameEngine engine, double enemySize, double drawX, double drawY) {
         if (!isFrozen()) {
             return;
         }
@@ -290,8 +296,8 @@ public class Enemy {
         }
         double effectW = enemySize * 0.95;
         double effectH = enemySize * 0.95;
-        double effectX = x - effectW / 2;
-        double effectY = y - effectH * 0.20;
+        double effectX = drawX - effectW / 2;
+        double effectY = drawY - effectH * 0.20;
         engine.setAlpha(0.58f);
         engine.drawImage(image, effectX, effectY, effectW, effectH);
         engine.setAlpha(1.0f);
@@ -309,14 +315,14 @@ public class Enemy {
         return "M";
     }
 
-    private void drawHealthBar(GameEngine engine) {
+    private void drawHealthBar(GameEngine engine, double drawX, double drawY) {
         double drawMul = getDrawSizeMultiplier();
         double barW = 24 * drawMul;
         engine.changeColor(Color.RED);
-        engine.drawSolidRectangle(x - barW / 2, y - 20 * drawMul, barW, 4);
+        engine.drawSolidRectangle(drawX - barW / 2, drawY - 20 * drawMul, barW, 4);
         double ratio = maxHp == 0 ? 0.0 : (double) hp / maxHp;
         engine.changeColor(Color.GREEN);
-        engine.drawSolidRectangle(x - barW / 2, y - 20 * drawMul, barW * ratio, 4);
+        engine.drawSolidRectangle(drawX - barW / 2, drawY - 20 * drawMul, barW * ratio, 4);
     }
 
     private double getCurrentSpeed() {

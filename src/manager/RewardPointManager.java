@@ -7,6 +7,7 @@ import java.util.Random;
 
 import core.GridPosition;
 import core.GridMap;
+import effect.ParticleSystem;
 import effect.RewardPoint;
 import game.GameEngine;
 import game.GameConfig;
@@ -49,10 +50,15 @@ public class RewardPointManager {
         }
     }
 
-    public boolean handleClick(GridPosition position, EconomyManager economy, ScoreManager score) {
+    public boolean handleClick(GridPosition position, EconomyManager economy, ScoreManager score,
+            GridMap map, ParticleSystem particleSystem) {
         for (RewardPoint point : rewardPoints) {
             if (point.isClicked(position)) {
                 point.collect(economy, score);
+                if (particleSystem != null) {
+                    particleSystem.spawnRewardText(map, position,
+                            GameConfig.REWARD_MONEY, GameConfig.REWARD_SCORE);
+                }
                 return true;
             }
         }

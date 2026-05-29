@@ -5,6 +5,7 @@ import game.Difficulty;
 /** Converts Difficulty into gameplay multipliers. */
 public class DifficultyManager {
     private Difficulty difficulty;
+    private double adaptivePressure = 1.0;
 
     public DifficultyManager(Difficulty difficulty) {
         this.difficulty = difficulty;
@@ -30,6 +31,39 @@ public class DifficultyManager {
         return 0.9;  // Normal: 10% faster spawn
     }
 
+    public void updateAdaptivePressure(double baseHpRatio, int money, int kills, double elapsedTime) {
+        double target = 1.0;
+        if (baseHpRatio > 0.75) {
+            target += 0.12;
+        } else if (baseHpRatio < 0.35) {
+            target -= 0.18;
+        }
+        if (money >= 220) {
+            target += 0.08;
+        } else if (money < 70) {
+            target -= 0.08;
+        }
+        double expectedKills = Math.max(1.0, elapsedTime / 8.0);
+        if (kills > expectedKills * 1.25) {
+            target += 0.10;
+        } else if (kills < expectedKills * 0.65 && elapsedTime > 30.0) {
+            target -= 0.08;
+        }
+        adaptivePressure += (clamp(target, 0.75, 1.25) - adaptivePressure) * 0.05;
+    }
+
+    public double getAdaptiveSpawnMultiplier() {
+        return 1.0 / adaptivePressure;
+    }
+
+    public double getAdaptiveSpecialEnemyMultiplier() {
+        return adaptivePressure;
+    }
+
+    public double getAdaptivePressure() {
+        return adaptivePressure;
+    }
+
     public double getDisasterInterval() {
         double base = 10.0;
         if (difficulty == Difficulty.EASY) return base * 1.8;  // Disasters every 18s
@@ -43,5 +77,9 @@ public class DifficultyManager {
 
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
+    }
+
+    private double clamp(double value, double min, double max) {
+        return Math.max(min, Math.min(max, value));
     }
 }

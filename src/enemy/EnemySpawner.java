@@ -1,8 +1,10 @@
 package enemy;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import core.GridPosition;
@@ -16,6 +18,7 @@ import manager.WaveManager;
 import manager.EconomyManager;
 import manager.ScoreManager;
 import manager.SoundManager;
+import effect.ParticleSystem;
 
 /** Spawns enemies from four map edges and owns the active enemy list. */
 public class EnemySpawner {
@@ -97,7 +100,8 @@ public class EnemySpawner {
     private boolean shouldSpawn(WaveManager waveManager) {
         double interval = GameConfig.DEFAULT_SPAWN_INTERVAL
                 * difficultyManager.getSpawnIntervalMultiplier()
-                * waveManager.getSpawnIntervalMultiplier();
+                * waveManager.getSpawnIntervalMultiplier()
+                * difficultyManager.getAdaptiveSpawnMultiplier();
         return spawnTimer >= interval;
     }
 
@@ -153,6 +157,11 @@ public class EnemySpawner {
         assassinChance *= stageMultiplier;
         archerChance *= stageMultiplier;
 
+        double pressureMultiplier = difficultyManager.getAdaptiveSpecialEnemyMultiplier();
+        tankChance *= pressureMultiplier;
+        assassinChance *= pressureMultiplier;
+        archerChance *= pressureMultiplier;
+
         // Calculate cumulative probabilities
         double tankLimit = tankChance;
         double assassinLimit = tankLimit + assassinChance;
@@ -186,7 +195,7 @@ public class EnemySpawner {
     }
 
     public void updateEnemies(double dt, EnemyAI enemyAI, EconomyManager economy, ScoreManager score,
-            WaveManager waveManager, List<Building> buildings) {
+            WaveManager waveManager, List<Building> buildings, ParticleSystem particleSystem) {
         for (Enemy enemy : new ArrayList<>(enemies)) {
             if (enemy instanceof BossEnemy) {
                 ((BossEnemy) enemy).setBuildings(buildings);
@@ -199,6 +208,10 @@ public class EnemySpawner {
             if (enemy.isDead()) {
                 if (enemy.getType() == EnemyType.BOSS) {
                     waveManager.markBossDefeated();
+                }
+                if (particleSystem != null) {
+                    particleSystem.spawnEnemyDeath(map, enemy.getGridPosition());
+                    particleSystem.spawnScoreText(map, enemy.getGridPosition(), enemy.getScoreReward());
                 }
                 economy.addMoney(enemy.getMoneyReward());
                 score.addKillScore(enemy.getScoreReward());
@@ -224,9 +237,30 @@ public class EnemySpawner {
     }
 
     public void draw(GameEngine engine, GridMap map) {
+        Map<GridPosition, Integer> tileCounts = new HashMap<GridPosition, Integer>();
         for (Enemy enemy : enemies) {
-            enemy.draw(engine, map);
+            GridPosition position = enemy.getGridPosition();
+            Integer count = tileCounts.get(position);
+            tileCounts.put(position, count == null ? 1 : count + 1);
         }
+        Map<GridPosition, Integer> drawIndices = new HashMap<GridPosition, Integer>();
+        for (Enemy enemy : enemies) {
+            GridPosition position = enemy.getGridPosition();
+            int count = tileCounts.get(position);
+            int index = drawIndices.containsKey(position) ? drawIndices.get(position) : 0;
+            drawIndices.put(position, index + 1);
+            double[] offset = getSeparationOffset(index, count);
+            enemy.draw(engine, map, offset[0], offset[1]);
+        }
+    }
+
+    private double[] getSeparationOffset(int index, int count) {
+        if (count <= 1) {
+            return new double[] {0.0, 0.0};
+        }
+        double radius = Math.min(14.0, 5.0 + count * 1.8);
+        double angle = Math.PI * 2.0 * index / count;
+        return new double[] {Math.cos(angle) * radius, Math.sin(angle) * radius};
     }
 
     public List<Enemy> getEnemies() {

@@ -15,6 +15,7 @@ src/util/Direction.java
 src/effect/ParticleSystem.java
 src/effect/RewardPoint.java
 src/effect/Particle.java
+src/effect/FloatingText.java
 src/game/GameEngine.java
 src/game/GameConfig.java
 src/game/Difficulty.java

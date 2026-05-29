@@ -79,7 +79,8 @@ public class HUD {
 
     public void draw(GameEngine engine, Base base, EconomyManager economy,
             ScoreManager score, WaveManager waves, Difficulty difficulty,
-            BuildingType selected, GameState state, int mouseX, int mouseY, double speedMul, int level) {
+            BuildingType selected, GameState state, int mouseX, int mouseY,
+            double speedMul, int level, double adaptivePressure) {
         if (level != lastButtonLevel) {
             createButtons(level);
             lastButtonLevel = level;
@@ -88,7 +89,7 @@ public class HUD {
         drawTitle(engine);
         drawLevelInfo(engine, level);
         drawBaseHealthBar(engine, base);
-        drawStats(engine, base, economy, score, waves, difficulty);
+        drawStats(engine, base, economy, score, waves, difficulty, adaptivePressure);
         drawButtons(engine, selected, mouseX, mouseY);
         drawHints(engine);
         drawTowerTooltip(engine, mouseX, mouseY, difficulty);
@@ -230,7 +231,7 @@ public class HUD {
     }
 
     private void drawStats(GameEngine engine, Base base, EconomyManager economy,
-            ScoreManager score, WaveManager waves, Difficulty difficulty) {
+            ScoreManager score, WaveManager waves, Difficulty difficulty, double adaptivePressure) {
         int x = GameConfig.WINDOW_WIDTH - GameConfig.HUD_WIDTH + 15;
         int y = 118;
         int cw = 135;
@@ -247,8 +248,14 @@ public class HUD {
         drawStatCard(engine, x + cw + gap, y, cw, ch, "SCORE", String.valueOf(score.getScore()), null);
 
         y += ch + gap;
-        drawStatCard(engine, x, y, cw, ch, "STAGE", waves.getStage() + "  " + difficulty, null);
+        drawStatCard(engine, x, y, cw, ch, "STAGE",
+                waves.getStage() + " " + difficulty.name().charAt(0) + " AIx" + formatPressure(adaptivePressure), null);
         drawStatCard(engine, x + cw + gap, y, cw, ch, "TIME", formatTime(waves.getElapsedTime()), null);
+    }
+
+    private String formatPressure(double pressure) {
+        int percent = (int) Math.round(pressure * 100.0);
+        return percent / 100 + "." + String.format("%02d", percent % 100);
     }
 
     // ================================================================

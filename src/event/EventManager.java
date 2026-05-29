@@ -6,6 +6,7 @@ import building.Building;
 import enemy.EnemySpawner;
 import game.GameEngine;
 import manager.RewardPointManager;
+import effect.ParticleSystem;
 import manager.WaveManager;
 import manager.EconomyManager;
 import manager.ScoreManager;
@@ -27,8 +28,9 @@ public class EventManager {
         disasterManager.update(dt, waves, map, spawner.getEnemies(), buildings);
     }
 
-    public boolean handleClick(GridPosition position, EconomyManager economy, ScoreManager score) {
-        return rewardPointManager.handleClick(position, economy, score);
+    public boolean handleClick(GridPosition position, EconomyManager economy, ScoreManager score,
+            GridMap map, ParticleSystem particleSystem) {
+        return rewardPointManager.handleClick(position, economy, score, map, particleSystem);
     }
 
     public void draw(GameEngine engine, GridMap map) {

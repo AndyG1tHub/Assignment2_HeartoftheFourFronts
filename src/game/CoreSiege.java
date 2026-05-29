@@ -37,6 +37,7 @@ public class CoreSiege extends GameEngine {
     private EnemyAI enemyAI;
     private DecoyManager decoyManager;
     private ProjectileManager projectileManager;
+    private ParticleSystem particleSystem;
     private EventManager eventManager;
     private EconomyManager economyManager;
     private ScoreManager scoreManager;
@@ -101,6 +102,7 @@ public class CoreSiege extends GameEngine {
         decoyManager = new DecoyManager(gridMap);
         enemyAI.setDecoyManager(decoyManager);
         projectileManager = new ProjectileManager();
+        particleSystem = new ParticleSystem();
         eventManager = new EventManager(difficultyManager.getDisasterInterval());
         economyManager = new EconomyManager();
         scoreManager = new ScoreManager();
@@ -142,6 +144,12 @@ public class CoreSiege extends GameEngine {
 
         waveManager.update(dt, scoreManager);
 
+        difficultyManager.updateAdaptivePressure(
+                (double) base.getHp() / base.getMaxHp(),
+                economyManager.getMoney(),
+                scoreManager.getEnemiesKilled(),
+                waveManager.getElapsedTime());
+
         enemySpawner.setCurrentLevel(currentLevel);
         enemySpawner.update(dt, waveManager);
 
@@ -149,7 +157,7 @@ public class CoreSiege extends GameEngine {
                 enemySpawner, buildings);
 
         enemySpawner.updateEnemies(dt, enemyAI,
-                economyManager, scoreManager, waveManager, buildings);
+                economyManager, scoreManager, waveManager, buildings, particleSystem);
 
         for (Building building : new ArrayList<Building>(buildings)) {
 
@@ -163,6 +171,7 @@ public class CoreSiege extends GameEngine {
         removeDestroyedBuildings();
 
         projectileManager.update(dt);
+        particleSystem.update(dt);
 
         // Detect boss death from projectile hits that happened this frame
         for (Enemy enemy : enemySpawner.getEnemies()) {
@@ -277,10 +286,44 @@ public class CoreSiege extends GameEngine {
 
         enemySpawner.draw(this, gridMap);
         projectileManager.draw(this, gridMap);
+        particleSystem.draw(this);
         decoyManager.draw(this);
         eventManager.draw(this, gridMap);
+        drawBuildPreview();
         hud.draw(this, base, economyManager, scoreManager, waveManager,
-                selectedDifficulty, selectedBuilding, gameState, mouseX, mouseY, speedMultiplier, currentLevel);
+                selectedDifficulty, selectedBuilding, gameState, mouseX, mouseY,
+                speedMultiplier, currentLevel, difficultyManager.getAdaptivePressure());
+    }
+
+    private void drawBuildPreview() {
+        if (gameState != GameState.PLAYING || mouseX < 0 || mouseY < 0) {
+            return;
+        }
+        GridPosition position = gridMap.mouseToGrid(mouseX, mouseY);
+        if (position == null) {
+            return;
+        }
+        boolean canPlace = canPlaceSelectedAt(position);
+        int x = gridMap.toScreenX(position.col);
+        int y = gridMap.toScreenY(position.row);
+        if (canPlace) {
+            changeColor(new Color(80, 220, 120, 90));
+        } else {
+            changeColor(new Color(230, 80, 70, 90));
+        }
+        drawSolidRectangle(x, y, GameConfig.TILE_SIZE, GameConfig.TILE_SIZE);
+        changeColor(canPlace ? new Color(120, 255, 150, 190) : new Color(255, 120, 110, 190));
+        drawRectangle(x + 2, y + 2, GameConfig.TILE_SIZE - 4, GameConfig.TILE_SIZE - 4, 2);
+    }
+
+    private boolean canPlaceSelectedAt(GridPosition position) {
+        if (selectedBuilding == BuildingType.DECOY) {
+            return economyManager.getMoney() >= GameConfig.DECOY_COST;
+        }
+        Building building = buildingFactory.createBuilding(selectedBuilding, position);
+        return building != null
+                && economyManager.getMoney() >= building.getCost()
+                && gridMap.isBuildable(position);
     }
 
     private void drawBackground() {
@@ -362,7 +405,8 @@ public class CoreSiege extends GameEngine {
             return;
         }
         GridPosition position = gridMap.mouseToGrid(event.getX(), event.getY());
-        if (position == null || eventManager.handleClick(position, economyManager, scoreManager)) {
+        if (position == null || eventManager.handleClick(position, economyManager, scoreManager,
+                gridMap, particleSystem)) {
             return;
         }
         Building existing = gridMap.getBuildingAt(position);
@@ -370,6 +414,7 @@ public class CoreSiege extends GameEngine {
             int cost = existing.getUpgradeCost();
             if (economyManager.spendMoney(cost)) {
                 existing.upgrade();
+                particleSystem.spawnUpgrade(gridMap, position);
                 soundManager.playButtonClick();
             } else {
                 soundManager.playInsufficientMoney();
@@ -426,6 +471,7 @@ public class CoreSiege extends GameEngine {
         if (gridMap.placeBuilding(building)) {
             buildings.add(building);
             scoreManager.addBuildingBuilt();
+            particleSystem.spawnBuild(gridMap, position);
             soundManager.playPlaceBuilding();
         } else {
             economyManager.addMoney(building.getCost());
