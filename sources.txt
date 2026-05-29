@@ -7,15 +7,15 @@ src/core/GridMap.java
 src/core/GridPosition.java
 src/core/PathFinder.java
 src/core/TileType.java
+src/combat/BossLaser.java
 src/combat/Projectile.java
 src/combat/ProjectileManager.java
-src/combat/BossLaser.java
 src/combat/MeteorStrike.java
 src/util/Direction.java
+src/effect/FloatingText.java
 src/effect/ParticleSystem.java
 src/effect/RewardPoint.java
 src/effect/Particle.java
-src/effect/FloatingText.java
 src/game/GameEngine.java
 src/game/GameConfig.java
 src/game/Difficulty.java
