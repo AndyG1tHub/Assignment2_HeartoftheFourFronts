@@ -18,9 +18,6 @@ public class BuildingFactory {
         if (type == BuildingType.LIGHTNING_TOWER) {
             return new LightningTower(position);
         }
-        if (type == BuildingType.WALL) {
-            return new Wall(position);
-        }
         if (type == BuildingType.HEAL_TOWER) {
             return new HealTower(position);
         }

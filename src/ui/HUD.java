@@ -52,13 +52,13 @@ public class HUD {
         buttons.clear();
         java.util.List<BuildingType> unlocked = GameConfig.getUnlockedTowers(level);
         int[] costs = {GameConfig.ARROW_TOWER_COST, GameConfig.CANNON_TOWER_COST, GameConfig.ICE_TOWER_COST,
-                       GameConfig.LIGHTNING_TOWER_COST, GameConfig.WALL_COST, GameConfig.HEAL_TOWER_COST, GameConfig.DECOY_COST};
-        String[] labels = {"Arrow", "Cannon", "Ice", "Lightning", "Wall", "Heal", "Decoy"};
+                       GameConfig.LIGHTNING_TOWER_COST, GameConfig.HEAL_TOWER_COST, GameConfig.DECOY_COST};
+        String[] labels = {"Arrow", "Cannon", "Ice", "Lightning", "Heal", "Decoy"};
         Color[] colors = {new Color(70, 170, 95), new Color(180, 110, 55), new Color(65, 170, 200),
-                          new Color(175, 100, 200), new Color(110, 110, 120), new Color(75, 180, 145), new Color(200, 155, 80)};
+                          new Color(175, 100, 200), new Color(75, 180, 145), new Color(200, 155, 80)};
         BuildingType[] allTypes = {BuildingType.ARROW_TOWER, BuildingType.CANNON_TOWER, BuildingType.ICE_TOWER,
-                                   BuildingType.LIGHTNING_TOWER, BuildingType.WALL, BuildingType.HEAL_TOWER, BuildingType.DECOY};
-        for (int i = 0; i < 7; i++) {
+                                   BuildingType.LIGHTNING_TOWER, BuildingType.HEAL_TOWER, BuildingType.DECOY};
+        for (int i = 0; i < 6; i++) {
             if (unlocked.contains(allTypes[i])) {
                 buttons.add(new Button(0, 0, 200, 24,
                     labels[i] + "  $" + costs[i], allTypes[i], colors[i]));
@@ -310,7 +310,6 @@ public class HUD {
             case CANNON_TOWER:   return ImageManager.getAttackTower();
             case ICE_TOWER:      return ImageManager.getIceTower();
             case LIGHTNING_TOWER:return ImageManager.getLightningTower();
-            case WALL:           return ImageManager.getWall();
             case HEAL_TOWER:     return ImageManager.getHealTower();
             case DECOY:          return ImageManager.getBait();
             default:             return null;
@@ -675,7 +674,7 @@ public class HUD {
         engine.changeColor(new Color(100, 220, 130));
         engine.drawText(tx + 80, ly + 16, String.valueOf(getHp(type)), "Arial", 11);
 
-        if (type != BuildingType.WALL && type != BuildingType.DECOY && type != BuildingType.HEAL_TOWER) {
+        if (type != BuildingType.DECOY && type != BuildingType.HEAL_TOWER) {
             engine.changeColor(MUTED);
             engine.drawText(tx + 8, ly + 32, "Damage", "Arial", 11);
             engine.changeColor(new Color(255, 150, 100));
@@ -695,17 +694,6 @@ public class HUD {
             engine.drawText(tx + 8, ly + 48, "Range", "Arial", 11);
             engine.changeColor(Color.WHITE);
             engine.drawText(tx + 80, ly + 48, getRange(type) + " tiles", "Arial", 11);
-        } else if (type == BuildingType.WALL) {
-            engine.changeColor(MUTED);
-            engine.drawText(tx + 8, ly + 32, "Type", "Arial", 11);
-            engine.changeColor(new Color(150, 150, 160));
-            engine.drawText(tx + 80, ly + 32, "Barrier", "Arial", 11);
-            engine.changeColor(MUTED);
-            engine.drawText(tx + 8, ly + 48, "Max", "Arial", 11);
-            engine.changeColor(GOLD);
-            int maxWalls = GameConfig.getMaxWalls(difficulty);
-            String maxStr = maxWalls == Integer.MAX_VALUE ? "Unlimited" : String.valueOf(maxWalls);
-            engine.drawText(tx + 80, ly + 48, maxStr, "Arial", 11);
         } else if (type == BuildingType.DECOY) {
             engine.changeColor(MUTED);
             engine.drawText(tx + 8, ly + 32, "Type", "Arial", 11);
@@ -720,7 +708,6 @@ public class HUD {
             case CANNON_TOWER: return GameConfig.CANNON_TOWER_COST;
             case ICE_TOWER: return GameConfig.ICE_TOWER_COST;
             case LIGHTNING_TOWER: return GameConfig.LIGHTNING_TOWER_COST;
-            case WALL: return GameConfig.WALL_COST;
             case HEAL_TOWER: return GameConfig.HEAL_TOWER_COST;
             case DECOY: return GameConfig.DECOY_COST;
             default: return 0;
@@ -733,7 +720,6 @@ public class HUD {
             case CANNON_TOWER: return 150;
             case ICE_TOWER: return 120;
             case LIGHTNING_TOWER: return 110;
-            case WALL: return 300;
             case HEAL_TOWER: return 120;
             case DECOY: return 100;
             default: return 0;

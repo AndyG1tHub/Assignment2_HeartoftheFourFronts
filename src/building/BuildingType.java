@@ -6,7 +6,6 @@ public enum BuildingType {
     CANNON_TOWER,
     ICE_TOWER,
     LIGHTNING_TOWER,
-    WALL,
     HEAL_TOWER,
     DECOY
 }

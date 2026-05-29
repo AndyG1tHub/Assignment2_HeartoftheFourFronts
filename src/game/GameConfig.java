@@ -22,14 +22,8 @@ public final class GameConfig {
     public static final int CANNON_TOWER_COST = 80;
     public static final int ICE_TOWER_COST = 45;
     public static final int LIGHTNING_TOWER_COST = 100;
-    public static final int WALL_COST = 35;
     public static final int HEAL_TOWER_COST = 65;
     public static final int DECOY_COST = 40;
-    public static int getMaxWalls(Difficulty difficulty) {
-        if (difficulty == Difficulty.EASY) return Integer.MAX_VALUE;
-        if (difficulty == Difficulty.NORMAL) return 16;
-        return 8;
-    }
     public static final double BUILDING_SELL_RATIO = 0.6;
     public static final int MAX_UPGRADE_LEVEL = 2;
     public static final double UPGRADE_COST_MULTIPLIER = 0.8;
@@ -78,7 +72,7 @@ public final class GameConfig {
     public static java.util.List<building.BuildingType> getUnlockedTowers(int level) {
         java.util.List<building.BuildingType> list = new java.util.ArrayList<>();
         list.add(building.BuildingType.ARROW_TOWER);
-        if (level >= 2) { list.add(building.BuildingType.WALL); list.add(building.BuildingType.CANNON_TOWER); }
+        if (level >= 2) { list.add(building.BuildingType.CANNON_TOWER); }
         if (level >= 3) { list.add(building.BuildingType.ICE_TOWER); list.add(building.BuildingType.HEAL_TOWER); }
         if (level >= 4) { list.add(building.BuildingType.LIGHTNING_TOWER); }
         if (level >= 5) { list.add(building.BuildingType.DECOY); }

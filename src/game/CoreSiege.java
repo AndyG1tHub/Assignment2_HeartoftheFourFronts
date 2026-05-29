@@ -182,9 +182,6 @@ public class CoreSiege extends GameEngine {
             Building building = iterator.next();
             if (building.isDestroyed()) {
                 gridMap.removeBuilding(building.getPosition());
-                if (building.getType() == BuildingType.WALL) {
-                    soundManager.playWallBreak();
-                }
                 iterator.remove();
             }
         }
@@ -422,17 +419,6 @@ public class CoreSiege extends GameEngine {
     }
 
     private void placeBuilding(GridPosition position) {
-        if (selectedBuilding == BuildingType.WALL) {
-            int wallCount = 0;
-            for (Building b : buildings) {
-                if (b.getType() == BuildingType.WALL) wallCount++;
-            }
-            int maxWalls = GameConfig.getMaxWalls(selectedDifficulty);
-            if (wallCount >= maxWalls) {
-                soundManager.playInsufficientMoney();
-                return;
-            }
-        }
         Building building = buildingFactory.createBuilding(selectedBuilding, position);
         if (building == null || !economyManager.spendMoney(building.getCost())) {
             if (building != null) soundManager.playInsufficientMoney();
@@ -481,10 +467,10 @@ public class CoreSiege extends GameEngine {
 
     private void selectBuildingByKey(int keyCode) {
         BuildingType[] all = {BuildingType.ARROW_TOWER, BuildingType.CANNON_TOWER, BuildingType.ICE_TOWER,
-                              BuildingType.LIGHTNING_TOWER, BuildingType.WALL, BuildingType.HEAL_TOWER, BuildingType.DECOY};
-        int[] keys = {KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4, KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7};
+                              BuildingType.LIGHTNING_TOWER, BuildingType.HEAL_TOWER, BuildingType.DECOY};
+        int[] keys = {KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4, KeyEvent.VK_5, KeyEvent.VK_6};
         java.util.List<BuildingType> unlocked = GameConfig.getUnlockedTowers(currentLevel);
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 6; i++) {
             if (keyCode == keys[i] && unlocked.contains(all[i])) {
                 selectedBuilding = all[i];
                 return;
