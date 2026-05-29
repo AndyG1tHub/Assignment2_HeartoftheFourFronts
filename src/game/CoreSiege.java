@@ -20,13 +20,7 @@ import effect.*;
 
 /** Main game class. It coordinates managers and keeps gameplay logic delegated. */
 public class CoreSiege extends GameEngine {
-    private static final String SAVE_DIR = System.getProperty("user.home") + "/.heartofthefourfronts";
-
-    private static java.io.File saveFile(String name) {
-        java.io.File dir = new java.io.File(SAVE_DIR);
-        if (!dir.exists()) dir.mkdirs();
-        return new java.io.File(dir, name);
-    }
+    private static final java.io.File SAVE_FILE = new java.io.File("save.dat");
 
     private GameState gameState = GameState.MENU;
     private Difficulty selectedDifficulty = Difficulty.NORMAL;
@@ -77,9 +71,8 @@ public class CoreSiege extends GameEngine {
         soundManager.loadSounds();
         ImageManager.loadImages(this);
         introScreen = new IntroScreen();
-        hasSave = saveFileExists();
+        loadSaveMetadata();
         menuScreen.setHasContinue(hasSave);
-        loadProgress();
         menuScreen.setMaxUnlockedLevel(maxUnlockedLevel);
         startNewGame(selectedDifficulty);
         gameState = GameState.INTRO;
@@ -193,7 +186,7 @@ public class CoreSiege extends GameEngine {
             gameState = GameState.GAME_OVER_EFFECT;
             endEffectTimer = 0.0;
             hud.resetEndMessageTimer();
-            deleteSave();
+            clearActiveSave();
             if (!hasTriggeredEndSound) {
                 soundManager.stopBgm();
                 soundManager.playGameOver();
@@ -203,7 +196,6 @@ public class CoreSiege extends GameEngine {
             gameState = GameState.WIN_EFFECT;
             endEffectTimer = 0.0;
             hud.resetEndMessageTimer();
-            deleteSave();
             if (!hasTriggeredEndSound) {
                 soundManager.stopBgm();
                 soundManager.playGameWin();
@@ -214,9 +206,9 @@ public class CoreSiege extends GameEngine {
             }
             if (currentLevel > maxUnlockedLevel) {
                 maxUnlockedLevel = currentLevel;
-                saveProgress();
                 menuScreen.setMaxUnlockedLevel(maxUnlockedLevel);
             }
+            clearActiveSave();
         }
     }
 
@@ -490,21 +482,7 @@ public class CoreSiege extends GameEngine {
 
     public void saveGame() {
         try {
-            java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter(saveFile("save.dat")));
-            out.println("difficulty=" + selectedDifficulty.ordinal());
-            out.println("money=" + economyManager.getMoney());
-            out.println("score=" + scoreManager.getScore());
-            out.println("kills=" + scoreManager.getEnemiesKilled());
-            out.println("rewards=" + scoreManager.getRewardPointsCollected());
-            out.println("buildingsBuilt=" + scoreManager.getBuildingsBuilt());
-            out.println("level=" + currentLevel);
-            out.println("baseHp=" + base.getHp());
-            out.println("waveTime=" + waveManager.getElapsedTime());
-            out.println("stage=" + waveManager.getStage());
-            for (Building b : buildings) {
-                out.println("building=" + b.getType().ordinal() + "," + b.getPosition().row + "," + b.getPosition().col + "," + b.getHp() + "," + b.getUpgradeLevel());
-            }
-            out.close();
+            writeSaveData(createCurrentSaveData(true));
             hasSave = true;
             menuScreen.setHasContinue(true);
             soundManager.playButtonClick();
@@ -515,36 +493,24 @@ public class CoreSiege extends GameEngine {
 
     public void loadGame() {
         try {
-            java.io.BufferedReader in = new java.io.BufferedReader(new java.io.FileReader(saveFile("save.dat")));
-            String line;
-            int diffOrd = 0, money = 0, score = 0, kills = 0, rewards = 0, buildingsBuilt = 0, level = 1;
-            int baseHp = GameConfig.BASE_MAX_HP;
-            double waveTime = 0;
-            int stage = 1;
-            List<String[]> savedBuildings = new ArrayList<String[]>();
-            while ((line = in.readLine()) != null) {
-                if (line.startsWith("difficulty=")) diffOrd = Integer.parseInt(line.substring(11));
-                else if (line.startsWith("money=")) money = Integer.parseInt(line.substring(6));
-                else if (line.startsWith("score=")) score = Integer.parseInt(line.substring(6));
-                else if (line.startsWith("kills=")) kills = Integer.parseInt(line.substring(6));
-                else if (line.startsWith("rewards=")) rewards = Integer.parseInt(line.substring(8));
-                else if (line.startsWith("buildingsBuilt=")) buildingsBuilt = Integer.parseInt(line.substring(15));
-                else if (line.startsWith("level=")) level = Integer.parseInt(line.substring(6));
-                else if (line.startsWith("baseHp=")) baseHp = Integer.parseInt(line.substring(7));
-                else if (line.startsWith("waveTime=")) waveTime = Double.parseDouble(line.substring(9));
-                else if (line.startsWith("stage=")) stage = Integer.parseInt(line.substring(6));
-                else if (line.startsWith("building=")) savedBuildings.add(line.substring(9).split(","));
+            SaveData data = readSaveData();
+            maxUnlockedLevel = clampLevel(data.unlockedLevel);
+            menuScreen.setMaxUnlockedLevel(maxUnlockedLevel);
+            if (!data.hasActiveSave) {
+                hasSave = false;
+                menuScreen.setHasContinue(false);
+                return;
             }
-            in.close();
 
-            Difficulty diff = Difficulty.values()[diffOrd];
-            currentLevel = level;
+            Difficulty diff = Difficulty.values()[Math.max(0, Math.min(data.difficulty, Difficulty.values().length - 1))];
+            currentLevel = clampLevel(data.level);
             startNewGame(diff);
-            base.setHp(baseHp);
-            economyManager.setMoney(money);
-            scoreManager.setScore(score, kills, rewards, buildingsBuilt);
-            waveManager.setElapsedTime(waveTime, stage);
-            for (String[] parts : savedBuildings) {
+            base.setHp(data.baseHp);
+            economyManager.setMoney(data.money);
+            scoreManager.setScore(data.score, data.kills, data.rewards, data.buildingsBuilt);
+            waveManager.setElapsedTime(data.waveTime, data.stage);
+            for (String buildingLine : data.buildingLines) {
+                String[] parts = buildingLine.split(",");
                 BuildingType type = BuildingType.values()[Integer.parseInt(parts[0])];
                 int row = Integer.parseInt(parts[1]);
                 int col = Integer.parseInt(parts[2]);
@@ -562,54 +528,154 @@ public class CoreSiege extends GameEngine {
             soundManager.startBgm();
         } catch (Exception e) {
             System.out.println("Load failed: " + e.getMessage());
-            hasSave = false;
-            menuScreen.setHasContinue(false);
+            resetSaveFile();
         }
     }
 
     public void deleteSave() {
         try {
-            saveFile("save.dat").delete();
-            hasSave = false;
-            menuScreen.setHasContinue(false);
+            resetSaveFile();
             soundManager.playButtonClick();
         } catch (Exception e) {
             System.out.println("Delete save failed: " + e.getMessage());
         }
     }
 
-    private void saveProgress() {
+    private void loadSaveMetadata() {
         try {
-            java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter(saveFile("progress.dat")));
-            out.println("unlockedLevel=" + maxUnlockedLevel);
-            out.close();
+            SaveData data = readSaveData();
+            hasSave = data.hasActiveSave;
+            maxUnlockedLevel = clampLevel(data.unlockedLevel);
         } catch (Exception e) {
-            System.out.println("Save progress failed: " + e.getMessage());
+            resetSaveFile();
         }
     }
 
-    private void loadProgress() {
+    private SaveData readSaveData() throws java.io.IOException {
+        ensureSaveFileExists();
+        SaveData data = new SaveData();
+        java.io.BufferedReader in = new java.io.BufferedReader(new java.io.FileReader(SAVE_FILE));
         try {
-            java.io.BufferedReader in = new java.io.BufferedReader(new java.io.FileReader(saveFile("progress.dat")));
             String line;
             while ((line = in.readLine()) != null) {
-                if (line.startsWith("unlockedLevel=")) {
-                    maxUnlockedLevel = Integer.parseInt(line.substring(14));
-                }
+                if (line.startsWith("hasActiveSave=")) data.hasActiveSave = Boolean.parseBoolean(line.substring(14));
+                else if (line.startsWith("unlockedLevel=")) data.unlockedLevel = Integer.parseInt(line.substring(14));
+                else if (line.startsWith("difficulty=")) data.difficulty = Integer.parseInt(line.substring(11));
+                else if (line.startsWith("money=")) data.money = Integer.parseInt(line.substring(6));
+                else if (line.startsWith("score=")) data.score = Integer.parseInt(line.substring(6));
+                else if (line.startsWith("kills=")) data.kills = Integer.parseInt(line.substring(6));
+                else if (line.startsWith("rewards=")) data.rewards = Integer.parseInt(line.substring(8));
+                else if (line.startsWith("buildingsBuilt=")) data.buildingsBuilt = Integer.parseInt(line.substring(15));
+                else if (line.startsWith("level=")) data.level = Integer.parseInt(line.substring(6));
+                else if (line.startsWith("baseHp=")) data.baseHp = Integer.parseInt(line.substring(7));
+                else if (line.startsWith("waveTime=")) data.waveTime = Double.parseDouble(line.substring(9));
+                else if (line.startsWith("stage=")) data.stage = Integer.parseInt(line.substring(6));
+                else if (line.startsWith("building=")) data.buildingLines.add(line.substring(9));
             }
+        } finally {
             in.close();
-            if (maxUnlockedLevel < 1 || maxUnlockedLevel > GameConfig.TOTAL_LEVELS) maxUnlockedLevel = 1;
-        } catch (Exception e) {
-            maxUnlockedLevel = 1;
+        }
+        data.unlockedLevel = clampLevel(data.unlockedLevel);
+        data.level = clampLevel(data.level);
+        return data;
+    }
+
+    private void writeSaveData(SaveData data) throws java.io.IOException {
+        java.io.PrintWriter out = new java.io.PrintWriter(new java.io.FileWriter(SAVE_FILE));
+        try {
+            out.println("hasActiveSave=" + data.hasActiveSave);
+            out.println("unlockedLevel=" + clampLevel(data.unlockedLevel));
+            out.println("difficulty=" + data.difficulty);
+            out.println("money=" + data.money);
+            out.println("score=" + data.score);
+            out.println("kills=" + data.kills);
+            out.println("rewards=" + data.rewards);
+            out.println("buildingsBuilt=" + data.buildingsBuilt);
+            out.println("level=" + clampLevel(data.level));
+            out.println("baseHp=" + data.baseHp);
+            out.println("waveTime=" + data.waveTime);
+            out.println("stage=" + data.stage);
+            for (String buildingLine : data.buildingLines) {
+                out.println("building=" + buildingLine);
+            }
+        } finally {
+            out.close();
         }
     }
 
-    private boolean saveFileExists() {
-        try {
-            return saveFile("save.dat").exists();
-        } catch (Exception e) {
-            return false;
+    private void ensureSaveFileExists() throws java.io.IOException {
+        if (!SAVE_FILE.exists()) {
+            writeSaveData(new SaveData());
         }
+    }
+
+    private void clearActiveSave() {
+        try {
+            SaveData data = new SaveData();
+            data.unlockedLevel = maxUnlockedLevel;
+            writeSaveData(data);
+            hasSave = false;
+            menuScreen.setHasContinue(false);
+        } catch (Exception e) {
+            System.out.println("Clear save failed: " + e.getMessage());
+        }
+    }
+
+    private void resetSaveFile() {
+        try {
+            writeSaveData(new SaveData());
+        } catch (Exception e) {
+            System.out.println("Reset save failed: " + e.getMessage());
+        }
+        hasSave = false;
+        maxUnlockedLevel = 1;
+        if (menuScreen != null) {
+            menuScreen.setHasContinue(false);
+            menuScreen.setMaxUnlockedLevel(maxUnlockedLevel);
+        }
+    }
+
+    private SaveData createCurrentSaveData(boolean active) {
+        SaveData data = new SaveData();
+        data.hasActiveSave = active;
+        data.unlockedLevel = maxUnlockedLevel;
+        data.difficulty = selectedDifficulty.ordinal();
+        data.money = economyManager.getMoney();
+        data.score = scoreManager.getScore();
+        data.kills = scoreManager.getEnemiesKilled();
+        data.rewards = scoreManager.getRewardPointsCollected();
+        data.buildingsBuilt = scoreManager.getBuildingsBuilt();
+        data.level = currentLevel;
+        data.baseHp = base.getHp();
+        data.waveTime = waveManager.getElapsedTime();
+        data.stage = waveManager.getStage();
+        for (Building b : buildings) {
+            data.buildingLines.add(b.getType().ordinal() + "," + b.getPosition().row + "," + b.getPosition().col + "," + b.getHp() + "," + b.getUpgradeLevel());
+        }
+        return data;
+    }
+
+    private int clampLevel(int level) {
+        if (level < 1 || level > GameConfig.TOTAL_LEVELS) {
+            return 1;
+        }
+        return level;
+    }
+
+    private static class SaveData {
+        boolean hasActiveSave = false;
+        int unlockedLevel = 1;
+        int difficulty = Difficulty.NORMAL.ordinal();
+        int money = GameConfig.STARTING_MONEY;
+        int score = 0;
+        int kills = 0;
+        int rewards = 0;
+        int buildingsBuilt = 0;
+        int level = 1;
+        int baseHp = GameConfig.BASE_MAX_HP;
+        double waveTime = 0.0;
+        int stage = 1;
+        List<String> buildingLines = new ArrayList<String>();
     }
 
     @Override
