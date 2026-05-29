@@ -46,6 +46,7 @@ public class HUD {
     public HUD() {
     }
 
+    /** Updates HUD timers and transient UI effects. */
     public void update(double dt) {
         gameTime += dt;
         endMessageTimer += dt;
@@ -77,6 +78,7 @@ public class HUD {
     //  MAIN DRAW
     // ================================================================
 
+    /** Draws in-game stats, build buttons, overlays, and tooltips. */
     public void draw(GameEngine engine, Base base, EconomyManager economy,
             ScoreManager score, WaveManager waves, Difficulty difficulty,
             BuildingType selected, GameState state, int mouseX, int mouseY,
@@ -535,6 +537,7 @@ public class HUD {
     //  PAUSE CLICK HANDLING
     // ================================================================
 
+    /** Handles clicks in the pause menu. */
     public int handlePauseClick(int mouseX, int mouseY) {
         if (resumeButton.contains(mouseX, mouseY)) return PAUSE_RESUME;
         if (saveButton.contains(mouseX, mouseY)) return PAUSE_SAVE;
@@ -560,7 +563,17 @@ public class HUD {
     private void drawBossWarning(GameEngine engine, WaveManager waves) {
         int cx = (GameConfig.WINDOW_WIDTH - GameConfig.HUD_WIDTH) / 2;
         boolean visible = (System.currentTimeMillis() / 500) % 2 == 0;
-        if (waves.isEliteWave() && !waves.isBossActive() && visible) {
+        if (waves.isFinalEliteWaveActive() && visible) {
+            int boxW = 250, boxH = 42;
+            int bx = cx - boxW / 2, by = 80;
+            engine.changeColor(new Color(120, 40, 160, 210));
+            engine.drawSolidRectangle(bx, by, boxW, boxH);
+            engine.changeColor(new Color(180, 90, 220));
+            engine.drawRectangle(bx, by, boxW, boxH, 2);
+            engine.changeColor(new Color(230, 200, 255));
+            int tw = engine.textWidth("!! FINAL ELITES !!", "Arial", 18);
+            engine.drawBoldText(cx - tw / 2, by + 28, "!! FINAL ELITES !!", "Arial", 18);
+        } else if (waves.isEliteWave() && !waves.isBossActive() && visible) {
             int boxW = 200, boxH = 36;
             int bx = cx - boxW / 2, by = 80;
             engine.changeColor(new Color(120, 40, 160, 200));
@@ -692,22 +705,22 @@ public class HUD {
             engine.changeColor(MUTED);
             engine.drawText(tx + 8, ly + 32, "Damage", "Arial", 11);
             engine.changeColor(new Color(255, 150, 100));
-            engine.drawText(tx + 80, ly + 32, String.valueOf(getDamage(type)), "Arial", 11);
+            engine.drawText(tx + 80, ly + 32, getDamage(type), "Arial", 11);
 
             engine.changeColor(MUTED);
             engine.drawText(tx + 8, ly + 48, "Range", "Arial", 11);
             engine.changeColor(Color.WHITE);
-            engine.drawText(tx + 80, ly + 48, getRange(type) + " tiles", "Arial", 11);
+            engine.drawText(tx + 80, ly + 48, getRange(type), "Arial", 11);
         } else if (type == BuildingType.HEAL_TOWER) {
             engine.changeColor(MUTED);
             engine.drawText(tx + 8, ly + 32, "Heal", "Arial", 11);
             engine.changeColor(new Color(100, 220, 200));
-            engine.drawText(tx + 80, ly + 32, "20 HP", "Arial", 11);
+            engine.drawText(tx + 80, ly + 32, "15 HP/s", "Arial", 11);
 
             engine.changeColor(MUTED);
             engine.drawText(tx + 8, ly + 48, "Range", "Arial", 11);
             engine.changeColor(Color.WHITE);
-            engine.drawText(tx + 80, ly + 48, getRange(type) + " tiles", "Arial", 11);
+            engine.drawText(tx + 80, ly + 48, getRange(type), "Arial", 11);
         } else if (type == BuildingType.DECOY) {
             engine.changeColor(MUTED);
             engine.drawText(tx + 8, ly + 32, "Type", "Arial", 11);
@@ -740,24 +753,24 @@ public class HUD {
         }
     }
 
-    private int getDamage(BuildingType type) {
+    private String getDamage(BuildingType type) {
         switch (type) {
-            case ARROW_TOWER: return 15;
-            case CANNON_TOWER: return 45;
-            case ICE_TOWER: return 18;
-            case LIGHTNING_TOWER: return 28;
-            default: return 0;
+            case ARROW_TOWER: return "18";
+            case CANNON_TOWER: return "50";
+            case ICE_TOWER: return "12 + freeze";
+            case LIGHTNING_TOWER: return "20 DPS";
+            default: return "0";
         }
     }
 
-    private int getRange(BuildingType type) {
+    private String getRange(BuildingType type) {
         switch (type) {
-            case ARROW_TOWER: return 4;
-            case CANNON_TOWER: return 4;
-            case ICE_TOWER: return 4;
-            case LIGHTNING_TOWER: return 5;
-            case HEAL_TOWER: return 3;
-            default: return 0;
+            case ARROW_TOWER: return "4 tiles";
+            case CANNON_TOWER: return "3 tiles";
+            case ICE_TOWER: return "4 tiles";
+            case LIGHTNING_TOWER: return "3x3";
+            case HEAL_TOWER: return "2 tiles";
+            default: return "0";
         }
     }
 }

@@ -62,6 +62,7 @@ public class CoreSiege extends GameEngine {
         createGame(new CoreSiege(), GameConfig.TARGET_FPS);
     }
 
+    /** Initializes managers, assets, save metadata, and the first state. */
     @Override
     public void init() {
         setWindowSize(GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
@@ -79,14 +80,7 @@ public class CoreSiege extends GameEngine {
         gameState = GameState.INTRO;
     }
 
-    void setCurrentLevel(int level) {
-        currentLevel = Math.min(level, GameConfig.TOTAL_LEVELS);
-    }
-
-    int getCurrentLevel() {
-        return currentLevel;
-    }
-
+    /** Resets all gameplay managers for a fresh run. */
     private void startNewGame(Difficulty difficulty) {
         hasTriggeredEndSound = false;
         selectedDifficulty = difficulty;
@@ -110,6 +104,7 @@ public class CoreSiege extends GameEngine {
         soundManager.startBgm();
     }
 
+    /** Advances the active game simulation by one frame. */
     @Override
     public void update(double dt) {
 
@@ -156,8 +151,13 @@ public class CoreSiege extends GameEngine {
         eventManager.update(dt, gridMap, waveManager,
                 enemySpawner, buildings);
 
+        int baseHpBeforeEnemyUpdate = base.getHp();
         enemySpawner.updateEnemies(dt, enemyAI,
                 economyManager, scoreManager, waveManager, buildings, particleSystem);
+        int baseHpLost = baseHpBeforeEnemyUpdate - base.getHp();
+        if (baseHpLost > 0) {
+            scoreManager.applyPenalty(baseHpLost);
+        }
 
         for (Building building : new ArrayList<Building>(buildings)) {
 
@@ -198,6 +198,7 @@ public class CoreSiege extends GameEngine {
 
     private boolean hasTriggeredEndSound;
 
+    /** Handles defeat and victory transitions. */
     private void checkGameEnd() {
         if (base.isDestroyed()) {
             gameState = GameState.GAME_OVER_EFFECT;
@@ -219,19 +220,17 @@ public class CoreSiege extends GameEngine {
                 soundManager.playGameWin();
                 hasTriggeredEndSound = true;
             }
-            if (currentLevel < GameConfig.TOTAL_LEVELS) {
-                currentLevel++;
-            }
-            if (currentLevel > maxUnlockedLevel) {
-                maxUnlockedLevel = currentLevel;
+            int unlockedLevel = Math.min(GameConfig.TOTAL_LEVELS, currentLevel + 1);
+            if (unlockedLevel > maxUnlockedLevel) {
+                maxUnlockedLevel = unlockedLevel;
                 menuScreen.setMaxUnlockedLevel(maxUnlockedLevel);
             }
             clearActiveSave();
         }
     }
 
+    /** Draws the current menu, end screen, or gameplay scene. */
     @Override
-
     public void paintComponent() {
 
         drawBackground();
@@ -331,6 +330,7 @@ public class CoreSiege extends GameEngine {
         clearBackground(GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
     }
 
+    /** Routes mouse clicks based on the current game state. */
     @Override
     public void mousePressed(MouseEvent event) {
         if (gameState == GameState.MENU) {
@@ -479,6 +479,7 @@ public class CoreSiege extends GameEngine {
         }
     }
 
+    /** Routes keyboard shortcuts for gameplay and menu states. */
     @Override
     public void keyPressed(KeyEvent event) {
         int keyCode = event.getKeyCode();
@@ -524,18 +525,21 @@ public class CoreSiege extends GameEngine {
         }
     }
 
+    /** Restarts the current level using the selected difficulty. */
     public void restartGame() {
         soundManager.playButtonClick();
         startNewGame(selectedDifficulty);
         gameState = GameState.PLAYING;
     }
 
+    /** Returns to the main menu and stops background music. */
     public void returnToMenu() {
         soundManager.playButtonClick();
         soundManager.stopBgm();
         gameState = GameState.MENU;
     }
 
+    /** Writes the current run to the root save file. */
     public void saveGame() {
         try {
             writeSaveData(createCurrentSaveData(true));
@@ -547,6 +551,7 @@ public class CoreSiege extends GameEngine {
         }
     }
 
+    /** Restores the active run from the root save file. */
     public void loadGame() {
         try {
             SaveData data = readSaveData();
@@ -565,6 +570,17 @@ public class CoreSiege extends GameEngine {
             economyManager.setMoney(data.money);
             scoreManager.setScore(data.score, data.kills, data.rewards, data.buildingsBuilt);
             waveManager.setElapsedTime(data.waveTime, data.stage);
+            waveManager.restoreBossState(data.bossSpawned, data.bossDefeated, data.finalEliteWave);
+            enemySpawner.setFinalEliteWaveSpawned(data.finalEliteWave);
+            for (String enemyLine : data.enemyLines) {
+                String[] parts = enemyLine.split(",");
+                EnemyType type = EnemyType.values()[Integer.parseInt(parts[0])];
+                int row = Integer.parseInt(parts[1]);
+                int col = Integer.parseInt(parts[2]);
+                int hp = Integer.parseInt(parts[3]);
+                Enemy enemy = createSavedEnemy(type, new GridPosition(row, col), hp);
+                enemySpawner.addRestoredEnemy(enemy);
+            }
             for (String buildingLine : data.buildingLines) {
                 String[] parts = buildingLine.split(",");
                 BuildingType type = BuildingType.values()[Integer.parseInt(parts[0])];
@@ -588,6 +604,7 @@ public class CoreSiege extends GameEngine {
         }
     }
 
+    /** Resets save data while keeping the save file present. */
     public void deleteSave() {
         try {
             resetSaveFile();
@@ -626,6 +643,10 @@ public class CoreSiege extends GameEngine {
                 else if (line.startsWith("baseHp=")) data.baseHp = Integer.parseInt(line.substring(7));
                 else if (line.startsWith("waveTime=")) data.waveTime = Double.parseDouble(line.substring(9));
                 else if (line.startsWith("stage=")) data.stage = Integer.parseInt(line.substring(6));
+                else if (line.startsWith("bossSpawned=")) data.bossSpawned = Boolean.parseBoolean(line.substring(12));
+                else if (line.startsWith("bossDefeated=")) data.bossDefeated = Boolean.parseBoolean(line.substring(13));
+                else if (line.startsWith("finalEliteWave=")) data.finalEliteWave = Boolean.parseBoolean(line.substring(15));
+                else if (line.startsWith("enemy=")) data.enemyLines.add(line.substring(6));
                 else if (line.startsWith("building=")) data.buildingLines.add(line.substring(9));
             }
         } finally {
@@ -634,6 +655,18 @@ public class CoreSiege extends GameEngine {
         data.unlockedLevel = clampLevel(data.unlockedLevel);
         data.level = clampLevel(data.level);
         return data;
+    }
+
+    private Enemy createSavedEnemy(EnemyType type, GridPosition position, int hp) {
+        Enemy enemy;
+        if (type == EnemyType.BOSS) {
+            int bossHp = (int) (GameConfig.getBossHp(currentLevel) * difficultyManager.getEnemyHpMultiplier());
+            enemy = enemyFactory.createBoss(position, bossHp);
+        } else {
+            enemy = enemyFactory.createEnemy(type, position);
+        }
+        enemy.setHp(hp);
+        return enemy;
     }
 
     private void writeSaveData(SaveData data) throws java.io.IOException {
@@ -651,6 +684,12 @@ public class CoreSiege extends GameEngine {
             out.println("baseHp=" + data.baseHp);
             out.println("waveTime=" + data.waveTime);
             out.println("stage=" + data.stage);
+            out.println("bossSpawned=" + data.bossSpawned);
+            out.println("bossDefeated=" + data.bossDefeated);
+            out.println("finalEliteWave=" + data.finalEliteWave);
+            for (String enemyLine : data.enemyLines) {
+                out.println("enemy=" + enemyLine);
+            }
             for (String buildingLine : data.buildingLines) {
                 out.println("building=" + buildingLine);
             }
@@ -705,6 +744,14 @@ public class CoreSiege extends GameEngine {
         data.baseHp = base.getHp();
         data.waveTime = waveManager.getElapsedTime();
         data.stage = waveManager.getStage();
+        data.bossSpawned = waveManager.hasBossSpawned();
+        data.bossDefeated = waveManager.hasWon();
+        data.finalEliteWave = waveManager.isFinalEliteWave();
+        for (Enemy enemy : enemySpawner.getEnemies()) {
+            if (!enemy.isDead()) {
+                data.enemyLines.add(enemy.getType().ordinal() + "," + enemy.getGridPosition().row + "," + enemy.getGridPosition().col + "," + enemy.getHp());
+            }
+        }
         for (Building b : buildings) {
             data.buildingLines.add(b.getType().ordinal() + "," + b.getPosition().row + "," + b.getPosition().col + "," + b.getHp() + "," + b.getUpgradeLevel());
         }
@@ -731,6 +778,10 @@ public class CoreSiege extends GameEngine {
         int baseHp = GameConfig.BASE_MAX_HP;
         double waveTime = 0.0;
         int stage = 1;
+        boolean bossSpawned = false;
+        boolean bossDefeated = false;
+        boolean finalEliteWave = false;
+        List<String> enemyLines = new ArrayList<String>();
         List<String> buildingLines = new ArrayList<String>();
     }
 

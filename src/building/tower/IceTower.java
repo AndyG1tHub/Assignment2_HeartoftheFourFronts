@@ -20,6 +20,7 @@ public class IceTower extends AttackTower {
                 BuildingType.ICE_TOWER, 12, 2.0);
     }
 
+    /** Fires an ice projectile that freezes the target on hit. */
     @Override
     protected void attack(List<Enemy> enemies, ProjectileManager projectiles, GridMap map) {
         Enemy target = findClosestEnemy(enemies);

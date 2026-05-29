@@ -11,6 +11,7 @@ public class DifficultyManager {
         this.difficulty = difficulty;
     }
 
+    /** Returns the HP multiplier for the selected difficulty. */
     public double getEnemyHpMultiplier() {
         if (difficulty == Difficulty.EASY) {
             return 0.7;  // 30% less HP
@@ -21,6 +22,7 @@ public class DifficultyManager {
         return 1.1;  // Normal: 10% more HP
     }
 
+    /** Returns the spawn interval multiplier for the selected difficulty. */
     public double getSpawnIntervalMultiplier() {
         if (difficulty == Difficulty.EASY) {
             return 1.4;  // 40% slower spawn
@@ -31,6 +33,7 @@ public class DifficultyManager {
         return 0.9;  // Normal: 10% faster spawn
     }
 
+    /** Adjusts pressure based on current player performance. */
     public void updateAdaptivePressure(double baseHpRatio, int money, int kills, double elapsedTime) {
         double target = 1.0;
         if (baseHpRatio > 0.75) {
@@ -64,6 +67,7 @@ public class DifficultyManager {
         return adaptivePressure;
     }
 
+    /** Returns how often disasters should trigger. */
     public double getDisasterInterval() {
         double base = 10.0;
         if (difficulty == Difficulty.EASY) return base * 1.8;  // Disasters every 18s

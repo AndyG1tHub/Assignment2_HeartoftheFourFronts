@@ -46,7 +46,7 @@
 - **流畅动画**：60FPS流畅体验，自适应窗口大小
 
 ### 💾 完善系统
-- **存档系统**：随时保存进度，继续冒险
+- **存档系统**：保存当前关卡、难度、波次、基地血量、金币、分数、建筑状态和场上敌人；投射物/奖励点/灾害不会写入存档
 - **经济系统**：击杀敌人获得金币，合理分配资源
 - **建造预览**：鼠标悬停地图时显示可建/不可建提示
 - **音效系统**：沉浸式背景音乐和战斗音效
@@ -63,18 +63,18 @@
 
 ### 编译运行
 
-#### 方法一：一键运行
+#### 方法一：使用现有 sources.txt 运行
 ```bash
-cd Assignment2_HeartoftheFourFronts/src
-javac Main.java
-java Main
+cd Assignment2_HeartoftheFourFronts
+javac -encoding UTF-8 -d out "@sources.txt"
+java -cp out Main
 ```
 
-#### 方法二：完整编译
+#### 方法二：重新生成 sources.txt 后运行
 ```bash
 cd Assignment2_HeartoftheFourFronts
 find src -name "*.java" > sources.txt
-javac -d out @sources.txt
+javac -encoding UTF-8 -d out "@sources.txt"
 java -cp out Main
 ```
 
@@ -106,6 +106,7 @@ java -cp out Main
    - Level 1-2：坚持到Stage 5并击败最终精英波
    - Level 3-5：击败Boss并清空所有剩余敌人
 3. **合理分配资源**：用有限的金币建造和升级防御塔
+4. **避免基地受伤**：基地每损失1 HP会扣除1分
 
 ### 游戏流程
 
@@ -211,7 +212,7 @@ Stage 1-5 逐步推进（每阶段40秒）
 ### 2. ❄️ 冰塔 (Ice Tower)
 **建造成本**：80 💰  
 **攻击类型**：单体冰冻  
-**特点**：冰冻敌人0.6秒，完全停止移动，控制神器  
+**特点**：冰冻敌人0.6秒，控制敌人移动
 **特殊机制**：Boss免疫冰冻效果  
 **升级效果**：
 - Level 0 → 1：64💰（伤害增强，范围+1）
@@ -228,7 +229,7 @@ Stage 1-5 逐步推进（每阶段40秒）
 **特点**：爆炸伤害，对密集敌人效果显著  
 **升级效果**：
 - Level 0 → 1：72💰（伤害×1.5，范围+1）
-- Level 1 → 2：144💰（伤害×2.0，爆炸范围增大）
+- Level 1 → 2：144💰（伤害×2.0，攻击间隔缩短30%）
 - **总投资**：306💰
 
 **推荐用途**：对付坦克和密集敌群，关键位置部署
@@ -265,7 +266,7 @@ Stage 1-5 逐步推进（每阶段40秒）
 **建造成本**：40 💰  
 **类型**：战术工具  
 **特点**：吸引附近敌人注意力，为你争取时间  
-**持续时间**：有限（会被敌人摧毁）
+**持续时间**：有限,会飞出地图
 
 **推荐用途**：紧急情况下分散敌人，保护关键建筑
 
@@ -555,7 +556,7 @@ src/
 | Graphics & Animation | 地图/塔/敌人/基地图片资源，敌人移动与攻击动画，火焰、金币、冰冻、治疗、浮动文字、建造/升级粒子和Boss激光特效 |
 | Game Complexity | 5个Level、每关5个Stage、6种敌人、6种防御/工具选择、塔升级、精英波和Boss战 |
 | Sound & Music | 背景音乐，以及射击、建造、敌人死亡、Boss/灾害、胜负和UI音效 |
-| Scoring / Health System | 分数、击杀数、金币奖励、奖励点、基地血量、建筑血量和敌人血量 |
+| Scoring / Health System | 分数、击杀数、金币奖励、奖励点、基地受伤扣分、基地血量、建筑血量和敌人血量 |
 | Gameplay & Controls & UI | 鼠标建塔/升级/出售，键盘快捷键，HUD，建造合法性预览，暂停菜单，快进，存档/读档 |
 | Gaming AI | BFS寻路，敌人追踪基地，攻击防御塔/阻挡建筑，诱饵目标切换，Boss特殊攻击，Adaptive Pressure AI动态调整刷怪压力 |
 | Additional Features | 难度选择、存档系统、动态灾害、奖励点、Boss激光、浮动文字、敌人反重叠显示、死亡/建造/升级粒子、可缩放窗口和多种视觉特效 |
@@ -616,9 +617,10 @@ src/
 
 ## 👥 贡献者
 
-- **游戏设计**：Yu Han
-- **程序开发**：Yu Han
-- **特效设计**：Yu Han & Claude (Kiro)
+- **机制设计**：Guo Mingqi
+- **互动设计**：Yu Han
+- **特效设计**：Song Pengju
+- **资源整合**：Li Qianzheng
 
 ---
 
@@ -631,9 +633,9 @@ src/
 ## 🎮 开始你的冒险！
 
 ```bash
-cd Assignment2_HeartoftheFourFronts/src
-javac Main.java
-java Main
+cd Assignment2_HeartoftheFourFronts
+javac -encoding UTF-8 -d out "@sources.txt"
+java -cp out Main
 ```
 
 **守护四方要塞，击败黑暗之王，成为传奇守护者！** 🏆

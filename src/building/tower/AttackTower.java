@@ -41,6 +41,7 @@ public abstract class AttackTower extends Building {
         return baseAttackInterval * GameConfig.ATTACK_INTERVAL_MULTIPLIER[upgradeLevel];
     }
 
+    /** Ticks cooldowns and fires when a target is available. */
     @Override
     public void update(double dt, List<Enemy> enemies, ProjectileManager projectiles,
             GridMap map, List<Building> buildings) {
@@ -54,6 +55,7 @@ public abstract class AttackTower extends Building {
         }
     }
 
+    /** Fires a projectile at the closest enemy in range. */
     protected void attack(List<Enemy> enemies, ProjectileManager projectiles, GridMap map) {
         Enemy target = findClosestEnemy(enemies);
         if (target == null) {
@@ -82,6 +84,7 @@ public abstract class AttackTower extends Building {
         }
     }
 
+    /** Finds the nearest living enemy within tower range. */
     protected Enemy findClosestEnemy(List<Enemy> enemies) {
         Enemy closest = null;
         double bestDistance = Double.MAX_VALUE;

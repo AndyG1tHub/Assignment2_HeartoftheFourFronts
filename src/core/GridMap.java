@@ -12,12 +12,13 @@ import building.Building;
 import manager.ImageManager;
 
 /** Stores and draws the 20x20 grid and validates placement/movement rules. */
-public class GridMap {
+public final class GridMap {
     private final Tile[][] tiles;
     private final GridPosition basePosition;
     private final Random random = new Random();
     private double animationTime = 0.0;
 
+    /** Builds a fresh map with base, terrain variants, and obstacles. */
     public GridMap() {
         tiles = new Tile[GameConfig.GRID_ROWS][GameConfig.GRID_COLS];
         basePosition = new GridPosition(GameConfig.GRID_ROWS / 2, GameConfig.GRID_COLS / 2);
@@ -48,7 +49,7 @@ public class GridMap {
     }
 
     private void placeCentralBase() {
-        getTile(basePosition).setType(TileType.BASE);
+        tiles[basePosition.row][basePosition.col].setType(TileType.BASE);
     }
 
     private void generateRandomObstacles() {

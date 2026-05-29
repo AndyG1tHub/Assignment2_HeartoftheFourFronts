@@ -26,8 +26,6 @@ public class ImageManager {
     private static Image coin;
     private static Image[] coinTurnFrames;
     private static Image homeItems;
-    private static Image enemies;
-    private static Image naturalDisaster;
     private static Image baseImage;
     private static Image arrowProjectile;
     private static Image cannonProjectile;
@@ -46,8 +44,6 @@ public class ImageManager {
     private static Image btnPlayNormal;
     private static Image btnExitHover;
     private static Image btnExitNormal;
-    private static Image btnPlainNormal;
-    private static Image btnPlainHover;
     private static Image panelTL, panelTR, panelBL, panelBR;
     private static Image pauseTL, pauseTR, pauseBL, pauseBR;
 
@@ -77,6 +73,7 @@ public class ImageManager {
     private static final Map<EnemyType, Image[]> enemyAttackFrames = new HashMap<>();
     private static final Map<EnemyType, Image[]> enemyAttackLeftFrames = new HashMap<>();
 
+    /** Loads all shared image assets before gameplay starts. */
     public static void loadImages(GameEngine engine) {
         loadStaticImages(engine);
         loadEnemySprites(engine);
@@ -175,7 +172,6 @@ public class ImageManager {
         bait = engine.loadImage("Images/bait.png");
         coin = engine.loadImage("Images/coin.png");
         homeItems = engine.loadImage("Images/homeItems.png");
-        naturalDisaster = engine.loadImage("Images/naturalDisaster.png");
         baseImage = engine.subImage(homeItems, 45, 80, 470, 500);
         arrowProjectile = engine.subImage(homeItems, 575, 310, 250, 175);
         cannonProjectile = engine.subImage(homeItems, 895, 330, 245, 245);
@@ -190,8 +186,6 @@ public class ImageManager {
         btnPlayNormal = engine.subImage(uiSheet, 64, 128, 64, 32);
         btnExitHover = engine.subImage(uiSheet, 0, 192, 64, 32);
         btnExitNormal = engine.subImage(uiSheet, 64, 192, 64, 32);
-        btnPlainHover = engine.subImage(uiSheet, 0, 224, 64, 32);
-        btnPlainNormal = engine.subImage(uiSheet, 64, 224, 64, 32);
         panelTL = engine.subImage(uiSheet, 128, 0, 64, 64);
         panelTR = engine.subImage(uiSheet, 192, 0, 64, 64);
         panelBL = engine.subImage(uiSheet, 128, 64, 64, 64);
@@ -380,8 +374,6 @@ public class ImageManager {
     public static Image getBtnPlayHover() { return btnPlayHover; }
     public static Image getBtnExitNormal() { return btnExitNormal; }
     public static Image getBtnExitHover() { return btnExitHover; }
-    public static Image getBtnPlainNormal() { return btnPlainNormal; }
-    public static Image getBtnPlainHover() { return btnPlainHover; }
     public static Image getPanelTL() { return panelTL; }
     public static Image getPanelTR() { return panelTR; }
     public static Image getPanelBL() { return panelBL; }

@@ -57,6 +57,7 @@ public class MenuScreen {
     //  TOP-LEVEL DRAW
     // ================================================================
 
+    /** Draws the active menu screen. */
     public void draw(GameEngine engine, int mouseX, int mouseY) {
         // 1. Background image — full screen, no global overlay
         Image bg = ImageManager.getBackground();
@@ -151,7 +152,7 @@ public class MenuScreen {
         int s = 22;
 
         drawHelpSection(engine, x, y, s, "CONTROLS", new String[]{
-            "1-7  Select building type        Space  Pause / Resume",
+            "1-6  Select building type        Space  Pause / Resume",
             "Left Click  Place building       Esc    Return to menu",
             "Right Click  Sell (60% refund)   F      Toggle 2x speed",
             "Click button  Select from panel  M      Toggle sound",
@@ -174,9 +175,9 @@ public class MenuScreen {
         drawHelpSection(engine, x, y, s, "TIPS", new String[]{
             "Hover building buttons to preview their stats",
             "Resize window - map scales to fit",
-            "Wall limit: Easy=unlimited, Normal=16, Hard=8",
+            "Base damage also reduces score",
             "5s prep time before each wave",
-            "Win: defeat final boss",
+            "Win: clear final elites or boss",
             "Save deletes on win or game over",
         });
 
@@ -253,6 +254,7 @@ public class MenuScreen {
     //  END SCREEN
     // ================================================================
 
+    /** Draws the victory or defeat action screen. */
     public void drawEndScreen(GameEngine engine, boolean won, int mouseX, int mouseY) {
         int w = GameConfig.WINDOW_WIDTH;
         int h = GameConfig.WINDOW_HEIGHT;
@@ -375,20 +377,6 @@ public class MenuScreen {
         engine.drawBoldText(x + (w - 56) / 2, y + 34, "BACK", "Arial", 17);
     }
 
-    private void drawEndBtn(GameEngine engine, Button btn, int mouseX, int mouseY) {
-        boolean on = btn.contains(mouseX, mouseY);
-        int x = btn.getX(), y = btn.getY(), w = btn.getWidth(), h = btn.getHeight();
-
-        engine.changeColor(on ? new Color(38, 44, 56, 210) : new Color(18, 22, 30, 160));
-        engine.drawSolidRectangle(x, y, w, h);
-        engine.changeColor(on ? GOLD : new Color(60, 65, 72, 130));
-        engine.drawRectangle(x, y, w, h);
-        engine.changeColor(on ? Color.WHITE : MUTED);
-        String t = btn.getText();
-        int tw = t.length() * 9;
-        engine.drawBoldText(x + (w - tw) / 2, y + 30, t, "Arial", 14);
-    }
-
     private void drawLevelBtn(GameEngine engine, int x, int y, int w, int h,
             String text, Color accent, boolean on) {
         engine.changeColor(on ? new Color(34, 60, 42, 210) : new Color(14, 22, 18, 160));
@@ -406,6 +394,7 @@ public class MenuScreen {
     //  CLICK HANDLING
     // ================================================================
 
+    /** Handles clicks in the main menu and level select screens. */
     public int handleClick(int mouseX, int mouseY) {
         if (menuState == 1) {
             if (backButton.contains(mouseX, mouseY)) { menuState = 0; return MenuAction.SOUND; }
@@ -439,6 +428,7 @@ public class MenuScreen {
 
     public Difficulty getSelectedDifficulty() { return currentDifficulty; }
 
+    /** Handles clicks on the end screen buttons. */
     public int handleEndClick(int mouseX, int mouseY) {
         if (restartButton.contains(mouseX, mouseY)) return END_RESTART;
         if (menuButton.contains(mouseX, mouseY))    return END_MENU;
