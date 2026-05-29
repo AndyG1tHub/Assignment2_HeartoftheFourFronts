@@ -12,8 +12,8 @@ import enemy.EnemyType;
 import game.GameConfig;
 import game.GameEngine;
 
-/** Boss enemy that fires purple cross-shaped lasers every 5 seconds,
- *  destroying entire row AND column of towers. */
+/** Boss enemy that fires purple horizontal or vertical lasers every 5 seconds,
+ *  destroying towers in their path over 2 seconds. */
 public class BossEnemy extends Enemy {
     public static final int BASE_HP = GameConfig.BOSS_BASE_HP;
 
