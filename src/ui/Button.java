@@ -95,4 +95,8 @@ public class Button {
     public BuildingType getBuildingType() {
         return buildingType;
     }
+
+    public Color getColor() {
+        return color;
+    }
 }
