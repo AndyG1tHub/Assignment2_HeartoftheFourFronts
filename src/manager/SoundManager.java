@@ -26,6 +26,7 @@ public class SoundManager {
     private GameEngine.AudioClip healTower;
     private GameEngine.AudioClip decoyDeploy;
     private GameEngine.AudioClip rewardCollect;
+    private GameEngine.AudioClip rewardSpawn;
     private GameEngine.AudioClip waveStart;
     private GameEngine.AudioClip enemySpawn;
     private GameEngine.AudioClip fireDisaster;
@@ -37,7 +38,7 @@ public class SoundManager {
 
     private Clip arrowClip, cannonClip, iceClip, lightningClip;
     private Clip deathClip, baseHitClip, buttonClip, placeClip, wallClip;
-    private Clip healClip, decoyClip, rewardClip, waveClip, spawnClip;
+    private Clip healClip, decoyClip, rewardClip, rewardSpawnClip, waveClip, spawnClip;
     private Clip fireClip, meteorClip, moneyClip, overClip, winClip;
 
     private SoundManager(GameEngine engine) {
@@ -65,6 +66,7 @@ public class SoundManager {
         healTower = engine.loadAudio("sounds/heal_tower.wav");
         decoyDeploy = engine.loadAudio("sounds/decoy_deploy.wav");
         rewardCollect = engine.loadAudio("sounds/reward_collect.wav");
+        rewardSpawn = engine.generateTone(1100, 1650, 160);
         waveStart = engine.loadAudio("sounds/wave_start.wav");
         enemySpawn = engine.loadAudio("sounds/enemy_spawn.wav");
         fireDisaster = engine.loadAudio("sounds/fire_disaster.wav");
@@ -89,6 +91,7 @@ public class SoundManager {
         healClip = createClip(healTower);
         decoyClip = createClip(decoyDeploy);
         rewardClip = createClip(rewardCollect);
+        rewardSpawnClip = createClip(rewardSpawn);
         waveClip = createClip(waveStart);
         spawnClip = createClip(enemySpawn);
         fireClip = createClip(fireDisaster);
@@ -151,8 +154,8 @@ public class SoundManager {
     public void playWallBreak() { playClip(wallClip, SFX_VOLUME); }
     public void playHealTower() { playClip(healClip, SFX_VOLUME); }
     public void playDecoyDeploy() { playClip(decoyClip, SFX_VOLUME); }
-    public void playRewardCollect() { playClip(rewardClip, SFX_VOLUME); }
-    public void playRewardSpawn() { playClip(rewardClip, SFX_VOLUME - 6.0f); }
+    public void playRewardCollect() { playClip(rewardClip, -1.0f); }
+    public void playRewardSpawn() { playClip(rewardSpawnClip, -12.0f); }
     public void playWaveStart() { playClip(waveClip, -6.0f); }
     public void playEnemySpawn() { playClip(spawnClip, -6.0f); }
     public void playFireDisaster() { playClip(fireClip, SFX_VOLUME); }
