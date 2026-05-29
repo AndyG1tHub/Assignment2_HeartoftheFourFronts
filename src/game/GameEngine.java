@@ -746,6 +746,29 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 		return null;
 	}
 
+	public AudioClip generateTone(float hz1, float hz2, float durationMs) {
+		float sampleRate = 44100;
+		int numSamples = (int)(sampleRate * durationMs / 1000.0f);
+		AudioFormat format = new AudioFormat(sampleRate, 16, 1, true, false);
+		byte[] data = new byte[numSamples * 2];
+		for (int i = 0; i < numSamples; i++) {
+			double t = i / sampleRate;
+			double envelope = Math.exp(-t * 12.0);
+			double freq = (t < durationMs / 2000.0f) ? hz1 : hz2;
+			double sample = Math.sin(2.0 * Math.PI * freq * t) * envelope * 0.5;
+			short val = (short)(sample * 32767);
+			data[i * 2] = (byte)(val & 0xff);
+			data[i * 2 + 1] = (byte)((val >> 8) & 0xff);
+		}
+		try {
+			java.io.ByteArrayInputStream bis = new java.io.ByteArrayInputStream(data);
+			AudioInputStream ais = new AudioInputStream(bis, format, numSamples);
+			return new AudioClip(ais);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 	// Plays an AudioClip
 	public void playAudio(AudioClip audioClip) {
 		// Check audioClip for null
