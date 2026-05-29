@@ -33,6 +33,8 @@ public class RewardPointManager {
         java.util.List<GridPosition> empty = map.getAllEmptyPositions();
         if (!empty.isEmpty()) {
             rewardPoints.add(new RewardPoint(empty.get(random.nextInt(empty.size()))));
+            SoundManager sm = SoundManager.getInstance();
+            if (sm != null) sm.playRewardSpawn();
         }
     }
 
