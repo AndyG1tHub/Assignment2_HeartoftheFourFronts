@@ -52,7 +52,7 @@ public class CoreSiege extends GameEngine {
     private IntroScreen introScreen;
 
     private SoundManager soundManager;
-    private ParticleSystem particleSystem;
+
 
     private BuildingType selectedBuilding = BuildingType.ARROW_TOWER;
     private int mouseX = -1, mouseY = -1;
@@ -113,7 +113,6 @@ public class CoreSiege extends GameEngine {
         economyManager = new EconomyManager();
         scoreManager = new ScoreManager();
         waveManager = new WaveManager();
-        particleSystem = new ParticleSystem();
         soundManager.startBgm();
     }
 
@@ -152,8 +151,6 @@ public class CoreSiege extends GameEngine {
 
         eventManager.update(dt, gridMap, waveManager,
                 enemySpawner, buildings);
-
-        particleSystem.update(dt);
 
         enemySpawner.updateEnemies(dt, enemyAI,
                 economyManager, scoreManager, waveManager, buildings);
@@ -279,7 +276,6 @@ public class CoreSiege extends GameEngine {
         projectileManager.draw(this, gridMap);
         decoyManager.draw(this);
         eventManager.draw(this, gridMap);
-        particleSystem.draw(this);
         hud.draw(this, base, economyManager, scoreManager, waveManager,
                 selectedDifficulty, selectedBuilding, gameState, mouseX, mouseY, speedMultiplier, currentLevel);
     }

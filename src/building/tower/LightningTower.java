@@ -28,7 +28,7 @@ public class LightningTower extends AttackTower {
     private boolean isFiring = false;
 
     public LightningTower(GridPosition position) {
-        super(position, 110, GameConfig.LIGHTNING_TOWER_COST, 2,
+        super(position, 110, GameConfig.LIGHTNING_TOWER_COST, 1,
                 BuildingType.LIGHTNING_TOWER, 25, 1.0);
     }
 

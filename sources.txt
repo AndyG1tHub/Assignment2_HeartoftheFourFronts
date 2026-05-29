@@ -7,7 +7,6 @@ src/core/GridMap.java
 src/core/GridPosition.java
 src/core/PathFinder.java
 src/core/TileType.java
-src/combat/DamageArea.java
 src/combat/Projectile.java
 src/combat/ProjectileManager.java
 src/combat/MeteorStrike.java
