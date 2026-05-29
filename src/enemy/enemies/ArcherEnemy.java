@@ -16,7 +16,7 @@ public class ArcherEnemy extends Enemy {
 
     @Override
     public double getBaseAttackRange() {
-        return 3.0;
+        return 2.0;
     }
 
     @Override
