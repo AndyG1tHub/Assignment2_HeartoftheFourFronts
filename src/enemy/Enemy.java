@@ -60,6 +60,7 @@ public class Enemy {
         y = map.tileCenterY(gridPosition);
     }
 
+    /** Updates status timers and delegates movement decisions to EnemyAI. */
     public void update(double dt, EnemyAI ai) {
         updateStatusEffects(dt);
         attackAnimationTimer = Math.max(0.0, attackAnimationTimer - dt);
@@ -93,6 +94,7 @@ public class Enemy {
         }
     }
 
+    /** Moves along the next step of a path. */
     public void followPath(List<GridPosition> path, double dt, GridMap map) {
         if (path == null || path.size() < 2) {
             return;
@@ -178,6 +180,7 @@ public class Enemy {
         }
     }
 
+    /** Attacks the player base when cooldown allows. */
     public void attackBase(double dt, Base base) {
         moveTarget = null;
         attackTarget = null;
@@ -192,6 +195,7 @@ public class Enemy {
         }
     }
 
+    /** Attacks a nearby building when cooldown allows. */
     public void attackBuilding(double dt, Building building) {
         if (building == null || building.isDestroyed()) {
             attackTarget = null;
@@ -232,6 +236,7 @@ public class Enemy {
         state = EnemyState.CHASING_DECOY;
     }
 
+    /** Applies damage and switches to dead state at zero HP. */
     public void takeDamage(int amount) {
         hp = Math.max(0, hp - amount);
         damageAnimation = true;
@@ -248,6 +253,7 @@ public class Enemy {
         hp = Math.min(maxHp, hp + amount);
     }
 
+    /** Freezes the enemy in place for the given duration. */
     public void applyFreeze(double duration) {
         freezeTimer = Math.max(freezeTimer, duration);
     }
@@ -256,10 +262,12 @@ public class Enemy {
         return state == EnemyState.DEAD || hp <= 0;
     }
 
+    /** Draws this enemy without stack separation offset. */
     public void draw(GameEngine engine, GridMap map) {
         draw(engine, map, 0.0, 0.0);
     }
 
+    /** Draws this enemy with a visual offset for crowded tiles. */
     public void draw(GameEngine engine, GridMap map, double offsetX, double offsetY) {
         if (shouldSnapToTileForAnimation()) {
             x = map.tileCenterX(gridPosition);
@@ -379,6 +387,13 @@ public class Enemy {
 
     public int getHp() {
         return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = Math.max(0, Math.min(maxHp, hp));
+        if (this.hp <= 0) {
+            state = EnemyState.DEAD;
+        }
     }
 
     public int getMaxHp() {

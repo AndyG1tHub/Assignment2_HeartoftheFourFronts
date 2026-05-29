@@ -28,6 +28,7 @@ public class EnemyAI {
         this.decoyManager = decoyManager;
     }
 
+    /** Chooses whether an enemy chases, moves, or attacks this frame. */
     public void updateEnemyBehaviour(Enemy enemy, double dt) {
         if (enemy.isDead()) {
             return;

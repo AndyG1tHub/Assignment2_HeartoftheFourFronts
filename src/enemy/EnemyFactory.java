@@ -17,6 +17,7 @@ public class EnemyFactory {
         this.difficultyManager = difficultyManager;
     }
 
+    /** Creates an enemy with difficulty-scaled health. */
     public Enemy createEnemy(EnemyType type, GridPosition position) {
         if (type == EnemyType.TANK) {
             return new TankEnemy(position, scaleHp(TankEnemy.BASE_HP));
@@ -34,6 +35,11 @@ public class EnemyFactory {
             return new EliteEnemy(position, scaleHp(EliteEnemy.BASE_HP));
         }
         return new MeleeEnemy(position, scaleHp(MeleeEnemy.BASE_HP));
+    }
+
+    /** Creates a boss with a pre-scaled health value. */
+    public Enemy createBoss(GridPosition position, int hp) {
+        return new BossEnemy(position, hp);
     }
 
     private int scaleHp(int baseHp) {

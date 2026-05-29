@@ -37,10 +37,23 @@ public class EnemySpawner {
         this.difficultyManager = difficultyManager;
     }
 
+    /** Updates the level used for spawn composition. */
     public void setCurrentLevel(int level) {
         this.currentLevel = level;
     }
 
+    public void setFinalEliteWaveSpawned(boolean spawned) {
+        finalEliteWaveSpawned = spawned;
+    }
+
+    public void addRestoredEnemy(Enemy enemy) {
+        if (enemy != null && !enemy.isDead()) {
+            enemy.snapToMap(map);
+            enemies.add(enemy);
+        }
+    }
+
+    /** Spawns enemies according to the current wave and level. */
     public void update(double dt, WaveManager waveManager) {
         if (waveManager.isPrepTime()) return;
         spawnTimer += dt;
@@ -63,13 +76,13 @@ public class EnemySpawner {
                 enemies.add(elite);
             }
             finalEliteWaveSpawned = true;
-            waveManager.markBossSpawned(); // Mark as "boss spawned" to stop regular spawning
+            waveManager.markFinalEliteWaveSpawned();
         }
 
         // Level 3-5: Spawn boss
         if (shouldSpawnBoss(waveManager)) {
             int bossHp = (int)(GameConfig.getBossHp(currentLevel) * difficultyManager.getEnemyHpMultiplier());
-            Enemy boss = enemyFactory.createEnemy(EnemyType.BOSS, getSpawnPosition());
+            Enemy boss = enemyFactory.createBoss(getSpawnPosition(), bossHp);
             boss.snapToMap(map);
             enemies.add(boss);
             waveManager.markBossSpawned();
@@ -194,6 +207,7 @@ public class EnemySpawner {
         return new GridPosition(0, 0);
     }
 
+    /** Updates active enemies and applies rewards for defeated enemies. */
     public void updateEnemies(double dt, EnemyAI enemyAI, EconomyManager economy, ScoreManager score,
             WaveManager waveManager, List<Building> buildings, ParticleSystem particleSystem) {
         for (Enemy enemy : new ArrayList<>(enemies)) {
@@ -236,6 +250,7 @@ public class EnemySpawner {
         }
     }
 
+    /** Draws active enemies with small offsets when they share one tile. */
     public void draw(GameEngine engine, GridMap map) {
         Map<GridPosition, Integer> tileCounts = new HashMap<GridPosition, Integer>();
         for (Enemy enemy : enemies) {

@@ -10,7 +10,9 @@ public class WaveManager {
     private double prepTimer = 5.0;
     private boolean bossSpawned;
     private boolean bossDefeated;
+    private boolean finalEliteWave;
 
+    /** Advances wave time and handles stage transitions. */
     public void update(double dt, ScoreManager score) {
         int oldStage = stage;
         if (prepTimer > 0) {
@@ -45,6 +47,7 @@ public class WaveManager {
         return prepTimer;
     }
 
+    /** Returns true when an elite wave should spawn. */
     public boolean isEliteWave() {
         // Increase elite spawn interval from 40s to 60s
         return !isPrepTime() && !bossSpawned && elapsedTime - lastEliteTime >= 60.0;
@@ -60,7 +63,15 @@ public class WaveManager {
     }
 
     public boolean isBossActive() {
-        return bossSpawned && !bossDefeated;
+        return bossSpawned && !bossDefeated && !finalEliteWave;
+    }
+
+    public boolean isFinalEliteWaveActive() {
+        return bossSpawned && !bossDefeated && finalEliteWave;
+    }
+
+    public boolean isFinalEliteWave() {
+        return finalEliteWave;
     }
 
     public void markBossDefeated() {
@@ -69,12 +80,25 @@ public class WaveManager {
 
     public void markBossSpawned() {
         bossSpawned = true;
+        finalEliteWave = false;
+    }
+
+    public void markFinalEliteWaveSpawned() {
+        bossSpawned = true;
+        finalEliteWave = true;
     }
 
     public boolean hasBossSpawned() {
         return bossSpawned;
     }
 
+    public void restoreBossState(boolean bossSpawned, boolean bossDefeated, boolean finalEliteWave) {
+        this.bossSpawned = bossSpawned;
+        this.bossDefeated = bossDefeated;
+        this.finalEliteWave = finalEliteWave;
+    }
+
+    /** Returns the spawn speed multiplier for the current stage. */
     public double getSpawnIntervalMultiplier() {
         // Boss phase: spawn enemies much faster!
         if (bossSpawned && !bossDefeated) {
@@ -83,6 +107,7 @@ public class WaveManager {
         return Math.max(0.35, 1.0 - (stage - 1) * 0.12);
     }
 
+    /** Returns true once the final wave or boss is defeated. */
     public boolean hasWon() {
         // Win condition: Boss/Final wave defeated (marked by bossDefeated)
         return bossDefeated;
@@ -106,6 +131,7 @@ public class WaveManager {
         return (int) (elapsedTime / GameConfig.WAVE_LENGTH_SECONDS) + 1;
     }
 
+    /** Restores wave timing from saved data. */
     public void setElapsedTime(double elapsedTime, int stage) {
         this.elapsedTime = elapsedTime;
         this.stage = stage;
