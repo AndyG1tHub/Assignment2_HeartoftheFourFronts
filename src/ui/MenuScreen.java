@@ -270,8 +270,7 @@ public class MenuScreen {
         String title = won ? "VICTORY" : "DEFEAT";
         Color tc = won ? new Color(100, 230, 145) : new Color(240, 90, 80);
 
-        int tw = engine.textWidth(title, "Georgia", 52);
-        int tx = (w - tw) / 2;
+        int tx = (w - title.length() * 30) / 2;
         int ty = h / 2 + 50;
         engine.changeColor(new Color(0, 0, 0, 110));
         engine.drawBoldText(tx + 3, ty + 3, title, "Georgia", 52);
@@ -279,8 +278,7 @@ public class MenuScreen {
         engine.drawBoldText(tx, ty, title, "Georgia", 52);
 
         engine.changeColor(MUTED);
-        int stw = engine.textWidth("Choose your next action", "Arial", 16);
-        engine.drawText((w - stw) / 2, ty + 36, "Choose your next action", "Arial", 16);
+        engine.drawText((w - 180) / 2, ty + 36, "Choose your next action", "Arial", 16);
 
         int btnW = 380;
         int btnH = 62;
