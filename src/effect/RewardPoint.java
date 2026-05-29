@@ -20,7 +20,7 @@ public class RewardPoint extends GameEvent {
     private double animationTime = 0;
 
     public RewardPoint(GridPosition position) {
-        super(EventType.REWARD_POINT, 8.0);
+        super(EventType.REWARD_POINT, GameConfig.REWARD_DURATION);
         this.position = position;
     }
 

@@ -48,7 +48,9 @@ public final class GameConfig {
 
     public static final int REWARD_MONEY = 40;
     public static final int REWARD_SCORE = 100;
-    public static final double REWARD_SPAWN_INTERVAL = 12.0;
+    public static final double REWARD_SPAWN_INTERVAL = 3.0;
+    public static final double REWARD_SPAWN_CHANCE = 0.75;
+    public static final double REWARD_DURATION = 5.0;
 
     public static final int TOTAL_LEVELS = 5;
     public static final int TOTAL_STAGES = 5;

@@ -20,7 +20,10 @@ public class RewardPointManager {
     public void update(double dt, GridMap map) {
         spawnTimer += dt;
         if (spawnTimer >= GameConfig.REWARD_SPAWN_INTERVAL) {
-            spawnRewardPoint(map);
+            // 75% chance to spawn
+            if (random.nextDouble() < GameConfig.REWARD_SPAWN_CHANCE) {
+                spawnRewardPoint(map);
+            }
             spawnTimer = 0.0;
         }
         removeFinished(dt);
