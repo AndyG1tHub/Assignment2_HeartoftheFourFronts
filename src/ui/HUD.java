@@ -40,8 +40,13 @@ public class HUD {
 
     private double endMessageTimer = 0.0;
     private static final double END_MESSAGE_DURATION = 3.0;
+    private double gameTime = 0.0;
 
     public HUD() {
+    }
+
+    public void update(double dt) {
+        gameTime += dt;
     }
 
     public void resetEndMessageTimer() {
@@ -338,7 +343,7 @@ public class HUD {
 
         // Pause hint - blinking
         y += gap;
-        if ((System.currentTimeMillis() / 600) % 2 == 0) {
+        if (((int)(gameTime / 0.6)) % 2 == 0) {
             engine.changeColor(new Color(16, 22, 28, 180));
             engine.drawSolidRectangle(x, y, w, hh);
             engine.changeColor(new Color(38, 43, 50, 80));

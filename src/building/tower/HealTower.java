@@ -102,8 +102,7 @@ public class HealTower extends Building {
         return type == BuildingType.ARROW_TOWER ||
                type == BuildingType.CANNON_TOWER ||
                type == BuildingType.ICE_TOWER ||
-               type == BuildingType.LIGHTNING_TOWER ||
-               type == BuildingType.HEAL_TOWER;
+               type == BuildingType.LIGHTNING_TOWER;
     }
 
     private boolean isInHealRange(Building building) {
