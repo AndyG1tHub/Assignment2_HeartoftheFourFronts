@@ -71,18 +71,17 @@ public class CoreSiege extends GameEngine {
     public void init() {
         setWindowSize(GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
         menuScreen = new MenuScreen();
-        introScreen = new IntroScreen();
         hud = new HUD();
         SoundManager.init(this);
         soundManager = SoundManager.getInstance();
         soundManager.loadSounds();
         ImageManager.loadImages(this);
+        introScreen = new IntroScreen();
         hasSave = saveFileExists();
         menuScreen.setHasContinue(hasSave);
         loadProgress();
         menuScreen.setMaxUnlockedLevel(maxUnlockedLevel);
         startNewGame(selectedDifficulty);
-        gameState = GameState.MENU;
         gameState = GameState.INTRO;
     }
 
@@ -130,6 +129,7 @@ public class CoreSiege extends GameEngine {
         // END EFFECT - show dramatic text then transition to end screen
         if (gameState == GameState.GAME_OVER_EFFECT || gameState == GameState.WIN_EFFECT) {
             endEffectTimer += dt;
+            hud.update(dt);
             if (endEffectTimer >= END_EFFECT_DURATION) {
                 gameState = (gameState == GameState.GAME_OVER_EFFECT) ? GameState.GAME_OVER : GameState.WIN;
             }
@@ -142,6 +142,8 @@ public class CoreSiege extends GameEngine {
         }
 
         dt *= speedMultiplier;
+
+        hud.update(dt);
 
         gridMap.update(dt);
 

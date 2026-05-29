@@ -26,10 +26,11 @@ public class LightningTower extends AttackTower {
     private double beamAnimationTime = 0.0;
     private double lockOnTime = 0.0;
     private boolean isFiring = false;
+    private double soundCooldown = 0.0;
 
     public LightningTower(GridPosition position) {
-        super(position, 110, GameConfig.LIGHTNING_TOWER_COST, 1,
-                BuildingType.LIGHTNING_TOWER, 25, 1.0);
+        super(position, 110, GameConfig.LIGHTNING_TOWER_COST, 2,
+                BuildingType.LIGHTNING_TOWER, 30, 1.0);
     }
 
     @Override
@@ -37,26 +38,20 @@ public class LightningTower extends AttackTower {
             GridMap map, List<Building> buildings) {
 
         beamAnimationTime += dt;
+        soundCooldown = Math.max(0.0, soundCooldown - dt);
 
         // Check if current target is still valid
         if (currentTarget != null) {
             if (currentTarget.isDead() || !isInLaserRange(currentTarget)) {
-                // Target lost, reset
                 currentTarget = null;
                 lockOnTime = 0.0;
                 accumulatedDamage = 0.0;
-
-                // Stop sound when losing target
-                if (isFiring) {
-                    SoundManager sm = SoundManager.getInstance();
-                    if (sm != null) sm.stopLightningLoop();
-                    isFiring = false;
-                }
+                soundCooldown = 0.3;
             }
         }
 
         // Only find new target if we don't have one
-        if (currentTarget == null) {
+        if (currentTarget == null && soundCooldown <= 0.0) {
             double closestDistance = Double.MAX_VALUE;
 
             for (Enemy enemy : enemies) {
@@ -71,14 +66,19 @@ public class LightningTower extends AttackTower {
 
             if (currentTarget != null) {
                 lockOnTime = 0.0;
-
-                // Start sound when acquiring target
-                if (!isFiring) {
-                    SoundManager sm = SoundManager.getInstance();
-                    if (sm != null) sm.startLightningLoop();
-                    isFiring = true;
-                }
             }
+        }
+
+        // Manage sound loop with cooldown to prevent flicker
+        boolean hasTarget = currentTarget != null;
+        if (isFiring && !hasTarget) {
+            SoundManager sm = SoundManager.getInstance();
+            if (sm != null) sm.stopLightningLoop();
+            isFiring = false;
+        } else if (!isFiring && hasTarget) {
+            SoundManager sm = SoundManager.getInstance();
+            if (sm != null) sm.startLightningLoop();
+            isFiring = true;
         }
 
         if (currentTarget == null) {

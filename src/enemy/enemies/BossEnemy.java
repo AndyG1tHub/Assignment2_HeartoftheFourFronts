@@ -25,6 +25,7 @@ public class BossEnemy extends Enemy {
         super(position, EnemyType.BOSS, hp, GameConfig.BOSS_DAMAGE,
                 GameConfig.BOSS_SPEED, 60, 300);
         laserTimer = BossLaser.FIRE_INTERVAL * 0.5; // first laser fires after 2.5s
+                GameConfig.BOSS_SPEED, 150, 500);
     }
 
     public void setBuildings(List<Building> buildings) {

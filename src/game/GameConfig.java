@@ -15,14 +15,14 @@ public final class GameConfig {
     public static int MAP_OFFSET_X = 30;
     public static int MAP_OFFSET_Y = 50;
 
-    public static final int BASE_MAX_HP = 1200;
-    public static final int STARTING_MONEY = 250;
+    public static final int BASE_MAX_HP = 1500;
+    public static final int STARTING_MONEY = 280;
 
-    public static final int ARROW_TOWER_COST = 55;
-    public static final int CANNON_TOWER_COST = 80;
-    public static final int ICE_TOWER_COST = 45;
-    public static final int LIGHTNING_TOWER_COST = 100;
-    public static final int HEAL_TOWER_COST = 65;
+    public static final int ARROW_TOWER_COST = 50;
+    public static final int CANNON_TOWER_COST = 90;
+    public static final int ICE_TOWER_COST = 55;
+    public static final int LIGHTNING_TOWER_COST = 95;
+    public static final int HEAL_TOWER_COST = 70;
     public static final int DECOY_COST = 40;
     public static final double BUILDING_SELL_RATIO = 0.6;
     public static final int MAX_UPGRADE_LEVEL = 2;
@@ -30,20 +30,20 @@ public final class GameConfig {
     public static final double[] DAMAGE_MULTIPLIER = {1.0, 1.5, 2.0};
     public static final int[] RANGE_BONUS = {0, 1, 1};
     public static final double[] ATTACK_INTERVAL_MULTIPLIER = {1.0, 0.85, 0.7};
-    public static final int[] HEAL_AMOUNT_UPGRADE = {20, 30, 45};
+    public static final int[] HEAL_AMOUNT_UPGRADE = {25, 40, 60};
     public static final double BOSS_INTERVAL = 40.0;
-    public static final int BOSS_BASE_HP = 1600;
-    public static final int BOSS_DAMAGE = 60;
-    public static final double BOSS_SPEED = 0.85;
-    public static final int ELITE_BASE_HP = 400;
-    public static final int ELITE_DAMAGE = 40;
+    public static final int BOSS_BASE_HP = 2000;
+    public static final int BOSS_DAMAGE = 50;
+    public static final double BOSS_SPEED = 0.8;
+    public static final int ELITE_BASE_HP = 500;
+    public static final int ELITE_DAMAGE = 35;
     public static final double ELITE_SPEED = 0.9;
 
-    public static final int REWARD_MONEY = 40;
+    public static final int REWARD_MONEY = 50;
     public static final int REWARD_SCORE = 100;
-    public static final double REWARD_SPAWN_INTERVAL = 3.0;
-    public static final double REWARD_SPAWN_CHANCE = 0.75;
-    public static final double REWARD_DURATION = 5.0;
+    public static final double REWARD_SPAWN_INTERVAL = 4.0;
+    public static final double REWARD_SPAWN_CHANCE = 0.8;
+    public static final double REWARD_DURATION = 6.0;
 
     public static final int TOTAL_LEVELS = 5;
     public static final int TOTAL_STAGES = 5;

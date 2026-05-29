@@ -47,12 +47,12 @@ public class RewardPoint extends GameEvent {
         Image coinImage = ImageManager.getCoinTurnFrame(animationTime);
         int centerX = map.tileCenterX(position);
         int centerY = map.tileCenterY(position);
-        int size = 26;
+        int size = (int)(GameConfig.TILE_SIZE * 0.8);
         if (coinImage != null) {
             engine.drawImage(coinImage, centerX - size / 2, centerY - size / 2, size, size);
         } else {
             engine.changeColor(Color.YELLOW);
-            engine.drawSolidCircle(centerX, centerY, 8);
+            engine.drawSolidCircle(centerX, centerY, GameConfig.TILE_SIZE * 0.24);
         }
     }
 }

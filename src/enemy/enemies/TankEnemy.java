@@ -8,10 +8,10 @@ import enemy.EnemyType;
 
 /** Slow meat-shield enemy that survives longer and hits harder. */
 public class TankEnemy extends Enemy {
-    public static final int BASE_HP = 280;
+    public static final int BASE_HP = 250;
 
     public TankEnemy(GridPosition position, int hp) {
-        super(position, EnemyType.TANK, hp, 18, 0.65, 25, 120);
+        super(position, EnemyType.TANK, hp, 20, 0.7, 35, 150);
     }
 
     @Override

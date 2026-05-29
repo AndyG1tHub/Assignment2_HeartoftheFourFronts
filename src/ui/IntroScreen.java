@@ -2,11 +2,11 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.awt.Toolkit;
 
 import game.CoreSiege;
 import game.GameConfig;
 import game.GameState;
+import manager.ImageManager;
 
 public class IntroScreen {
 
@@ -27,7 +27,7 @@ public class IntroScreen {
 
     public IntroScreen() {
         lastSwitchTime = System.currentTimeMillis();
-        backgroundImage = Toolkit.getDefaultToolkit().getImage("Images/background.png");
+        backgroundImage = ImageManager.getBackground();
     }
 
     public void update(CoreSiege game) {
