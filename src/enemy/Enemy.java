@@ -291,7 +291,7 @@ public class Enemy {
         double effectW = enemySize * 0.95;
         double effectH = enemySize * 0.95;
         double effectX = x - effectW / 2;
-        double effectY = y - effectH * 0.08;
+        double effectY = y - effectH * 0.20;
         engine.setAlpha(0.58f);
         engine.drawImage(image, effectX, effectY, effectW, effectH);
         engine.setAlpha(1.0f);

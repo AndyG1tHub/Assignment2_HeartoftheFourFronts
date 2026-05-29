@@ -93,4 +93,9 @@ public class BossEnemy extends Enemy {
     protected String getDrawLabel() {
         return "B";
     }
+
+    @Override
+    public void applyFreeze(double duration) {
+        // Boss is immune to freeze effects
+    }
 }

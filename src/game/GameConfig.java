@@ -20,7 +20,7 @@ public final class GameConfig {
 
     public static final int ARROW_TOWER_COST = 50;
     public static final int CANNON_TOWER_COST = 90;
-    public static final int ICE_TOWER_COST = 55;
+    public static final int ICE_TOWER_COST = 80;
     public static final int LIGHTNING_TOWER_COST = 95;
     public static final int HEAL_TOWER_COST = 70;
     public static final int DECOY_COST = 40;

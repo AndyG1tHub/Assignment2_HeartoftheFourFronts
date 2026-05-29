@@ -29,7 +29,7 @@ public class IceTower extends AttackTower {
 
         int damage = getDamage();
 
-        double freezeDuration = getAttackInterval();
+        double freezeDuration = 0.6; // Fixed freeze duration
 
         // Create projectile with damage and freeze callback
         projectiles.addProjectile(position, target.getGridPosition(), Color.CYAN, () -> {
