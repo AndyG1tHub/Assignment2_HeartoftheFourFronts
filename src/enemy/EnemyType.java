@@ -9,9 +9,7 @@
 
 package enemy;
 
-/**
- * <p>Enumeration of all enemy types in the game: MELEE, TANK, ARCHER, ASSASSIN, ELITE and BOSS.</p>
- */
+/** Enemy archetypes used by EnemyFactory and the wave spawner. */
 public enum EnemyType {
     MELEE,
     TANK,

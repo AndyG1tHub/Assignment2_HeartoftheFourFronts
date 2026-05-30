@@ -11,9 +11,7 @@ package core;
 
 import building.Building;
 
-/**
- * <p>A single tile on the game grid. Stores terrain type, obstacle flag, the building occupying it and references to neighbouring tiles.</p>
- */
+/** One map cell. It owns terrain type and an optional building reference. */
 public class Tile {
     private final int row;
     private final int col;

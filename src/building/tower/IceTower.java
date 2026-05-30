@@ -22,9 +22,7 @@ import game.GameEngine;
 import game.GameConfig;
 import manager.ImageManager;
 
-/**
- * <p>A freezing tower that fires ice projectiles, slowing enemies hit. Useful for crowd control and slowing fast enemies.</p>
- */
+/** Low-damage tower that freezes its target in place. */
 public class IceTower extends AttackTower {
     public IceTower(GridPosition position) {
         super(position, 120, GameConfig.ICE_TOWER_COST, 4,

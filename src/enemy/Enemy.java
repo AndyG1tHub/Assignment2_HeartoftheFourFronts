@@ -22,9 +22,7 @@ import game.GameEngine;
 import game.GameConfig;
 import manager.ImageManager;
 
-/**
- * <p>Abstract base class for all enemy entities. Handles movement along the path, HP, damage, attack timers, state transitions and hit-stun animation.</p>
- */
+/** Base enemy that owns stats and grid movement; EnemyAI owns decisions. */
 public class Enemy {
     private GridPosition gridPosition;
     private double x;

@@ -22,9 +22,7 @@ import game.GameEngine;
 import game.GameConfig;
 import manager.ImageManager;
 
-/**
- * <p>A slow-firing tower that launches explosive cannonballs dealing area damage. High damage per shot with a slow attack interval.</p>
- */
+/** Slow tower with simple area damage. */
 public class CannonTower extends AttackTower {
     public CannonTower(GridPosition position) {
         super(position, 150, GameConfig.CANNON_TOWER_COST, 3,

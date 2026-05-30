@@ -20,9 +20,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-/**
- * <p>BFS-based pathfinding system that computes the shortest route from a given tile to the base, avoiding obstacles and buildings.</p>
- */
+/** Breadth-first search pathfinder for four-direction grid movement. */
 public class PathFinder {
     public List<GridPosition> findPath(GridMap map, GridPosition start, GridPosition target) {
         if (!map.isInside(start) || !map.isInside(target)) {

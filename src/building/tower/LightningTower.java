@@ -25,9 +25,7 @@ import game.GameConfig;
 import manager.ImageManager;
 import manager.SoundManager;
 
-/**
- * <p>A laser tower that deals continuous damage to all enemies within a 3x3 area. Plays a looping electrical sound effect while firing.</p>
- */
+/** Laser tower with 3x3 range and continuous beam damage. */
 public class LightningTower extends AttackTower {
     private static final double DAMAGE_PER_SECOND = 20.0;
     private static final double DAMAGE_RAMP_UP_RATE = 5.0; // Additional damage per second of continuous fire

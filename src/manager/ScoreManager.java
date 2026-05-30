@@ -9,9 +9,7 @@
 
 package manager;
 
-/**
- * <p>Tracks the player's cumulative score, kill count, buildings built and reward points collected during the game.</p>
- */
+/** Owns score counters and scoring rules. */
 public class ScoreManager {
     private int score;
     private int enemiesKilled;

@@ -19,9 +19,8 @@ import core.GridPosition;
 import game.GameConfig;
 import game.GameEngine;
 
-/**
- * <p>Represents the final boss's devastating laser attack. Charges up over a brief period then fires a horizontal or vertical beam that damages every building in its path.</p>
- */
+/** Epic boss laser inspired by PvZ Zomboss — charges with energy buildup,
+ *  then fires a devastating beam that obliterates entire row OR column! */
 public class BossLaser {
     public static final double FIRE_INTERVAL = 3.5;
     private static final double CHARGE_TIME = 0.8;   // dramatic charge-up

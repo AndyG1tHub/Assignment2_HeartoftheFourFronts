@@ -9,9 +9,7 @@
 
 package building;
 
-/**
- * <p>Enumeration of all building types available for placement. Includes ARROW_TOWER, CANNON_TOWER, ICE_TOWER, LIGHTNING_TOWER, HEAL_TOWER, WALL and DECOY.</p>
- */
+/** Build menu choices and building categories. */
 public enum BuildingType {
     ARROW_TOWER,
     CANNON_TOWER,

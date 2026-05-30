@@ -19,9 +19,7 @@ import building.Decoy;
 import util.Direction;
 import game.GameEngine;
 
-/**
- * <p>Manages the active decoy building: placement validity, lifetime tracking, removal on expiry and draw logic.</p>
- */
+/** Owns all active decoys and exposes attraction queries to EnemyAI. */
 public class DecoyManager {
     private final List<Decoy> decoys = new ArrayList<Decoy>();
     private final GridMap map;

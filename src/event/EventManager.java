@@ -20,9 +20,7 @@ import manager.WaveManager;
 import manager.EconomyManager;
 import manager.ScoreManager;
 
-/**
- * <p>Facade that coordinates gameplay events including reward point spawning and disaster triggers.</p>
- */
+/** Facade that coordinates reward points and disasters. */
 public class EventManager {
     private final RewardPointManager rewardPointManager;
     private final DisasterManager disasterManager;

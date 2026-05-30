@@ -22,9 +22,7 @@ import combat.MeteorStrike;
 import game.GameEngine;
 import manager.WaveManager;
 
-/**
- * <p>Manages active disaster events. Triggers new disasters at set intervals depending on difficulty and updates all active disasters each frame.</p>
- */
+/** Starts and updates disaster events in later waves. */
 public class DisasterManager {
     private final List<Disaster> disasters = new ArrayList<Disaster>();
     private final Random random = new Random();

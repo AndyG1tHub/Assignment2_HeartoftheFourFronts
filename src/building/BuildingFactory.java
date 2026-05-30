@@ -12,9 +12,7 @@ package building;
 import core.GridPosition;
 import building.tower.*;
 
-/**
- * <p>Factory class responsible for constructing building instances based on a given {@link BuildingType} and grid position.</p>
- */
+/** Creates buildings and keeps construction details out of CoreSiege. */
 public class BuildingFactory {
     public Building createBuilding(BuildingType type, GridPosition position) {
         if (type == BuildingType.ARROW_TOWER) {

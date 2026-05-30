@@ -21,9 +21,8 @@ import enemy.EnemyType;
 import game.GameConfig;
 import game.GameEngine;
 
-/**
- * <p>The final boss enemy encountered at stage 5. Possesses very high HP and periodically fires a devastating laser beam across the grid. Defeating the boss triggers victory.</p>
- */
+/** Boss enemy that fires purple horizontal or vertical lasers every 5 seconds,
+ *  destroying towers in their path over 2 seconds. */
 public class BossEnemy extends Enemy {
     public static final int BASE_HP = GameConfig.BOSS_BASE_HP;
 

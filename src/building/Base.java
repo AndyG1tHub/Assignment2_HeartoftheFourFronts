@@ -19,9 +19,7 @@ import game.GameConfig;
 import manager.ImageManager;
 import manager.SoundManager;
 
-/**
- * <p>The central fortress the player must defend. When its HP reaches zero the game is lost.</p>
- */
+/** The central objective enemies try to destroy. */
 public class Base {
     private final GridPosition position;
     private final int maxHp;

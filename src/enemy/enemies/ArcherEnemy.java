@@ -15,9 +15,7 @@ import core.GridPosition;
 import enemy.Enemy;
 import enemy.EnemyType;
 
-/**
- * <p>A ranged enemy that stops at range and fires arrows at the base. Has lower HP but can damage the base from a distance.</p>
- */
+/** Ranged-role enemy tuned as a fragile, rewarding damage dealer. */
 public class ArcherEnemy extends Enemy {
     public static final int BASE_HP = 70;
 

@@ -20,11 +20,7 @@ import game.GameEngine;
 import building.Building;
 import manager.ImageManager;
 
-/**
- * <p>The tile-based game map that manages all grid positions, obstacles,
- * building placements and pathfinding queries. Validates placement rules
- * including adjacency constraints.</p>
- */
+/** Stores and draws the 20x20 grid and validates placement/movement rules. */
 public final class GridMap {
     private final Tile[][] tiles;
     private final GridPosition basePosition;

@@ -19,9 +19,7 @@ import game.GameConfig;
 import game.GameEngine;
 import manager.ImageManager;
 
-/**
- * <p>A decoy building that lures enemies towards a player-chosen direction. Enemies that detect the decoy alter their pathfinding target.</p>
- */
+/** Moving lure that travels outward and attracts nearby enemies. */
 public class Decoy {
     private GridPosition gridPosition;
     private final Direction direction;

@@ -27,9 +27,7 @@ import game.GameConfig;
 import manager.ImageManager;
 import manager.SoundManager;
 
-/**
- * <p>A support tower that periodically heals nearby damaged allied towers. Does not attack enemies. Cannot heal other HealTowers.</p>
- */
+/** Support building that heals nearby damaged towers with green laser beams. */
 public class HealTower extends Building {
     private static final double HEAL_INTERVAL = 0.5;
     private static final int MAX_HEAL_TARGETS = 3;

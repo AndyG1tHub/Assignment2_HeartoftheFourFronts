@@ -20,9 +20,7 @@ import building.BuildingType;
 import building.Decoy;
 import manager.DecoyManager;
 
-/**
- * <p>AI controller governing enemy behaviour. Directs pathfinding, target acquisition (base or decoy), attacking and state management.</p>
- */
+/** Handles enemy decisions while Enemy keeps movement and combat mechanics. */
 public class EnemyAI {
     private final GridMap map;
     private final Base base;

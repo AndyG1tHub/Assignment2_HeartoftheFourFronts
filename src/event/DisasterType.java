@@ -9,9 +9,7 @@
 
 package event;
 
-/**
- * <p>Enumeration of disaster types. Currently includes METEOR_STRIKE.</p>
- */
+/** Disaster categories. */
 public enum DisasterType {
     METEOR_STRIKE
 }

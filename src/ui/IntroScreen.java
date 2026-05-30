@@ -17,9 +17,6 @@ import game.GameConfig;
 import game.GameState;
 import manager.ImageManager;
 
-/**
- * <p>The story introduction screen displayed at game start. Shows a background image with scrolling narrative text. Press SPACE to skip.</p>
- */
 public class IntroScreen {
 
     private String[] story = {

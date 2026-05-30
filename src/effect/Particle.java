@@ -13,9 +13,7 @@ import java.awt.Color;
 
 import game.GameEngine;
 
-/**
- * <p>A single lightweight particle with position, velocity, lifetime, size and colour. Used by the particle system for visual effects.</p>
- */
+/** Small visual particle used by burst effects. */
 public class Particle {
     private double x;
     private double y;

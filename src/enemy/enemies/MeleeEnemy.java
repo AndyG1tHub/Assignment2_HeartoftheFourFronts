@@ -15,9 +15,7 @@ import core.GridPosition;
 import enemy.Enemy;
 import enemy.EnemyType;
 
-/**
- * <p>The basic melee enemy. Walks directly toward the base along the path and attacks when adjacent.</p>
- */
+/** Standard frontline enemy with balanced health, damage, and speed. */
 public class MeleeEnemy extends Enemy {
     public static final int BASE_HP = 100;
 

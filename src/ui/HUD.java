@@ -25,9 +25,7 @@ import manager.ImageManager;
 import manager.ScoreManager;
 import manager.WaveManager;
 
-/**
- * <p>The heads-up display rendered during gameplay. Shows stats (money, score, kills, wave, time, stage), building buttons, hints, pause menu, dev mode indicator and speed indicator.</p>
- */
+/** Draws in-game stats and build buttons — premium glassmorphism style. */
 public class HUD {
     public static final int PAUSE_RESUME = 1;
     public static final int PAUSE_SAVE = 2;

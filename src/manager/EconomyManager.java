@@ -11,9 +11,7 @@ package manager;
 
 import game.GameConfig;
 
-/**
- * <p>Owns and manages the player's money supply. Handles spending, rewards from kills and collectables, and sell refunds.</p>
- */
+/** Owns player money. */
 public class EconomyManager {
     private int money;
 

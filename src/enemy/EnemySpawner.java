@@ -29,9 +29,7 @@ import manager.ScoreManager;
 import manager.SoundManager;
 import effect.ParticleSystem;
 
-/**
- * <p>Manages all enemy spawning including regular waves, elite spawns and the final boss. Tracks wave timing and spawn intervals per stage.</p>
- */
+/** Spawns enemies from four map edges and owns the active enemy list. */
 public class EnemySpawner {
     private final GridMap map;
     private final EnemyFactory enemyFactory;

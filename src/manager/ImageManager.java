@@ -17,9 +17,7 @@ import java.util.Map;
 import enemy.EnemyType;
 import game.GameEngine;
 
-/**
- * <p>Loads, caches and serves all image assets including tile sprites, enemy animation frames, tower sprites, UI elements and backgrounds.</p>
- */
+/** Loads image assets and serves animation frames. */
 public class ImageManager {
     private static final int ENEMY_FRAME_SIZE = 256;
     private static final int ENEMY_FRAME_INSET = 14;

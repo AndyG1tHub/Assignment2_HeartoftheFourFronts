@@ -18,9 +18,7 @@ import game.GameConfig;
 import game.GameEngine;
 import manager.ImageManager;
 
-/**
- * <p>A projectile fired by towers toward enemies. Handles movement, collision detection and type-specific visual rendering.</p>
- */
+/** Lightweight visual projectile. Damage is applied when projectile reaches target. */
 public class Projectile {
     private final GridPosition start;
     private final GridPosition target;

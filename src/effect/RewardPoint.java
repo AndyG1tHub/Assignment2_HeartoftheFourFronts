@@ -23,9 +23,7 @@ import manager.ImageManager;
 import manager.ScoreManager;
 import manager.SoundManager;
 
-/**
- * <p>An interactive floating coin pickup that appears on the map after certain intervals. Clicking it grants bonus money and score.</p>
- */
+/** Clickable timed pickup that grants money and score. */
 public class RewardPoint extends GameEvent {
     private final GridPosition position;
     private double animationTime = 0;

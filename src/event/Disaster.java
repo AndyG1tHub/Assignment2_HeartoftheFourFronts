@@ -19,9 +19,7 @@ import building.Building;
 import game.GameEngine;
 import game.GameConfig;
 
-/**
- * <p>Abstract base class for disaster events. Provides the lifecycle methods (init, update, draw, isFinished) that concrete disasters implement.</p>
- */
+/** Base class for timed natural disasters. */
 public abstract class Disaster extends GameEvent {
     protected final GridPosition position;
     protected final int radius;

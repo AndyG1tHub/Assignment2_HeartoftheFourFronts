@@ -20,9 +20,7 @@ import core.GridPosition;
 import game.GameEngine;
 import game.GameConfig;
 
-/**
- * <p>Manages a pool of {@link Particle} instances to produce visual effects such as explosions, fire and magical bursts.</p>
- */
+/** Owns lightweight particles used by combat and building feedback. */
 public class ParticleSystem {
     private final List<Particle> particles = new ArrayList<Particle>();
     private final List<FloatingText> floatingTexts = new ArrayList<FloatingText>();
