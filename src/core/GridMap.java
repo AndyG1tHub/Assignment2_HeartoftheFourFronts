@@ -1,13 +1,13 @@
-/**
+/*
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
+ */
 
-
-
+/**
  * Stores and draws the 20x20 tile grid and enforces placement rules.
  * Creates the map with terrain variants, a central base, and 10% obstacles.
  * Guarantees path connectivity from every edge spawn point to the base.

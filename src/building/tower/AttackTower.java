@@ -1,13 +1,13 @@
-/**
+/*
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
+ */
 
-
-
+/**
  * Shared base for all towers that deal damage through projectiles.
  * Manages cooldown timers and picks the closest enemy in range.
  * Damage and range scale with upgrade level.
