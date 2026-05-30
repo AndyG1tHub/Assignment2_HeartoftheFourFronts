@@ -30,6 +30,7 @@ public class Enemy {
     private GridPosition moveTarget;
     private Building attackTarget;
     private double freezeTimer;
+    private double hitStunCooldown;
     private double speedBoostTimer;
     private double damageBoostTimer;
     private double animationTime;
@@ -85,6 +86,9 @@ public class Enemy {
     private void updateStatusEffects(double dt) {
         if (freezeTimer > 0) {
             freezeTimer = Math.max(0.0, freezeTimer - dt);
+        }
+        if (hitStunCooldown > 0) {
+            hitStunCooldown -= dt;
         }
         if (speedBoostTimer > 0) {
             speedBoostTimer -= dt;
@@ -239,8 +243,11 @@ public class Enemy {
     /** Applies damage and switches to dead state at zero HP. */
     public void takeDamage(int amount) {
         hp = Math.max(0, hp - amount);
-        damageAnimation = true;
-        attackAnimationTimer = 0.35;
+        if (hitStunCooldown <= 0) {
+            damageAnimation = true;
+            attackAnimationTimer = 0.35;
+            hitStunCooldown = 0.25;
+        }
         if (hp <= 0) {
             state = EnemyState.DEAD;
         }
