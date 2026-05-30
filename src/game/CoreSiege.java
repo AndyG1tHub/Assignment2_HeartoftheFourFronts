@@ -210,6 +210,7 @@ public class CoreSiege extends GameEngine {
             clearActiveSave();
             if (!hasTriggeredEndSound) {
                 soundManager.stopBgm();
+                soundManager.stopLightningLoop();
                 soundManager.playGameOver();
                 hasTriggeredEndSound = true;
             }
@@ -220,6 +221,7 @@ public class CoreSiege extends GameEngine {
             hud.resetEndMessageTimer();
             if (!hasTriggeredEndSound) {
                 soundManager.stopBgm();
+                soundManager.stopLightningLoop();
                 soundManager.playGameWin();
                 hasTriggeredEndSound = true;
             }

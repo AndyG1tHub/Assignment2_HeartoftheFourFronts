@@ -63,7 +63,12 @@ public class BossEnemy extends Enemy {
 
     @Override
     public void draw(GameEngine engine, GridMap map) {
-        super.draw(engine, map);
+        draw(engine, map, 0.0, 0.0);
+    }
+
+    @Override
+    public void draw(GameEngine engine, GridMap map, double offsetX, double offsetY) {
+        super.draw(engine, map, offsetX, offsetY);
         if (activeLaser != null && activeLaser.isActive()) {
             activeLaser.draw(engine);
         }
