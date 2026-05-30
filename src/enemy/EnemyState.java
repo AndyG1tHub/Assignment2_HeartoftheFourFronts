@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Tactical states an enemy can occupy at any moment.
+ * SPAWNING: just created; MOVING: walking to base.
+ * ATTACKING_BASE: hitting fortress; ATTACKING_BUILDING: hitting tower.
+ * CHASING_DECOY: following lure; DEAD: awaiting removal.
+ */
 package enemy;
 
 /** Current tactical state of an enemy. */

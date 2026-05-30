@@ -1,12 +1,19 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
+
+
+ * Represents the central fortress that enemies attempt to destroy.
+ * Placed at the centre of the grid as the primary loss condition.
+ * When HP reaches zero, the game ends in defeat.
+ * Renders as a large sprite with a colour-coded health bar.
+ * The incomingDamageMultiplier allows global damage tuning.
+ */
 package building;
 
 import java.awt.Color;

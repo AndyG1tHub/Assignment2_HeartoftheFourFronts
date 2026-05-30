@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Player-selected difficulty tier for the game.
+ * EASY: reduced enemy HP, slower spawns, fewer disasters.
+ * NORMAL: baseline with slight multipliers for balance.
+ * HARD: tougher enemies, faster spawns, shorter disaster intervals.
+ */
 package game;
 
 /** Player-selected difficulty. DifficultyManager converts this into numbers. */

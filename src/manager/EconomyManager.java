@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Owns the player's money balance with atomic spend/earn operations.
+ * spendMoney() returns false if the cost is unaffordable.
+ * Money comes from enemy kills, reward points, and building sales.
+ * Starting amount is defined in GameConfig.STARTING_MONEY.
+ */
 package manager;
 
 import game.GameConfig;

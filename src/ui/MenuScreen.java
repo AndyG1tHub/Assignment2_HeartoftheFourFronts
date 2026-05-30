@@ -7,6 +7,14 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Main menu and end-screen UI rendered over the background image.
+ * Main menu: CONTINUE (if saved), PLAY, DIFFICULTY, HELP, and EXIT buttons.
+ * Level select shows 5 levels with locked ones in red.
+ * HELP panel lists controls, pause menu actions, and gameplay tips.
+ * End screens show VICTORY or DEFEAT with RESTART and MAIN MENU options.
+ * Button interactions return action constants routed by CoreSiege.
+ */
 package ui;
 
 import java.awt.Color;

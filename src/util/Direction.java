@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Four cardinal directions for decoy movement and edge spawning.
+ * NORTH is up (-row), SOUTH is down (+row).
+ * WEST is left (-col), EAST is right (+col).
+ * Decoy launch direction is chosen by the click position relative to base.
+ */
 package util;
 
 /** Four cardinal directions used for spawning and decoy movement. */

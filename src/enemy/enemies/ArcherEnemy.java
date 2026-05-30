@@ -7,6 +7,11 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Ranged enemy that attacks from 2 tiles away.
+ * 70 base HP, 15 damage, 1.1 speed, high rewards (110 score, 30 money).
+ * Green colour, label "R" for ranged.
+ */
 package enemy.enemies;
 
 import java.awt.Color;

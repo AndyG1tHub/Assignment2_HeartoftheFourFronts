@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Reusable UI button with hover, selected, and normal rendering states.
+ * Optionally holds a BuildingType for build menu and an accent colour bar.
+ * Repositioned and resized each frame via setPosition/setSize.
+ * Click detection uses simple axis-aligned bounds checking.
+ */
 package ui;
 
 import java.awt.Color;

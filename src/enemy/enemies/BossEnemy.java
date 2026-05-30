@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Level-end boss (levels 3-5) with massive HP and a laser ability.
+ * Fires a BossLaser every 3.5s that damages all towers in a row or column.
+ * Immune to freeze effects and rendered at 1.85x scale.
+ * Laser timer runs independently alongside normal movement and attacks.
+ */
 package enemy.enemies;
 
 import java.awt.Color;

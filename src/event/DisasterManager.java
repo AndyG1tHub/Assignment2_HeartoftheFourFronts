@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Starts and updates disaster events from stage 2 onward.
+ * At difficulty-scaled intervals, creates a MeteorStrike.
+ * Targets a random building (50%) or a random empty tile.
+ * Updates and draws active disasters each frame; removes finished ones.
+ */
 package event;
 
 import java.util.ArrayList;

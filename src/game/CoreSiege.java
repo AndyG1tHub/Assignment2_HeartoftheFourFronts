@@ -7,6 +7,15 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Main game class extending GameEngine that orchestrates the entire game.
+ * Manages game flow through intro, menu, playing, paused, win, and game-over.
+ * Runs every-frame simulation: waves, enemies, towers, projectiles, particles.
+ * Handles mouse input for placement, upgrade, sell, decoy, and reward clicks.
+ * Handles keyboard shortcuts for tower selection, pause, speed, and dev mode.
+ * Serialises full game state to save.dat for save/load persistence.
+ * Renders depth-sorted buildings, preview highlights, HUD, and end effects.
+ */
 package game;
 
 import java.awt.Color;

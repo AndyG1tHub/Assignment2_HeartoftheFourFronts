@@ -7,6 +7,13 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Singleton sound facade with one-line play methods for every audio event.
+ * Loads all WAV assets at startup and pre-creates Clip objects for low latency.
+ * Supports mute toggle and separate volume levels for SFX and BGM.
+ * Supports looping audio for BGM and lightning beam effects.
+ * Any class calls SoundManager.getInstance().playX() without holding a reference.
+ */
 package manager;
 
 import javax.sound.sampled.*;

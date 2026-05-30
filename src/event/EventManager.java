@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Facade that coordinates reward points and disasters under one interface.
+ * CoreSiege delegates update, click handling, and drawing here.
+ * Owns a RewardPointManager and DisasterManager internally.
+ * Lets the event subsystem grow independently without bloating the main loop.
+ */
 package event;
 
 import core.GridPosition;

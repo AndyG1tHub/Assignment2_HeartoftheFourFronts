@@ -1,12 +1,19 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
+
+
+ * Abstract base class for every player-placed building on the grid.
+ * Each building occupies one tile and has HP, cost, and a BuildingType.
+ * Supports up to three upgrade levels (0-2) with scaling stats.
+ * Subclasses implement update() for behaviour and draw() for visuals.
+ * Provides shared health-bar drawing, upgrade cost, and level chevrons.
+ */
 package building;
 
 import java.util.List;

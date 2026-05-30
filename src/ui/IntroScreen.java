@@ -7,6 +7,13 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Story intro sequence shown when the game first launches.
+ * Displays narrative text lines over the background, each lasting 3.5s.
+ * The final line is rendered larger and in gold for dramatic effect.
+ * Blinking "Press SPACE to skip" allows jumping directly to the menu.
+ * Automatically transitions to MENU state after all lines are shown.
+ */
 package ui;
 
 import java.awt.Color;

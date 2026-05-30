@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Event categories used by EventManager.
+ * REWARD_POINT: clickable money/score pickup.
+ * FIRE_ZONE: reserved for future use.
+ * METEOR_STRIKE: destroys everything in a 3x3 area.
+ */
 package event;
 
 /** Event categories used by EventManager. */

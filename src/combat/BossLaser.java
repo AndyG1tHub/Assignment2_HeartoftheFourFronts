@@ -1,12 +1,19 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
+
+
+ * Boss laser ability that fires a devastating beam along a row or column.
+ * Charges for 0.8s with converging energy orbs, then fires for 1.5s.
+ * Deals proportional damage to all buildings in the beam's path.
+ * Visual effects include screen shake, electric arcs, and shockwave rings.
+ * Inner classes manage laser particles, energy orbs, and shockwave rings.
+ */
 package combat;
 
 import java.awt.Color;

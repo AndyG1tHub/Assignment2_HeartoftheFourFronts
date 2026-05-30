@@ -7,6 +7,11 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Mini-boss used as final wave in levels 1-2 and elite waves throughout.
+ * 500 base HP, 35 damage, 0.9 speed, 1.5x draw scale.
+ * Replaces boss encounters when the full tower arsenal is not yet available.
+ */
 package enemy.enemies;
 
 import java.awt.Color;

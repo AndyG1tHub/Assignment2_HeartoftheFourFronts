@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Creates enemy instances with difficulty-scaled HP.
+ * Maps each EnemyType to its concrete class via createEnemy().
+ * Applies DifficultyManager's HP multiplier during construction.
+ * Boss enemies use a separate createBoss() path with pre-scaled HP.
+ */
 package enemy;
 
 import core.GridPosition;

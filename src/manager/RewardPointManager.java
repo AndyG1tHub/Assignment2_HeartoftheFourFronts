@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Spawns, updates, draws, and collects reward points on the map.
+ * At a fixed interval with an 80% chance, spawns on a random empty tile.
+ * Clicking awards money and score; expired points are removed silently.
+ * Plays spawn and collect sound effects through SoundManager.
+ */
 package manager;
 
 import java.util.ArrayList;

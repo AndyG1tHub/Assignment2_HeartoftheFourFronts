@@ -7,6 +7,13 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Owns the active enemy list and spawns from the four map edges.
+ * Determines spawn composition by level (1-5) and wave stage.
+ * Blends melee, tank, assassin, and archer probabilities scaled by difficulty.
+ * Handles elite waves, boss spawning (level 3+), and final elite waves (1-2).
+ * Awards money and score on kills, and handles crowding via ring offsets.
+ */
 package enemy;
 
 import java.util.ArrayList;

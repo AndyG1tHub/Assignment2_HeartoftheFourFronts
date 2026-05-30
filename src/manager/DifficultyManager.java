@@ -7,6 +7,14 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Converts the Difficulty enum into concrete gameplay multipliers.
+ * Provides enemy HP scaling, spawn interval, and disaster frequency.
+ * Runs an adaptive pressure system based on player performance.
+ * Factors in base HP ratio, money, and kill rate versus elapsed time.
+ * Higher pressure means faster spawning and more special enemies.
+ * Smoothly interpolates toward the target pressure each frame.
+ */
 package manager;
 
 import game.Difficulty;

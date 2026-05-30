@@ -1,12 +1,20 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
+
+
+ * Central manager for visual feedback particles and floating text.
+ * spawnEnemyDeath() creates a red/gold burst on enemy death.
+ * spawnBuild() creates a green ring with "BUILD" floating text.
+ * spawnUpgrade() creates a blue burst with "UPGRADE" floating text.
+ * spawnScoreText() and spawnRewardText() show point and money gains.
+ * Each frame updates all active particles and texts, removing expired ones.
+ */
 package effect;
 
 import java.awt.Color;

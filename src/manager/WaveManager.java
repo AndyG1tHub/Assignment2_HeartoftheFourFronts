@@ -7,11 +7,18 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Tracks wave time and manages stage progression, spawn flags, and win conditions.
+ * Stages advance every 40s with 5s prep gaps; elite waves every 60s.
+ * Boss spawns after all stages (level 3+) or a final elite wave (levels 1-2).
+ * Spawn interval shortens per stage and drops to 25% during boss fights.
+ * Win declared when boss or final elites are defeated and no enemies remain.
+ */
 package manager;
 
 import game.GameConfig;
 
-/** Tracks elapsed time and exposes the current pressure stage. */
+/*Tracks elapsed time and exposes the current pressure stage. */
 public class WaveManager {
     private double elapsedTime;
     private int stage = 1;

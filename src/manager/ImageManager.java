@@ -7,6 +7,14 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Loads and serves all image assets via static accessors.
+ * Handles tower sprites, enemy spritesheets per type with left-facing variants.
+ * Loads map tiles, obstacle sprites, fire animation, and coin rotation frames.
+ * Loads UI panel corners, projectile images, and background art.
+ * All images loaded once at startup via loadImages().
+ * Enemy animation uses index-based frame selection driven by animation timers.
+ */
 package manager;
 
 import java.awt.*;

@@ -7,6 +7,13 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Base class for all enemy units with core combat and movement mechanics.
+ * Owns HP, damage, speed, position, attack cooldowns, and status effects.
+ * Supports freeze, speed boost, and damage boost status effects.
+ * Renders spritesheet-based animations with run and attack cycles.
+ * Draws health bars, freeze overlays, and supports tile-crowding offsets.
+ */
 package enemy;
 
 import java.awt.Color;

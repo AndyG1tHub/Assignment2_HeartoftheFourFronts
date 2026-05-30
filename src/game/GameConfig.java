@@ -7,6 +7,15 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Central constant repository for all gameplay tuning parameters.
+ * Stores window, grid, tile, and HUD dimensions.
+ * Stores tower costs, damage multipliers, upgrade curves, and sell ratio.
+ * Stores boss/elite stats, wave timing, and level-specific enemy probabilities.
+ * Defines tower unlock progression across five levels.
+ * getBossHp(level) returns level-scaled boss HP.
+ * getUnlockedTowers(level) returns available towers at a given level.
+ */
 package game;
 
 /** Stores shared constants so gameplay code avoids magic numbers. */

@@ -1,12 +1,17 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
+
+
+ * Transient floating text that rises and fades over 1.5 seconds.
+ * Displays feedback like "BUILD", "UPGRADE", and "+SCORE" above tiles.
+ * Rendered in bold with alpha decreasing as lifetime expires.
+ */
 package effect;
 
 import java.awt.Color;

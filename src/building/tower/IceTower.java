@@ -1,12 +1,19 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
+
+
+ * Crowd-control tower unlocked at Level 2.
+ * Fires ice projectiles that freeze targets in place for 0.6s on hit.
+ * Per-shot damage is low but freeze buys time for other towers.
+ * Best paired with high-damage towers to create kill zones.
+ * Boss enemies are immune to the freeze effect.
+ */
 package building.tower;
 
 import java.awt.Color;

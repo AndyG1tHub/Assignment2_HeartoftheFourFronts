@@ -7,6 +7,13 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Enemy decision-making layer, separated from Enemy's mechanics.
+ * Each frame: checks for decoys first, then attacks base if in range.
+ * Attacks nearby towers if in range, or breaks blocking buildings.
+ * Otherwise follows the shortest path to the base.
+ * Keeps Enemy focused on stats and rendering while AI can evolve independently.
+ */
 package enemy;
 
 import java.util.List;

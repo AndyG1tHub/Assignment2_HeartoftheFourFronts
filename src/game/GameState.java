@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Top-level game screen states driving CoreSiege's update and draw routing.
+ * INTRO: story cutscene; MENU: main menu; PLAYING: active gameplay.
+ * PAUSED: pause overlay; GAME_OVER_EFFECT / WIN_EFFECT: 3s transitions.
+ * GAME_OVER / WIN: final result screens with action buttons.
+ */
 package game;
 
 /** Represents the top-level screen or play state of the game. */

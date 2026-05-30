@@ -7,6 +7,13 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Owns the player's score and related statistics counters.
+ * Tracks enemies killed, reward points collected, and buildings built.
+ * Adds kill score, wave bonuses, and reward score; applies HP-loss penalty.
+ * Score is clamped to never go below zero.
+ * setScore() bulk-setter is used during save/load restoration.
+ */
 package manager;
 
 /** Owns score counters and scoring rules. */

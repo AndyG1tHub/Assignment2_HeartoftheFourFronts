@@ -1,12 +1,18 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
+
+
+ * Owns the active projectile list and drives their update/draw lifecycle.
+ * Towers fire by calling addProjectile() with start, target, and colour.
+ * Iterates all projectiles each frame and removes finished ones.
+ * Keeps projectile plumbing out of the main game loop.
+ */
 package combat;
 
 import java.awt.Color;

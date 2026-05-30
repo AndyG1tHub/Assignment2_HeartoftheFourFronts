@@ -7,6 +7,16 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * In-game HUD rendered as a glass-morphism panel on the right side.
+ * Draws title, level, and a gradient base health bar.
+ * Draws stat cards for money, kills, wave, score, stage, and time.
+ * Draws tower build buttons with icons, costs, and hover tooltips.
+ * Shows context hints for sell, pause, speed toggle, and mute.
+ * Renders pause menu overlay with resume, save, delete, restart, and menu.
+ * Animates dramatic end messages and draws boss/elite warning banners.
+ * Shows stage prep countdown and a speed indicator badge at 2x.
+ */
 package ui;
 
 import java.awt.Color;

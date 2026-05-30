@@ -7,6 +7,13 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Base class for timed natural disasters on the grid.
+ * Stores position, radius, and damage for area effects.
+ * Subclasses implement applyEffect() to define what happens on trigger.
+ * affects() checks whether a grid position falls within the radius.
+ * drawArea() renders a bounding rectangle for the affected zone.
+ */
 package event;
 
 import java.awt.Color;

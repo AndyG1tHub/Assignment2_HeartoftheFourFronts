@@ -7,6 +7,11 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Slow, durable enemy with the highest base HP.
+ * 250 base HP, 20 damage, 0.7 speed.
+ * Absorbs heavy fire while faster enemies slip past. Grey colour, label "T".
+ */
 package enemy.enemies;
 
 import java.awt.Color;

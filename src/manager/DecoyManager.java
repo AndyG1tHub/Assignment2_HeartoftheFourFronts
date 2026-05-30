@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Owns all active decoys and provides queries for EnemyAI.
+ * createDecoy() spawns a new decoy from the base.
+ * findAttractingDecoy() returns the first decoy in range of an enemy.
+ * Updates and draws all live decoys; removes destroyed or off-map ones.
+ */
 package manager;
 
 import java.util.ArrayList;

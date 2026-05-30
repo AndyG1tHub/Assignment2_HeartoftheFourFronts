@@ -7,6 +7,12 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Abstract base for all timed map events with a common lifecycle.
+ * Holds a type enum, a countdown duration, and an active flag.
+ * Subclasses override draw() for rendering and add effect logic.
+ * Duration ticks down each frame; when zero, marked finished and removed.
+ */
 package event;
 
 import core.GridMap;

@@ -1,12 +1,19 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
+
+
+ * Support building unlocked at Level 4 that heals nearby attack towers.
+ * Continuously heals up to three damaged towers at 15 HP/second each.
+ * Healing beams render as pulsing green lasers with energy particles.
+ * Has no projectile interaction and contributes no direct damage.
+ * Extends defence line survivability during boss fights and elite waves.
+ */
 package building.tower;
 
 import java.awt.AlphaComposite;

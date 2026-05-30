@@ -7,6 +7,11 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Standard frontline enemy with balanced stats.
+ * 100 base HP, 12 damage, 1.0 speed, no special abilities.
+ * The most common unit in every wave. Red colour, label "M".
+ */
 package enemy.enemies;
 
 import java.awt.Color;

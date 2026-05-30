@@ -7,6 +7,11 @@
  * - Li Qianzheng (ID: 24009199)
  */
 
+/**
+ * Categories of natural disaster.
+ * Currently only METEOR_STRIKE is implemented.
+ * Additional types can be added without changing DisasterManager's interface.
+ */
 package event;
 
 /** Disaster categories. */
