@@ -179,15 +179,15 @@ public class ImageManager {
     }
 
     private static void loadStaticImages(GameEngine engine) {
-        arrowTower = engine.loadImage("Images/arrowTower.png");
-        attackTower = engine.loadImage("Images/attackTower.png");
-        healTower = engine.loadImage("Images/healTower.png");
-        iceTower = engine.loadImage("Images/iceTower.png");
-        iceFreezeEffect = engine.loadImage("Images/ice.png");
-        lightningTower = engine.loadImage("Images/lightningTower.png");
-        bait = engine.loadImage("Images/bait.png");
-        coin = engine.loadImage("Images/coin.png");
-        homeItems = engine.loadImage("Images/homeItems.png");
+        arrowTower = engine.loadImage("images/arrow-tower.png");
+        attackTower = engine.loadImage("images/attack-tower.png");
+        healTower = engine.loadImage("images/heal-tower.png");
+        iceTower = engine.loadImage("images/ice-tower.png");
+        iceFreezeEffect = engine.loadImage("images/ice.png");
+        lightningTower = engine.loadImage("images/lightning-tower.png");
+        bait = engine.loadImage("images/bait.png");
+        coin = engine.loadImage("images/coin.png");
+        homeItems = engine.loadImage("images/home-items.png");
         baseImage = engine.subImage(homeItems, 45, 80, 470, 500);
         arrowProjectile = engine.subImage(homeItems, 575, 310, 250, 175);
         cannonProjectile = engine.subImage(homeItems, 895, 330, 245, 245);
@@ -195,9 +195,9 @@ public class ImageManager {
         laserEffect = engine.subImage(homeItems, 170, 650, 300, 265);
         healRangeEffect = engine.subImage(homeItems, 555, 650, 340, 265);
         explosionFireball = engine.subImage(homeItems, 995, 630, 350, 285);
-        backgroundImage = engine.loadImage("Images/background.png");
+        backgroundImage = engine.loadImage("images/background.png");
 
-        uiSheet = engine.loadImage("Images/Ui.png");
+        uiSheet = engine.loadImage("images/ui.png");
         btnPlayHover = engine.subImage(uiSheet, 0, 128, 64, 32);
         btnPlayNormal = engine.subImage(uiSheet, 64, 128, 64, 32);
         btnExitHover = engine.subImage(uiSheet, 0, 192, 64, 32);
@@ -218,31 +218,31 @@ public class ImageManager {
     }
 
     private static void loadEnemySprites(GameEngine engine) {
-        Image meleeSheet = engine.loadImage("Images/meleeEnemy.png");
+        Image meleeSheet = engine.loadImage("images/melee-enemy.png");
         meleeEnemyRun = loadEnemyRunSprite(engine, meleeSheet);
         meleeEnemyRunLeft = flipFrames(meleeEnemyRun);
         meleeEnemyAttack = loadEnemyAttackSprite(engine, meleeSheet);
         meleeEnemyAttackLeft = flipFrames(meleeEnemyAttack);
 
-        Image tankSheet = engine.loadImage("Images/tankEnemy.png");
+        Image tankSheet = engine.loadImage("images/tank-enemy.png");
         tankEnemyRun = loadEnemyRunSprite(engine, tankSheet);
         tankEnemyRunLeft = flipFrames(tankEnemyRun);
         tankEnemyAttack = loadEnemyAttackSprite(engine, tankSheet);
         tankEnemyAttackLeft = flipFrames(tankEnemyAttack);
 
-        Image assassinSheet = engine.loadImage("Images/assassinEnemy.png");
+        Image assassinSheet = engine.loadImage("images/assassin-enemy.png");
         assassinEnemyRun = loadEnemyRunSprite(engine, assassinSheet);
         assassinEnemyRunLeft = flipFrames(assassinEnemyRun);
         assassinEnemyAttack = loadEnemyAttackSprite(engine, assassinSheet);
         assassinEnemyAttackLeft = flipFrames(assassinEnemyAttack);
 
-        Image archerSheet = engine.loadImage("Images/archerEnemy.png");
+        Image archerSheet = engine.loadImage("images/archer-enemy.png");
         archerEnemyRun = loadEnemyRunSprite(engine, archerSheet);
         archerEnemyRunLeft = flipFrames(archerEnemyRun);
         archerEnemyAttack = loadEnemyAttackSprite(engine, archerSheet);
         archerEnemyAttackLeft = flipFrames(archerEnemyAttack);
 
-        Image bossSheet = engine.loadImage("Images/bossEnemy.png");
+        Image bossSheet = engine.loadImage("images/boss-enemy.png");
         bossEnemyRun = loadEnemyRunSprite(engine, bossSheet);
         bossEnemyRunLeft = flipFrames(bossEnemyRun);
         bossEnemyAttack = loadEnemyAttackSprite(engine, bossSheet);
@@ -401,20 +401,20 @@ public class ImageManager {
 
     private static void loadMapTiles(GameEngine engine) {
         mapTiles = new Image[3];
-        mapTiles[0] = engine.loadImage("Images/mapGround.png");
-        mapTiles[1] = engine.loadImage("Images/mapGross.png");
-        mapTiles[2] = engine.loadImage("Images/mapFlower.png");
+        mapTiles[0] = engine.loadImage("images/map-ground.png");
+        mapTiles[1] = engine.loadImage("images/map-grass.png");
+        mapTiles[2] = engine.loadImage("images/map-flower.png");
     }
 
     private static void loadObstacleSprites(GameEngine engine) {
         obstacleSprites = new Image[4];
         for (int i = 0; i < 4; i++) {
-            obstacleSprites[i] = engine.loadImage("Images/tree_" + (i + 1) + ".png");
+            obstacleSprites[i] = engine.loadImage("images/tree-" + (i + 1) + ".png");
         }
     }
 
     private static void loadFireAnimationFrames(GameEngine engine) {
-        Image fireSheet = engine.loadImage("Images/fireAnimation.png");
+        Image fireSheet = engine.loadImage("images/fire-animation.png");
         int frameWidth = 44;
         int frameHeight = 48;
         int column = 2;
@@ -426,7 +426,7 @@ public class ImageManager {
     }
 
     private static void loadCoinTurnFrames(GameEngine engine) {
-        Image coinSheet = engine.loadImage("Images/coinTurn.png");
+        Image coinSheet = engine.loadImage("images/coin-turn.png");
         int columns = 8;
         int rows = 1;
         int totalFrames = columns * rows;

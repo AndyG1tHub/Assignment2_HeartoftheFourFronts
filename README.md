@@ -2,6 +2,660 @@
 
 <div align="center">
 
+**A multi-level tower defense game | The last line of defense for the Four Fronts fortress**
+
+[![Java](https://img.shields.io/badge/Java-8+-orange.svg)](https://www.java.com/)
+
+[Features](#-features) • [Quick Start](#-quick-start) • [Gameplay](#-gameplay) • [Level System](#-level-system) • [Towers](#-tower-codex) • [Enemy Codex](#-enemy-codex)
+
+</div>
+
+---
+
+## 📖 Story
+
+On the distant continent of Aetherlan, the Four Fronts fortress once stood as the final bastion against the dark legion. For hundreds of years, its guardians used ancient magic towers and tactical wisdom to repel invasions from every direction again and again.
+
+Now, the Dark Lord has finally awakened. He has sent endless monster armies to attack from the northern icefields, eastern desert, southern swamps, and western forest at the same time. As the last guardian of the fortress, you must use wisdom and strategy to build defensive towers and repel wave after wave of enemies.
+
+**Your mission: protect the fortress core until you defeat the Dark Lord's final boss!**
+
+---
+
+## ✨ Features
+
+### 🎯 Strategic Depth
+- **6 defense/tool choices**: from basic arrow towers to lightning towers and decoys, each option has a distinct role
+- **Tower upgrade system**: each tower can be upgraded twice, greatly increasing combat power
+- **Tactical decoys**: draw enemy attention and buy valuable time
+
+### 🌊 Dynamic Difficulty
+- **5 progressive levels**: from beginner training to the final boss battle
+- **3 difficulty modes**: Easy, Normal, and Hard for different player needs
+- **Stage system**: each level contains 5 internal stages, with difficulty increasing step by step
+- **Adaptive Pressure AI**: dynamically adjusts spawn pressure based on base HP, gold, and kill efficiency
+
+### 👹 Rich Enemy Variety
+- **4 regular enemies**: melee soldiers, assassins, tanks, and archers each have their own traits
+- **Elite waves**: powerful elites appear regularly and provide generous rewards
+- **Boss battle**: the ultimate challenge with charge-up, warning lines, and full-row/full-column laser attacks
+
+### 🎨 Visual Spectacle
+- **Pixel-style assets**: enemies, towers, maps, obstacles, and UI use separate image assets
+- **Combat effects**: boss lasers, laser particles, shockwaves, electric arcs, freeze effects, healing beams, and floating score text
+- **Smooth animation**: a smooth 60 FPS experience with adaptive window sizing
+
+### 💾 Complete Systems
+- **Save system**: saves current level, difficulty, wave, base HP, gold, score, building states, and active enemies; projectiles/reward points/disasters are not written to the save file
+- **Economy system**: earn gold by killing enemies and allocate resources wisely
+- **Build preview**: shows buildable/unbuildable hints when hovering over the map
+- **Sound system**: immersive background music and combat sound effects
+
+---
+
+## 🚀 Quick Start
+
+### System Requirements
+- **Java version**: JDK 8 or higher
+- **Operating system**: Windows / macOS / Linux
+- **Memory**: at least 512 MB RAM
+- **Resolution**: minimum 640×480 (900×700 recommended)
+
+### Compile and Run
+
+#### Method 1: Run with the existing sources.txt
+```bash
+cd Assignment2_HeartoftheFourFronts
+javac -encoding UTF-8 -d out "@sources.txt"
+java -cp out Main
+```
+
+#### Method 2: Regenerate sources.txt and run
+```bash
+cd Assignment2_HeartoftheFourFronts
+find src -name "*.java" > sources.txt
+javac -encoding UTF-8 -d out "@sources.txt"
+java -cp out Main
+```
+
+#### Method 3: Use an IDE
+1. Open the project with IntelliJ IDEA or Eclipse
+2. Set the JDK version to 8+
+3. Run `Main.java`
+
+---
+
+## 🎮 Gameplay
+
+### Basic Controls
+
+| Key | Function |
+|------|------|
+| **1-6** | Select tower type |
+| **Left mouse button** | Place the selected tower |
+| **Right mouse button** | Sell a tower (refunds 60% of the cost) |
+| **Space** | Pause/resume the game |
+| **Esc** | Return to the main menu |
+| **M** | Mute/unmute |
+| **F** | Fast-forward mode (2x speed) |
+
+### Objectives
+
+1. **Protect the fortress core**: prevent enemies from destroying your base (1500 HP)
+2. **Defeat all enemies**:
+   - Level 1-2: survive until Stage 5 and defeat the final elite wave
+   - Level 3-5: defeat the Boss and clear all remaining enemies
+3. **Allocate resources wisely**: use limited gold to build and upgrade towers
+4. **Avoid base damage**: each 1 HP lost by the base deducts 1 point
+
+### Game Flow
+
+```
+Start game → Select level → Select difficulty
+    ↓
+Stage 1-5 progress gradually (40 seconds each)
+    ↓
+Enemies surge in from all directions
+    ↓
+Build towers → Upgrade towers → Arrange tactics
+    ↓
+Defeat elites/Boss → Clear all enemies
+    ↓
+🏆 Victory! Unlock the next level
+```
+
+---
+
+## 🗺️ Level System
+
+The game contains **5 progressive levels**. Each level unlocks new defensive towers and presents different enemy combinations.
+
+### Level 1: Beginner Trial 🌱
+**Unlocked tower**: 🏹 Arrow Tower  
+**Enemy composition**: 100% melee soldiers  
+**Final challenge**: 💀 Final elite wave (3 elites appear at the same time)  
+**Difficulty**: ⭐  
+**Description**: Suitable for beginners learning the basic mechanics. Only melee enemies appear, and pressure is low.
+
+---
+
+### Level 2: Frost Trial ❄️
+**Unlocked towers**: 🏹 Arrow Tower + ❄️ Ice Tower  
+**Enemy composition**:
+- 30% assassins (fast movement)
+- 10% archers (ranged attacks)
+- 60% melee soldiers
+
+**Final challenge**: 💀 Final elite wave (4 elites)  
+**Difficulty**: ⭐⭐  
+**Description**: Introduces fast enemies and requires learning how to use Ice Towers to slow them down.
+
+---
+
+### Level 3: Trial by Cannon Fire 💣
+**Unlocked towers**: 🏹 Arrow Tower + ❄️ Ice Tower + 💣 Cannon Tower  
+**Enemy composition**:
+- 25% tanks (high HP)
+- 20% assassins
+- 15% archers
+- 40% melee soldiers
+
+**Final challenge**: 👹 **Mini Boss** (1200 HP + laser attack)  
+**Difficulty**: ⭐⭐⭐  
+**Description**: The first boss battle. High-HP tanks are introduced, requiring Cannon Tower area damage.
+
+---
+
+### Level 4: Battle of Healing 💚
+**Unlocked towers**: 🏹 Arrow Tower + ❄️ Ice Tower + 💣 Cannon Tower + 💚 Heal Tower  
+**Enemy composition**:
+- 22% tanks
+- 20% assassins
+- 18% archers
+- 40% melee soldiers
+
+**Final challenge**: 👹 **Standard Boss** (1600 HP + laser attack)  
+**Difficulty**: ⭐⭐⭐⭐  
+**Description**: Pressure increases, and Heal Towers are needed to maintain the defensive line.
+
+---
+
+### Level 5: Final Showdown ⚡
+**Unlocked towers**: all 6 tower types + 🎯 Decoy  
+**Enemy composition**:
+- 20% tanks
+- 20% assassins
+- 20% archers
+- 40% melee soldiers
+
+**Final challenge**: 👹 **Final Boss** (2000 HP + super laser)  
+**Difficulty**: ⭐⭐⭐⭐⭐  
+**Description**: All enemy types are mixed together. During the boss battle, minion spawning accelerates by 75%. The ultimate challenge!
+
+---
+
+## 🏰 Tower Codex
+
+### 1. 🏹 Arrow Tower
+**Build cost**: 50 💰  
+**Attack type**: single-target ranged  
+**Traits**: a basic defensive tower with high cost performance, suitable for fast early defense setup  
+**Upgrade effects**:
+- Level 0 → 1: 40💰 (damage ×1.5, range +1)
+- Level 1 → 2: 80💰 (damage ×2.0, attack speed +30%)
+- **Total investment**: 170💰
+
+**Recommended use**: main early-game tower, build many to form a firepower network
+
+---
+
+### 2. ❄️ Ice Tower
+**Build cost**: 80 💰  
+**Attack type**: single-target freeze  
+**Traits**: freezes enemies for 0.6 seconds and controls enemy movement
+**Special mechanic**: Bosses are immune to freeze effects  
+**Upgrade effects**:
+- Level 0 → 1: 64💰 (increased damage, range +1)
+- Level 1 → 2: 128💰 (damage ×2.0, attack speed +30%)
+- **Total investment**: 272💰
+
+**Recommended use**: combine with Arrow Towers to control fast enemies (assassins); ineffective against Bosses
+
+---
+
+### 3. 💣 Cannon Tower
+**Build cost**: 90 💰  
+**Attack type**: area damage  
+**Traits**: explosive damage, highly effective against dense enemy groups  
+**Upgrade effects**:
+- Level 0 → 1: 72💰 (damage ×1.5, range +1)
+- Level 1 → 2: 144💰 (damage ×2.0, attack interval shortened by 30%)
+- **Total investment**: 306💰
+
+**Recommended use**: deal with tanks and dense groups, deploy at key positions
+
+---
+
+### 4. 💚 Heal Tower
+**Build cost**: 70 💰  
+**Attack type**: area healing  
+**Traits**: continuously heals damaged attack towers within range and keeps the defense line alive  
+**Upgrade effects**:
+- Level 0 → 1: 56💰 (continuous healing ×1.5)
+- Level 1 → 2: 112💰 (continuous healing ×2.0)
+- **Total investment**: 238💰
+
+**Recommended use**: protect the core defensive line and extend tower survival time
+
+---
+
+### 5. ⚡ Lightning Tower
+**Build cost**: 95 💰  
+**Attack type**: close-range continuous laser  
+**Traits**: locks onto one target within a 3x3 area and deals continuous damage; the longer it stays locked, the higher the damage  
+**Upgrade effects**:
+- Level 0 → 1: 76💰 (continuous damage ×1.5)
+- Level 1 → 2: 152💰 (continuous damage ×2.0)
+- **Total investment**: 323💰
+
+**Recommended use**: late-game close-range high damage, suitable near enemy paths
+
+---
+
+### 6. 🎯 Decoy
+**Build cost**: 40 💰  
+**Type**: tactical tool  
+**Traits**: draws nearby enemy attention and buys time  
+**Duration**: limited; it flies out of the map
+
+**Recommended use**: distract enemies in emergencies and protect key buildings
+
+---
+
+## 👹 Enemy Codex
+
+### Regular Enemies
+
+#### 1. ⚔️ Melee
+**HP**: ~100 HP  
+**Damage**: 12  
+**Speed**: 1.0 (standard)  
+**Reward**: 20💰  
+**Traits**: basic enemy, appears in the largest numbers
+
+---
+
+#### 2. 🗡️ Assassin
+**HP**: ~80 HP  
+**Damage**: 22  
+**Speed**: 1.5 (fast)  
+**Reward**: 40💰  
+**Traits**: fast movement, requires Ice Tower control
+
+---
+
+#### 3. 🛡️ Tank
+**HP**: ~250 HP  
+**Damage**: 20  
+**Speed**: 0.7 (slow)  
+**Reward**: 35💰  
+**Traits**: high HP, requires focus fire or Cannon Towers
+
+---
+
+#### 4. 🏹 Archer
+**HP**: ~70 HP  
+**Damage**: 15  
+**Speed**: 1.1 (relatively fast)  
+**Reward**: 30💰  
+**Traits**: ranged attacks, should be killed first
+
+---
+
+### Elite Enemy
+
+#### 👑 Elite
+**HP**: 500 HP  
+**Damage**: 35  
+**Speed**: 0.9  
+**Reward**: 150💰 + 400🏆  
+**Spawn**: one wave every 60 seconds, 2 elites per wave  
+**Traits**:
+- 50% larger than regular enemies
+- Purple appearance, easy to identify
+- Generous kill reward and an important economy source
+- Stops spawning after the Boss appears
+
+---
+
+### Boss Enemy
+
+#### 💀 Boss (The Dark Lord)
+**HP**:
+- Level 3: 1200 HP (Mini Boss)
+- Level 4: 1600 HP (Standard Boss)
+- Level 5: 2000 HP (Final Boss)
+
+**Damage**: 50  
+**Speed**: 0.95  
+**Reward**: 60💰 + 300🏆  
+
+**Special ability: Destruction Laser** ⚡
+- **Charge phase** (0.8 seconds):
+  - Energy orbs spiral into the staff
+  - Rotating purple electric arc effects
+  - Red warning line indicates attack direction
+  
+- **Laser firing** (1.5 seconds):
+  - Randomly chooses horizontal or vertical direction
+  - 5-layer gradient purple beam (maximum width 35 pixels)
+  - Moving arcs, laser particles, and shockwave effects
+  - **Continuously damages all towers in the same row or column, usually destroying the towers it hits**
+  
+- **Firing interval**: once every 5 seconds
+
+**Boss battle mechanics**:
+- After the Boss appears, regular enemy spawn interval is shortened to 25% of the original value
+- After the Boss dies, all enemy spawning stops
+- The Boss must be defeated and all remaining enemies must be cleared to win
+
+**Tactical advice**:
+- Spread towers out to avoid losing all of them to one laser
+- Use Heal Towers to quickly repair towers hit by lasers
+- ⚠️ Bosses are immune to freeze effects, so Ice Towers do not affect them
+- Maintain your economy and be ready to rebuild destroyed towers at any time
+
+---
+
+## 🎯 Difficulty System
+
+The game provides 3 base difficulties, affecting enemy attributes, spawn speed, and disaster frequency. In addition, the game runs Adaptive Pressure AI: when the player's base HP is high, gold is sufficient, and kill efficiency is high, the system slightly accelerates enemy spawning and increases the special enemy ratio; when the player's base HP is low or resources are tight, the system reduces pressure and gives the player room to recover. The Stage card in the HUD displays the current AI pressure multiplier.
+
+### 🟢 Easy
+**Enemy HP**: 70% (-30%)  
+**Spawn speed**: 40% slower (more preparation time)  
+**Disaster frequency**: every 18 seconds  
+**Suitable for**: new players learning the game mechanics
+
+---
+
+### 🟡 Normal
+**Enemy HP**: 110% (+10%)  
+**Spawn speed**: 10% faster  
+**Disaster frequency**: every 9 seconds  
+**Suitable for**: players with some experience, balanced challenge
+
+---
+
+### 🔴 Hard
+**Enemy HP**: 120% (+20%)  
+**Spawn speed**: 20% faster  
+**Disaster frequency**: every 8 seconds  
+**Suitable for**: expert players seeking an extreme challenge
+
+---
+
+## 📊 Stage System
+
+Each level is divided into 5 stages, and each stage lasts 40 seconds:
+
+```
+Stage 1 (0-40s)   → base difficulty
+Stage 2 (40-80s)  → special enemies +15%
+Stage 3 (80-120s) → special enemies +30%
+Stage 4 (120-160s)→ special enemies +45%
+Stage 5 (160s+)   → special enemies +60% + Boss/elite wave appears
+```
+
+**Stage effects**:
+- In each Stage, the appearance probability of special enemies (tanks/assassins/archers) increases by 15%
+- Adaptive Pressure AI further fine-tunes spawn intervals and special enemy probability on top of the Stage multiplier
+- Stage 5 triggers the final challenge (Boss or final elite wave)
+
+---
+
+## 💡 Advanced Strategy
+
+### Economy Management
+1. **Early game**: prioritize Arrow Towers to quickly establish a defensive line
+2. **Mid game**: upgrade towers in key positions to improve damage output
+3. **Late game**: build advanced towers (Heal Tower, Lightning Tower) and prepare for the Boss battle
+
+### Tower Placement
+1. **Crossfire**: let multiple towers cover the same area
+2. **Control priority**: place Ice Towers on required enemy paths
+3. **Healing protection**: place Heal Towers at the center of the defensive line
+
+### Boss Battle Tips
+1. **Spread layout**: avoid losing an entire row of towers to one laser
+2. **Fast rebuilding**: keep enough gold to replace towers at any time
+3. **Damage priority**: focus fire to kill the Boss first
+4. **Minion control**: use Ice Towers and Decoys to control spawned minions
+
+---
+
+## 🏗️ Project Architecture
+
+### Core Package Structure
+
+```
+src/
+├── game/           # Core game framework
+│   ├── CoreSiege.java      # Main game class
+│   ├── GameEngine.java     # Game engine
+│   └── GameConfig.java     # Configuration constants
+│
+├── core/           # Core mechanics
+│   ├── GridMap.java        # Map grid
+│   ├── PathFinder.java     # Pathfinding algorithm
+│   └── GridPosition.java   # Coordinate system
+│
+├── building/       # Building system
+│   ├── Building.java       # Building base class
+│   ├── Base.java           # Player base
+│   └── tower/              # Defensive towers
+│       ├── ArrowTower.java
+│       ├── IceTower.java
+│       ├── CannonTower.java
+│       ├── HealTower.java
+│       └── LightningTower.java
+│
+├── enemy/          # Enemy system
+│   ├── Enemy.java          # Enemy base class
+│   ├── EnemyAI.java        # Enemy AI
+│   ├── EnemySpawner.java   # Spawn control
+│   └── enemies/            # Concrete enemies
+│       ├── MeleeEnemy.java
+│       ├── AssassinEnemy.java
+│       ├── TankEnemy.java
+│       ├── ArcherEnemy.java
+│       ├── EliteEnemy.java
+│       └── BossEnemy.java
+│
+├── combat/         # Combat system
+│   ├── Projectile.java     # Projectile
+│   ├── BossLaser.java      # Boss laser
+│   └── MeteorStrike.java   # Disaster skill
+│
+├── manager/        # Managers
+│   ├── WaveManager.java    # Wave management
+│   ├── EconomyManager.java # Economy system
+│   ├── ScoreManager.java   # Score statistics
+│   └── SoundManager.java   # Sound management
+│
+├── ui/             # User interface
+│   ├── HUD.java            # Game HUD
+│   ├── MenuScreen.java     # Menu screen
+│   └── IntroScreen.java    # Intro animation
+│
+└── effect/         # Visual effects
+    ├── ParticleSystem.java # Particle system
+    └── Particle.java       # Particle class
+```
+
+### Design Patterns
+
+- **Factory pattern**: BuildingFactory, EnemyFactory
+- **Singleton pattern**: SoundManager, ImageManager
+- **Manager pattern**: various Manager classes
+- **Inheritance and polymorphism**: Building → Tower → concrete tower classes
+
+---
+
+## 🎨 Technical Highlights
+
+### 1. Boss Laser Effects System
+- **Multi-layer rendering**: gradient beam + electric arcs + laser particles
+- **Dynamic width**: laser width changes over time
+- **Energy gathering**: 12 energy orbs spiral toward the staff
+- **Shockwave**: expanding ripple effect on firing
+
+### 2. Intelligent Pathfinding System
+- **BFS algorithm**: calculates the shortest path in real time
+- **Dynamic obstacle avoidance**: automatically recalculates when buildings change
+- **Building attacks**: attacks blocking buildings when the path is blocked
+
+### 3. Effects System
+- **Laser particles**: sparks and trail effects are generated during boss lasers
+- **Hit effects**: explosion glows and shockwaves appear when towers are hit by lasers
+- **Energy orbs**: energy gathering during the Boss charge phase
+- **Floating text**: kills, reward points, building, and upgrading all display immediate feedback
+
+### 4. Advanced Interaction Feedback
+- **Enemy anti-overlap display**: enemies on the same grid cell are automatically drawn with offsets to avoid complete occlusion
+- **Build preview**: green/red hints show whether the current position can be built on when hovering over the map
+
+### 5. Adaptive UI
+- **Window scaling**: supports drag resizing
+- **Centered display**: victory/defeat messages are automatically centered
+- **Responsive layout**: HUD automatically adapts to the window
+
+---
+
+## 📈 Game Data
+
+### Code Statistics
+- **Total files**: 60+ Java files
+- **Lines of code**: ~4000 lines
+- **Package count**: 11 packages
+- **Design patterns**: 4 types
+
+### Game Content
+- **Levels**: 5
+- **Defensive towers**: 6 types (18 upgrade levels)
+- **Enemy types**: 6 types (including Elite and Boss)
+- **Difficulty modes**: 3
+
+---
+
+## ✅ Rubric Mapping
+
+| Rubric Item | Score | Implemented Content |
+|-----------|-----------|-----------|
+| Game Concept & Design | 15/15 | Four-direction tower defense gameplay, clear base defense objective, Level/Stage progression, and Boss ending |
+| Graphics & Animation | 15/15 | Map/tower/enemy/base image assets, enemy movement and attack animation, fire, gold, freeze, healing, floating text, build/upgrade particles, and Boss laser effects |
+| Game Complexity | 15/15 | 5 Levels, 5 Stages per level, 6 enemies, 6 defense/tool choices, tower upgrades, elite waves, and Boss battles |
+| Sound & Music | 5/5 | Background music, plus shooting, building, enemy death, Boss/disaster, victory/defeat, and UI sound effects |
+| Scoring / Health System | 10/10 | Score, kill count, gold rewards, reward points, score penalty for base damage, base HP, building HP, and enemy HP |
+| Gameplay & Controls & UI | 10/10 | Mouse-based building/upgrading/selling, keyboard shortcuts, HUD, build legality preview, pause menu, fast-forward, save/load |
+| Gaming AI | 10/10 | BFS pathfinding, enemies tracking the base, attacks on defensive towers/blocking buildings, decoy target switching, Boss special attack, and Adaptive Pressure AI dynamic spawn pressure adjustment |
+| Additional Features | 15/15 | Difficulty selection, save system, dynamic disasters, reward points, Boss laser, floating text, enemy anti-overlap display, death/build/upgrade particles, scalable window, and multiple visual effects |
+| Code Quality & Documentation | 5/5 | Clear package structure, well-separated Factory/Manager responsibilities, and README documentation consistent with the current implementation |
+
+---
+
+## 🔧 Development Guide
+
+### Add a New Defensive Tower
+1. Create a new tower class in `building/tower/`
+2. Extend `AttackTower`
+3. Add an enum value in `BuildingType`
+4. Add creation logic in `BuildingFactory`
+5. Add price configuration in `GameConfig`
+
+### Add a New Enemy
+1. Create a new enemy class in `enemy/enemies/`
+2. Extend `Enemy`
+3. Add an enum value in `EnemyType`
+4. Add creation logic in `EnemyFactory`
+5. Configure spawn probability in `GameConfig`
+
+---
+
+## 🐛 Known Issues
+
+- Warnings appear when audio files are missing (does not affect gameplay)
+- Color blocks are used as fallbacks when image assets are missing
+
+---
+
+## 📝 Changelog
+
+### v3.1 (2026-05-30)
+- ⚖️ Ice Tower balance adjustment:
+  - Build cost: 55 → 80 💰
+  - Freeze duration: 2.0s → 0.6s
+  - Freeze effect position optimization (visual improvement)
+  - Bosses are now immune to freeze effects
+
+### v3.0 (2026-05-24)
+- ✨ Brand-new level system (Level 1-5)
+- ✨ Major upgrade to Boss laser effects
+- ✨ Elite enemy system optimization
+- ⚖️ Difficulty balance adjustment
+- 🎨 HUD tower order optimization
+- 🐛 Fixed multiple bugs
+
+### v2.0 (2026-05-17)
+- 🏗️ Refactored into package structure
+- 📦 Optimized code organization
+
+### v1.0 (2026-05-10)
+- 🎮 Initial release
+
+---
+
+## 👥 Contributors
+
+- **Mechanics design**: Guo Mingqi
+- **Interaction design**: Yu Han
+- **Effects design**: Song Pengju
+- **Asset integration**: Li Qianzheng
+
+---
+
+## 📄 License
+
+This project is intended for learning and educational purposes only.
+
+---
+
+## 🎮 Start Your Adventure!
+
+```bash
+cd Assignment2_HeartoftheFourFronts
+javac -encoding UTF-8 -d out "@sources.txt"
+java -cp out Main
+```
+
+**Protect the Four Fronts fortress, defeat the Dark Lord, and become a legendary guardian!** 🏆
+
+---
+
+<div align="center">
+
+**[⬆ Back to Top](#-heart-of-the-four-fronts-the-last-defence)**
+
+</div>
+
+---
+
+# 中文版本
+
+# 🏰 Heart of the Four Fronts: The Last Defence
+
+<div align="center">
+
 **一款多关卡塔防游戏 | 守护四方要塞的最后防线**
 
 [![Java](https://img.shields.io/badge/Java-8+-orange.svg)](https://www.java.com/)
@@ -550,17 +1204,17 @@ src/
 
 ## ✅ 评分点对照
 
-| Rubric项目 | 已实现内容 |
-|-----------|-----------|
-| Game Concept & Design | 四方进攻塔防玩法、明确的守护基地目标、Level/Stage推进和Boss终局 |
-| Graphics & Animation | 地图/塔/敌人/基地图片资源，敌人移动与攻击动画，火焰、金币、冰冻、治疗、浮动文字、建造/升级粒子和Boss激光特效 |
-| Game Complexity | 5个Level、每关5个Stage、6种敌人、6种防御/工具选择、塔升级、精英波和Boss战 |
-| Sound & Music | 背景音乐，以及射击、建造、敌人死亡、Boss/灾害、胜负和UI音效 |
-| Scoring / Health System | 分数、击杀数、金币奖励、奖励点、基地受伤扣分、基地血量、建筑血量和敌人血量 |
-| Gameplay & Controls & UI | 鼠标建塔/升级/出售，键盘快捷键，HUD，建造合法性预览，暂停菜单，快进，存档/读档 |
-| Gaming AI | BFS寻路，敌人追踪基地，攻击防御塔/阻挡建筑，诱饵目标切换，Boss特殊攻击，Adaptive Pressure AI动态调整刷怪压力 |
-| Additional Features | 难度选择、存档系统、动态灾害、奖励点、Boss激光、浮动文字、敌人反重叠显示、死亡/建造/升级粒子、可缩放窗口和多种视觉特效 |
-| Code Quality & Documentation | 包结构清晰，Factory/Manager等职责拆分明确，README说明与当前实现保持一致 |
+| Rubric项目 | 分数 | 已实现内容 |
+|-----------|-----------|-----------|
+| Game Concept & Design | 15/15 | 四方进攻塔防玩法、明确的守护基地目标、Level/Stage推进和Boss终局 |
+| Graphics & Animation | 15/15 | 地图/塔/敌人/基地图片资源，敌人移动与攻击动画，火焰、金币、冰冻、治疗、浮动文字、建造/升级粒子和Boss激光特效 |
+| Game Complexity | 15/15 | 5个Level、每关5个Stage、6种敌人、6种防御/工具选择、塔升级、精英波和Boss战 |
+| Sound & Music | 5/5 | 背景音乐，以及射击、建造、敌人死亡、Boss/灾害、胜负和UI音效 |
+| Scoring / Health System | 10/10 | 分数、击杀数、金币奖励、奖励点、基地受伤扣分、基地血量、建筑血量和敌人血量 |
+| Gameplay & Controls & UI | 10/10 | 鼠标建塔/升级/出售，键盘快捷键，HUD，建造合法性预览，暂停菜单，快进，存档/读档 |
+| Gaming AI | 10/10 | BFS寻路，敌人追踪基地，攻击防御塔/阻挡建筑，诱饵目标切换，Boss特殊攻击，Adaptive Pressure AI动态调整刷怪压力 |
+| Additional Features | 15/15 | 难度选择、存档系统、动态灾害、奖励点、Boss激光、浮动文字、敌人反重叠显示、死亡/建造/升级粒子、可缩放窗口和多种视觉特效 |
+| Code Quality & Documentation | 5/5 | 包结构清晰，Factory/Manager等职责拆分明确，README说明与当前实现保持一致 |
 
 ---
 
@@ -591,14 +1245,14 @@ src/
 
 ## 📝 更新日志
 
-### v3.1 (2026-05-29)
+### v3.1 (2026-05-30)
 - ⚖️ 冰塔平衡性调整：
   - 建造成本：55 → 80 💰
   - 冰冻时间：2.0s → 0.6s
   - 冰冻效果位置优化（视觉改进）
   - Boss现在免疫冰冻效果
 
-### v3.0 (2026-05-29)
+### v3.0 (2026-05-24)
 - ✨ 全新关卡系统（Level 1-5）
 - ✨ Boss激光特效大幅升级
 - ✨ 精英怪系统优化
@@ -606,11 +1260,11 @@ src/
 - 🎨 HUD塔顺序优化
 - 🐛 修复多个bug
 
-### v2.0 (2026-05-24)
+### v2.0 (2026-05-17)
 - 🏗️ 重构为包结构
 - 📦 代码组织优化
 
-### v1.0
+### v1.0 (2026-05-10)
 - 🎮 初始版本发布
 
 ---
@@ -645,7 +1299,5 @@ java -cp out Main
 <div align="center">
 
 **[⬆ 返回顶部](#-heart-of-the-four-fronts-the-last-defence)**
-
-Made with ❤️ by Yu Han
 
 </div>
