@@ -98,6 +98,7 @@ public class HUD {
         drawBossWarning(engine, waves);
         drawPrepTimer(engine, waves);
         drawSpeedIndicator(engine, speedMul);
+
         drawStateOverlay(engine, state, mouseX, mouseY);
     }
 

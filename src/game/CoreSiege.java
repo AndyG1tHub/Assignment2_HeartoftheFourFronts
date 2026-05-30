@@ -57,6 +57,7 @@ public class CoreSiege extends GameEngine {
     private int maxUnlockedLevel = 1;
     private double endEffectTimer = 0.0;
     private static final double END_EFFECT_DURATION = 3.0;
+    private boolean devMode;
 
     public static void main(String[] args) {
         createGame(new CoreSiege(), GameConfig.TARGET_FPS);
@@ -132,6 +133,8 @@ public class CoreSiege extends GameEngine {
         }
 
         dt *= speedMultiplier;
+
+        if (devMode) economyManager.addMoney(100000);
 
         hud.update(dt);
 
@@ -292,6 +295,10 @@ public class CoreSiege extends GameEngine {
         hud.draw(this, base, economyManager, scoreManager, waveManager,
                 selectedDifficulty, selectedBuilding, gameState, mouseX, mouseY,
                 speedMultiplier, currentLevel, difficultyManager.getAdaptivePressure());
+        if (devMode) {
+            changeColor(new Color(255, 220, 80));
+            drawBoldText(GameConfig.WINDOW_WIDTH - GameConfig.HUD_WIDTH + 10, 40, "DEV MODE", "Arial", 16);
+        }
     }
 
     private void drawBuildPreview() {
@@ -499,6 +506,8 @@ public class CoreSiege extends GameEngine {
             soundManager.toggleMute();
         } else if (keyCode == KeyEvent.VK_F) {
             speedMultiplier = (speedMultiplier == 2.0) ? 1.0 : 2.0;
+        } else if (keyCode == KeyEvent.VK_G) {
+            devMode = !devMode;
         } else {
             selectBuildingByKey(keyCode);
         }
