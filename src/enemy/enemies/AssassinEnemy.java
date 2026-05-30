@@ -15,7 +15,9 @@ import core.GridPosition;
 import enemy.Enemy;
 import enemy.EnemyType;
 
-/** Fast enemy with low health but high base damage. */
+/**
+ * <p>A fast-moving melee enemy with low health. Rushes past defences to reach and damage the base quickly.</p>
+ */
 public class AssassinEnemy extends Enemy {
     public static final int BASE_HP = 80;
 

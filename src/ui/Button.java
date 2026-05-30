@@ -14,7 +14,9 @@ import java.awt.Color;
 import building.BuildingType;
 import game.GameEngine;
 
-/** UI button with optional type-specific color and selected state. */
+/**
+ * <p>A clickable UI button supporting custom text, hover highlighting, enabled/disabled states and action callbacks.</p>
+ */
 public class Button {
     private int x;
     private int y;

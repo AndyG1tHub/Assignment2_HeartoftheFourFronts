@@ -9,7 +9,9 @@
 
 package enemy;
 
-/** Current tactical state of an enemy. */
+/**
+ * <p>Enumeration of enemy behaviour states. Includes MOVING, ATTACKING_BASE, ATTACKING_BUILDING, CHASING_DECOY and other state constants.</p>
+ */
 public enum EnemyState {
     SPAWNING,
     MOVING,

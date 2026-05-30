@@ -15,7 +15,9 @@ import core.GridPosition;
 import enemy.Enemy;
 import enemy.EnemyType;
 
-/** Slow meat-shield enemy that survives longer and hits harder. */
+/**
+ * <p>A slow, high-HP armoured enemy that absorbs tower fire. Designed to soak up damage while other enemies advance.</p>
+ */
 public class TankEnemy extends Enemy {
     public static final int BASE_HP = 250;
 

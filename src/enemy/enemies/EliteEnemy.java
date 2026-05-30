@@ -16,6 +16,9 @@ import enemy.EnemyType;
 import core.GridPosition;
 import game.GameConfig;
 
+/**
+ * <p>An elite enemy variant that appears periodically throughout the game. Has boosted HP and damage compared to standard enemies and grants greater rewards upon defeat.</p>
+ */
 public class EliteEnemy extends Enemy {
     public static final int BASE_HP = GameConfig.ELITE_BASE_HP;
 

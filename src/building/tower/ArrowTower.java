@@ -19,7 +19,9 @@ import game.GameEngine;
 import game.GameConfig;
 import manager.ImageManager;
 
-/** Fast single-target starter tower. */
+/**
+ * <p>A rapid-firing tower that shoots arrows at nearby enemies. Balanced attack speed and damage, effective against all enemy types.</p>
+ */
 public class ArrowTower extends AttackTower {
     public ArrowTower(GridPosition position) {
         super(position, 120, GameConfig.ARROW_TOWER_COST, 4,

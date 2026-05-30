@@ -11,7 +11,9 @@ package manager;
 
 import game.Difficulty;
 
-/** Converts Difficulty into gameplay multipliers. */
+/**
+ * <p>Translates the selected {@link Difficulty} into gameplay multiplier values for enemy HP, damage, spawn rate and disaster intervals.</p>
+ */
 public class DifficultyManager {
     private Difficulty difficulty;
     private double adaptivePressure = 1.0;

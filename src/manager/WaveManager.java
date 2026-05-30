@@ -11,7 +11,9 @@ package manager;
 
 import game.GameConfig;
 
-/** Tracks elapsed time and exposes the current pressure stage. */
+/**
+ * <p>Controls stage progression and wave timing. Manages the 5-stage campaign timer, preparation countdown, elite spawn timer and boss trigger.</p>
+ */
 public class WaveManager {
     private double elapsedTime;
     private int stage = 1;

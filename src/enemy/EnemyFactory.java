@@ -18,7 +18,9 @@ import enemy.enemies.MeleeEnemy;
 import enemy.enemies.TankEnemy;
 import manager.DifficultyManager;
 
-/** Creates enemies with difficulty-scaled stats. */
+/**
+ * <p>Factory class that creates enemy instances by type. Applies difficulty-based stat scaling to spawned enemies.</p>
+ */
 public class EnemyFactory {
     private final DifficultyManager difficultyManager;
 

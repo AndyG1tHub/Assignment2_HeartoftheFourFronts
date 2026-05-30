@@ -11,7 +11,9 @@ package core;
 
 import java.util.Objects;
 
-/** Immutable row/column coordinate for the grid map. */
+/**
+ * <p>An immutable position on the game grid represented by a row and column. Provides utility methods for neighbour calculation and equality checks.</p>
+ */
 public class GridPosition {
     public final int row;
     public final int col;

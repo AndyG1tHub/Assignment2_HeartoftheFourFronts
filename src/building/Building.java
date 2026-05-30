@@ -20,7 +20,9 @@ import combat.ProjectileManager;
 import game.GameEngine;
 import game.GameConfig;
 
-/** Base class for all one-tile player buildings. */
+/**
+ * <p>Abstract base class for all placeable buildings in the game. Subclasses include attack towers, the heal tower, walls and the decoy. Each building occupies a single grid tile and has HP, a cost, and a sell value.</p>
+ */
 public abstract class Building {
     protected final GridPosition position;
     protected int hp;

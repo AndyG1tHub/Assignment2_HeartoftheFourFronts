@@ -21,7 +21,9 @@ import enemy.Enemy;
 import combat.ProjectileManager;
 import manager.SoundManager;
 
-/** Shared targeting and cooldown logic for attack towers. */
+/**
+ * <p>Abstract base class for all offensive towers. Handles targeting, projectile firing, upgrade logic and rank rendering. Subclasses define their own projectile type, fire rate and damage multipliers.</p>
+ */
 public abstract class AttackTower extends Building {
     protected final int baseDamage;
     protected final double baseAttackInterval;

@@ -9,7 +9,9 @@
 
 package event;
 
-/** Event categories used by EventManager. */
+/**
+ * <p>Enumeration of random event types that may occur during gameplay. Includes REWARD_POINT and DISASTER.</p>
+ */
 public enum EventType {
     REWARD_POINT,
     FIRE_ZONE,

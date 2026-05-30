@@ -9,7 +9,9 @@
 
 package game;
 
-/** Represents the top-level screen or play state of the game. */
+/**
+ * <p>Enumeration of all possible game states: MENU, PLAYING, PAUSED, GAME_OVER, VICTORY, LEVEL_SELECT, HELP, INTRO and others.</p>
+ */
 public enum GameState {
 
     INTRO,

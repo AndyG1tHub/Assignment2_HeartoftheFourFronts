@@ -11,7 +11,9 @@
 
 
 import game.CoreSiege;
-/** Optional launcher kept so javac src/*.java compiles cleanly. */
+/**
+ * <p>Optional launcher class that starts the game from the command line.</p>
+ */
 public class Main {
     public static void main(String[] args) {
         CoreSiege.main(args);

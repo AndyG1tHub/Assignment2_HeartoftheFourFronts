@@ -12,7 +12,9 @@ package event;
 import core.GridMap;
 import game.GameEngine;
 
-/** Abstract timed event with a common update/draw lifecycle. */
+/**
+ * <p>Abstract base class for timed game events with a cooldown timer and lifecycle management.</p>
+ */
 public abstract class GameEvent {
     protected final EventType type;
     protected double duration;

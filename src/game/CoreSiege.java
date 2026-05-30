@@ -27,7 +27,9 @@ import ui.*;
 import util.*;
 import effect.*;
 
-/** Main game class. It coordinates managers and keeps gameplay logic delegated. */
+/**
+ * <p>The primary game coordinator. Initialises all managers and systems, runs the game loop, processes input, handles save/load, and manages game state transitions (menu, playing, paused, game-over).</p>
+ */
 public class CoreSiege extends GameEngine {
     private static final java.io.File SAVE_FILE = new java.io.File("save.dat");
 

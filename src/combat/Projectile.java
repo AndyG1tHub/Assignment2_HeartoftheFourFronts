@@ -18,7 +18,9 @@ import game.GameConfig;
 import game.GameEngine;
 import manager.ImageManager;
 
-/** Lightweight visual projectile. Damage is applied when projectile reaches target. */
+/**
+ * <p>A projectile fired by towers toward enemies. Handles movement, collision detection and type-specific visual rendering.</p>
+ */
 public class Projectile {
     private final GridPosition start;
     private final GridPosition target;

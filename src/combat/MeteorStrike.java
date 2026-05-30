@@ -23,7 +23,9 @@ import game.GameEngine;
 import manager.ImageManager;
 import manager.SoundManager;
 
-/** Warning marker followed by one burst of damage. */
+/**
+ * <p>A disaster event where a meteor strikes a targeted position on the grid. Deals damage to all buildings within the blast radius.</p>
+ */
 public class MeteorStrike extends Disaster {
     private double warningTimer;
     private boolean struck;

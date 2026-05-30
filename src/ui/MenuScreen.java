@@ -17,7 +17,9 @@ import game.GameConfig;
 import game.Difficulty;
 import manager.ImageManager;
 
-/** Main menu screen — premium minimal UI that showcases the background art. */
+/**
+ * <p>Main menu screen with options to Play, Continue, Select Level, View Help or Quit. Also handles the level select screen, help screen and the victory/defeat end screen.</p>
+ */
 public class MenuScreen {
     private static final Color BG = new Color(20, 24, 28);
     private static final Color GOLD = new Color(235, 200, 110);

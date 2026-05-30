@@ -21,7 +21,9 @@ import effect.RewardPoint;
 import game.GameEngine;
 import game.GameConfig;
 
-/** Spawns, updates, draws and collects reward points. */
+/**
+ * <p>Spawns clickable {@link RewardPoint} pickups at timed intervals and tracks them until collected or expired.</p>
+ */
 public class RewardPointManager {
     private final List<RewardPoint> rewardPoints = new ArrayList<RewardPoint>();
     private final Random random = new Random();

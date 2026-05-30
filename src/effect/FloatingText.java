@@ -13,6 +13,9 @@ import java.awt.Color;
 
 import game.GameEngine;
 
+/**
+ * <p>An animated text label that floats upward and fades out. Used for damage numbers, coin rewards and gameplay notifications.</p>
+ */
 public class FloatingText {
     private double x;
     private double y;

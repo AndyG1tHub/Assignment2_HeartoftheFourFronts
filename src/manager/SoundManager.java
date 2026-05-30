@@ -13,7 +13,9 @@ import javax.sound.sampled.*;
 
 import game.GameEngine;
 
-/** Central sound facade. Singleton so any gameplay class can call it. */
+/**
+ * <p>Singleton facade that loads, pre-caches and plays all sound effects and background music clips used throughout the game.</p>
+ */
 public class SoundManager {
     private static SoundManager instance;
 

@@ -9,7 +9,10 @@
 
 package game;
 
-/** Stores shared constants so gameplay code avoids magic numbers. */
+/**
+ * <p>Central configuration constants defining gameplay balance:
+ * tower stats, enemy stats, economy values, stage timings and level unlock rules.</p>
+ */
 public final class GameConfig {
     public static final String TITLE = "Heart of the Four Fronts: The Last Defence";
 

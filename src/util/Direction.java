@@ -9,7 +9,9 @@
 
 package util;
 
-/** Four cardinal directions used for spawning and decoy movement. */
+/**
+ * <p>Enumeration of the four cardinal directions: UP, DOWN, LEFT, RIGHT. Used for decoy targeting direction selection.</p>
+ */
 public enum Direction {
     NORTH,
     SOUTH,

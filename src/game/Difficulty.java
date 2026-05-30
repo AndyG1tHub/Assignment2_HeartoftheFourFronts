@@ -9,7 +9,9 @@
 
 package game;
 
-/** Player-selected difficulty. DifficultyManager converts this into numbers. */
+/**
+ * <p>Enumeration of selectable difficulty levels: EASY, NORMAL and HARD.</p>
+ */
 public enum Difficulty {
     EASY,
     NORMAL,

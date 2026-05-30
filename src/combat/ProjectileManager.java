@@ -18,7 +18,9 @@ import core.GridPosition;
 import core.GridMap;
 import game.GameEngine;
 
-/** Updates and draws projectile visuals. */
+/**
+ * <p>Manages all active projectiles in the game world. Updates their positions each frame, detects hits and removes expired projectiles.</p>
+ */
 public class ProjectileManager {
     private final List<Projectile> projectiles = new ArrayList<Projectile>();
 

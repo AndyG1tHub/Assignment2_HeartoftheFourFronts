@@ -9,7 +9,9 @@
 
 package core;
 
-/** Logical state of one grid tile. */
+/**
+ * <p>Enumeration of terrain types for map tiles: GROUND (buildable), GRASS, FLOWER (decorative) and OBSTACLE (blocked).</p>
+ */
 public enum TileType {
     EMPTY,
     OBSTACLE,
