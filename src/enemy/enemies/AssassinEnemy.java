@@ -1,13 +1,12 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
  * Fast, fragile damage dealer that rushes the base.
  * 80 base HP, 22 damage, 1.5 speed (fastest non-boss).
  * IceTower freeze is especially effective against them. Purple colour, label "S".

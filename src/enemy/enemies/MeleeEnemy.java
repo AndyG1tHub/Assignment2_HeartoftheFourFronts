@@ -1,13 +1,12 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
  * Standard frontline enemy with balanced stats.
  * 100 base HP, 12 damage, 1.0 speed, no special abilities.
  * The most common unit in every wave. Red colour, label "M".

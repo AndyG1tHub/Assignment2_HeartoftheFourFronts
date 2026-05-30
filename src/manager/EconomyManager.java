@@ -1,13 +1,12 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
  * Owns the player's money balance with atomic spend/earn operations.
  * spendMoney() returns false if the cost is unaffordable.
  * Money comes from enemy kills, reward points, and building sales.

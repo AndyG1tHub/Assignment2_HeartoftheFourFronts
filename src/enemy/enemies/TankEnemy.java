@@ -1,13 +1,12 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
  * Slow, durable enemy with the highest base HP.
  * 250 base HP, 20 damage, 0.7 speed.
  * Absorbs heavy fire while faster enemies slip past. Grey colour, label "T".

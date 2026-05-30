@@ -1,13 +1,12 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
  * Loads and serves all image assets via static accessors.
  * Handles tower sprites, enemy spritesheets per type with left-facing variants.
  * Loads map tiles, obstacle sprites, fire animation, and coin rotation frames.

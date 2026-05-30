@@ -1,13 +1,12 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
  * Ranged enemy that attacks from 2 tiles away.
  * 70 base HP, 15 damage, 1.1 speed, high rewards (110 score, 30 money).
  * Green colour, label "R" for ranged.

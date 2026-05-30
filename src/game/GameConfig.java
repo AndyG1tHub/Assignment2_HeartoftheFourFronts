@@ -1,13 +1,12 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
  * Central constant repository for all gameplay tuning parameters.
  * Stores window, grid, tile, and HUD dimensions.
  * Stores tower costs, damage multipliers, upgrade curves, and sell ratio.

@@ -1,13 +1,12 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
  * In-game HUD rendered as a glass-morphism panel on the right side.
  * Draws title, level, and a gradient base health bar.
  * Draws stat cards for money, kills, wave, score, stage, and time.

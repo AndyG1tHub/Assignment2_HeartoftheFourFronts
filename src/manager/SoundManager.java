@@ -1,13 +1,12 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
  * Singleton sound facade with one-line play methods for every audio event.
  * Loads all WAV assets at startup and pre-creates Clip objects for low latency.
  * Supports mute toggle and separate volume levels for SFX and BGM.

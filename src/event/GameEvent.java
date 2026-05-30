@@ -1,13 +1,12 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
  * Abstract base for all timed map events with a common lifecycle.
  * Holds a type enum, a countdown duration, and an active flag.
  * Subclasses override draw() for rendering and add effect logic.

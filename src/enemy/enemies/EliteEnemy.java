@@ -1,13 +1,12 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
  * Mini-boss used as final wave in levels 1-2 and elite waves throughout.
  * 500 base HP, 35 damage, 0.9 speed, 1.5x draw scale.
  * Replaces boss encounters when the full tower arsenal is not yet available.
