@@ -490,6 +490,7 @@ public class CoreSiege extends GameEngine {
         if (building == null) return;
         int refund = (int) (building.getCost() * GameConfig.BUILDING_SELL_RATIO);
         economyManager.addMoney(refund);
+        particleSystem.spawnSell(gridMap, position, refund);
         building.takeDamage(building.getHp());
         gridMap.removeBuilding(position);
         buildings.remove(building);

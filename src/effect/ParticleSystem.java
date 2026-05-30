@@ -11,6 +11,7 @@
  * Central manager for visual feedback particles and floating text.
  * spawnEnemyDeath() creates a red/gold burst on enemy death.
  * spawnBuild() creates a green ring with "BUILD" floating text.
+ * spawnSell() creates a gold burst with sell refund floating text.
  * spawnUpgrade() creates a blue burst with "UPGRADE" floating text.
  * spawnScoreText() and spawnRewardText() show point and money gains.
  * Each frame updates all active particles and texts, removing expired ones.
@@ -47,6 +48,12 @@ public class ParticleSystem {
         spawnRing(map.tileCenterX(position), map.tileCenterY(position), 16,
                 new Color(90, 210, 125), new Color(235, 205, 110), 90.0, 0.45);
         spawnText(map, position, "BUILD", new Color(115, 235, 145));
+    }
+
+    public void spawnSell(GridMap map, GridPosition position, int refund) {
+        spawnBurst(map.tileCenterX(position), map.tileCenterY(position), 18,
+                new Color(255, 190, 80), new Color(255, 235, 135), 100.0, 0.5);
+        spawnText(map, position, "SELL +$" + refund, new Color(255, 215, 95));
     }
 
     public void spawnUpgrade(GridMap map, GridPosition position) {
