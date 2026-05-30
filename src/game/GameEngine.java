@@ -1,12 +1,3 @@
-/*
- * 159.261 Games Programming - Assignment 2
- * Team members:
- * - Guo Mingqi (ID: 24009196)
- * - Yu Han (ID: 24008995)
- * - Song Pengju (ID: 24009198)
- * - Li Qianzheng (ID: 24009199)
- */
-
 package game;
 
 import java.awt.*;
@@ -20,7 +11,6 @@ import java.util.Random;
 import javax.imageio.*;
 import javax.sound.sampled.*;
 
-/** Core game engine providing window management, rendering, input and audio. */
 public abstract class GameEngine implements KeyListener, MouseListener, MouseMotionListener {
 	//-------------------------------------------------------
 	// Game Engine Frame and Panel
