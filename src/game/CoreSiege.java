@@ -134,7 +134,14 @@ public class CoreSiege extends GameEngine {
 
         dt *= speedMultiplier;
 
-        if (devMode) economyManager.addMoney(100000);
+        if (devMode) {
+            economyManager.addMoney(100000);
+            base.incomingDamageMultiplier = 0.5;
+            maxUnlockedLevel = GameConfig.TOTAL_LEVELS;
+            menuScreen.setMaxUnlockedLevel(maxUnlockedLevel);
+        } else {
+            base.incomingDamageMultiplier = 1.0;
+        }
 
         hud.update(dt);
 
@@ -510,6 +517,10 @@ public class CoreSiege extends GameEngine {
             speedMultiplier = (speedMultiplier == 2.0) ? 1.0 : 2.0;
         } else if (keyCode == KeyEvent.VK_G) {
             devMode = !devMode;
+            if (devMode) {
+                maxUnlockedLevel = GameConfig.TOTAL_LEVELS;
+                menuScreen.setMaxUnlockedLevel(maxUnlockedLevel);
+            }
         } else {
             selectBuildingByKey(keyCode);
         }

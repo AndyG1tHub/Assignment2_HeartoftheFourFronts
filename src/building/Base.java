@@ -15,6 +15,7 @@ public class Base {
     private final GridPosition position;
     private final int maxHp;
     private int hp;
+    public double incomingDamageMultiplier = 1.0;
 
     public Base(GridPosition position) {
         this.position = position;
@@ -23,7 +24,7 @@ public class Base {
     }
 
     public void takeDamage(int amount) {
-        hp = Math.max(0, hp - amount);
+        hp = Math.max(0, hp - (int)(amount * incomingDamageMultiplier));
         SoundManager sm = SoundManager.getInstance();
         if (sm != null) sm.playBaseHit();
     }
