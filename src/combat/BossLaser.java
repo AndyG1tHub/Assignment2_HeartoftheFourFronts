@@ -13,7 +13,7 @@ import game.GameEngine;
 /** Epic boss laser inspired by PvZ Zomboss — charges with energy buildup,
  *  then fires a devastating beam that obliterates entire row OR column! */
 public class BossLaser {
-    public static final double FIRE_INTERVAL = 5.0;
+    public static final double FIRE_INTERVAL = 3.5;
     private static final double CHARGE_TIME = 0.8;   // dramatic charge-up
     private static final double BEAM_TIME = 1.5;      // intense beam duration
     public static final double TOTAL_DURATION = CHARGE_TIME + BEAM_TIME;
