@@ -1,13 +1,13 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
+
  * Small coloured circle particle with gravity and fade-out.
  * Used for burst effects on enemy death, building placement, and upgrade.
  * Each particle has velocity, size, colour, and lifetime.

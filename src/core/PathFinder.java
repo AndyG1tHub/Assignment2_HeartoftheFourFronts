@@ -1,13 +1,13 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
+
  * Breadth-first search pathfinder on the 20x20 grid.
  * Finds the shortest four-directional path respecting obstacles and buildings.
  * findPath() treats buildings as blocked tiles.

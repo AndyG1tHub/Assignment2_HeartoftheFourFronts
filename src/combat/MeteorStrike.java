@@ -1,13 +1,13 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
+
  * A timed disaster that destroys everything in a 3x3 area.
  * Warning marker flashes for 1.2s before the meteor strikes.
  * Instantly kills all enemies and buildings in the affected zone.

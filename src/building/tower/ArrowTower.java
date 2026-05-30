@@ -1,13 +1,13 @@
-/*
+/**
  * 159.261 Games Programming - Assignment 2
  * Team members:
  * - Guo Mingqi (ID: 24009196)
  * - Yu Han (ID: 24008995)
  * - Song Pengju (ID: 24009198)
  * - Li Qianzheng (ID: 24009199)
- */
 
-/**
+
+
  * Fast single-target starter tower available from Level 1.
  * Fires arrow projectiles at the closest enemy every 1.8 seconds.
  * Has the longest range (4 tiles) among attack towers.
